@@ -12734,24 +12734,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
   <aside class="gcpu-sidebar" id="gcpu-sidebar">
     <!-- Brand Header kèm Logo SVG Vàng Champagne từ D:\seedance 2.5 mới\public\logo.svg -->
     <div style="display:flex;align-items:center;gap:10px;padding:4px 6px 12px;border-bottom:1px solid var(--border)">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" style="flex-shrink:0">
-        <defs>
-          <linearGradient id="gcpuGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#e5d1b0"/>
-            <stop offset="50%" stop-color="#c9ad7d"/>
-            <stop offset="100%" stop-color="#9e7f4f"/>
-          </linearGradient>
-        </defs>
-        <g stroke="url(#gcpuGoldGrad)" stroke-width="4.5" stroke-linecap="round" fill="none">
-          <rect x="20" y="20" width="60" height="60" rx="10" fill="#141418"/>
-          <rect x="31" y="31" width="38" height="38" rx="5"/>
-          <line x1="35" y1="8" x2="35" y2="20"/><line x1="50" y1="8" x2="50" y2="20"/><line x1="65" y1="8" x2="65" y2="20"/>
-          <line x1="35" y1="80" x2="35" y2="92"/><line x1="50" y1="80" x2="50" y2="92"/><line x1="65" y1="80" x2="65" y2="92"/>
-          <line x1="8" y1="35" x2="20" y2="35"/><line x1="8" y1="50" x2="20" y2="50"/><line x1="8" y1="65" x2="20" y2="65"/>
-          <line x1="80" y1="35" x2="92" y2="35"/><line x1="80" y1="50" x2="92" y2="50"/><line x1="80" y1="65" x2="92" y2="65"/>
-        </g>
-        <polygon points="44,40 44,60 60,50" fill="url(#gcpuGoldGrad)"/>
-      </svg>
+      <img src="/logo.svg" alt="H3 Pro" width="36" height="36" style="flex-shrink:0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.45)">
       <div style="min-width:0;flex:1">
         <div style="font-size:13.5px;font-weight:900;color:var(--text-main);letter-spacing:.3px;white-space:nowrap">H3 STUDIO <span style="color:var(--em-light)">PRO</span></div>
         <div style="font-size:9.5px;color:var(--text-muted);font-weight:700;letter-spacing:.03em">Tạo Video AI Không Giới Hạn</div>
@@ -34582,7 +34565,17 @@ class H(BaseHTTPRequestHandler):
         if p.startswith("/h3-studio"):
             p = p[10:] or "/"
         if p in ("/", ""): self._h(PAGE)
-        elif p == "/favicon.ico": self.send_response(204); self.end_headers()
+        elif p in ("/favicon.ico", "/logo.svg"):
+            asset_file = SCRIPT_DIR / "assets" / ("logo.svg" if p == "/logo.svg" else "icon.ico")
+            if asset_file.is_file():
+                data = asset_file.read_bytes()
+                self.send_response(200)
+                self.send_header("Content-Type", "image/svg+xml; charset=utf-8" if p == "/logo.svg" else "image/x-icon")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+            else:
+                self.send_response(204); self.end_headers()
         elif p == "/api/license/status":
             self._j(get_current_license_status())
         elif p == "/api/github/status":

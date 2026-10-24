@@ -131,6 +131,7 @@ async function createWindow() {
     minHeight: 700,
     backgroundColor: '#0c0c0e',
     title: 'H3 Studio Pro - AI Video Generator',
+    icon: path.join(__dirname, 'icon.ico'),
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,

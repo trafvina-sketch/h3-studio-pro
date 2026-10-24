@@ -48,6 +48,7 @@
       }
     ],
     "win": {
+      "icon": "icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -63,6 +64,9 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "H3 Studio Pro",
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.ico",
       "runAfterFinish": true
     }
   }
