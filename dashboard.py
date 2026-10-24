@@ -12698,6 +12698,9 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 
   <!-- Phải: Nút công cụ gọn gàng -->
   <div class="right">
+    <button class="b b2" id="nav-license-key-btn" onclick="openLicenseKeyModal(false)" title="Quản lý Key bản quyền & Mã máy HWID" style="padding:5px 10px;font-size:11.5px;font-weight:800;border-radius:8px;background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.42);color:#34d399">
+      🔑 <span id="nav-license-key-txt">Nhập Key</span>
+    </button>
     <button class="b b2" id="nav-github-update-btn" onclick="openGithubUpdateModal()" title="Kiểm tra & Cập nhật H3 Studio trực tiếp từ GitHub" style="padding:5px 10px;font-size:11.5px;font-weight:800;border-radius:8px;background:rgba(201,173,125,0.12);border-color:rgba(201,173,125,0.42);color:#e5d1b0">
       🔄 Cập Nhật GitHub <span id="nav-gh-badge" style="display:none;background:#10b981;color:#052e16;font-size:9.5px;font-weight:900;padding:1px 5px;border-radius:999px;margin-left:3px">MỚI</span>
     </button>
@@ -12808,6 +12811,10 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 
     <div class="gcpu-sb-group">
       <div class="gcpu-sb-label">Hệ Thống &amp; Cập Nhật</div>
+      <button type="button" class="gcpu-sb-link" onclick="openLicenseKeyModal(false)" style="border:1px solid rgba(16,185,129,0.28);background:rgba(16,185,129,0.06);margin-bottom:3px">
+        <span class="sb-ico">🔑</span> <span>Kích Hoạt Key Bản Quyền</span>
+        <span class="gcpu-sb-badge" id="sb-license-badge" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.4)">KEY</span>
+      </button>
       <button type="button" class="gcpu-sb-link" onclick="openGithubUpdateModal()" style="border:1px solid rgba(201,173,125,0.28);background:rgba(201,173,125,0.06);margin-bottom:3px">
         <span class="sb-ico">🔄</span> <span>Cập Nhật Từ GitHub</span>
         <span class="gcpu-sb-badge" id="sb-gh-badge">GIT</span>
@@ -17497,6 +17504,11 @@ function syncGenCpuH3LockUI(){
 }
 
 window.__checkGenCpuH3Allowed = function(){
+  if(!window.__gencpuEmbed && window.__h3LicenseState && !window.__h3LicenseState.valid){
+    openLicenseKeyModal(true);
+    if(typeof toast === 'function') toast('🔒 Vui lòng kích hoạt Key bản quyền để bắt đầu tạo video!');
+    return false;
+  }
   if(window.__gencpuEmbed && !isAdminMode && !window.__gencpuCanGen){
     const usedCnt = Number(window.__gencpuUsedCount || 0);
     const quotaLim = Number(window.__gencpuQuotaLimit || 0);
@@ -33756,6 +33768,312 @@ setTimeout(() => {
 }, 2500);
 </script>
 
+
+<!-- MODAL KÍCH HOẠT KEY BẢN QUYỀN & KHÓA MÃ MÁY (HWID) TRÊN VERCEL -->
+<div id="h3-license-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(5,6,9,0.88);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:16px">
+  <div style="width:100%;max-width:540px;background:#141417;border:1.5px solid rgba(201,173,125,0.48);border-radius:18px;padding:24px 26px;box-shadow:0 28px 70px rgba(0,0,0,0.85);color:#f4f4f5">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#d8be94,#9e7f4f);color:#14120e;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900">🔑</div>
+        <div>
+          <h3 style="margin:0;font-size:16px;font-weight:900;color:#e5d1b0">Kích Hoạt Bản Quyền H3 Studio Pro</h3>
+          <div style="font-size:11px;color:#a1a1aa;margin-top:2px">Hệ thống xác thực Key &amp; Khóa thiết bị (HWID) qua Server Vercel</div>
+        </div>
+      </div>
+      <button type="button" class="b b2" id="btn-close-license-modal" onclick="closeLicenseKeyModal()" style="padding:5px 10px;font-size:12px">&times; Đóng</button>
+    </div>
+
+    <!-- Hộp thông tin Thiết bị HWID & Trạng thái Key hiện tại -->
+    <div style="background:#101013;border:1px solid rgba(201,173,125,0.28);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;flex-direction:column;gap:8px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="color:#a1a1aa;font-weight:700">💻 Mã Thiết Bị (HWID):</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          <code id="lic-hwid-val" style="background:#1c1c21;color:#e5d1b0;padding:3px 8px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-weight:800;border:1px solid rgba(201,173,125,0.3)">HWID-...</code>
+          <button type="button" class="b b2" onclick="navigator.clipboard.writeText(document.getElementById('lic-hwid-val').textContent);toast('📋 Đã sao chép mã máy HWID!')" style="padding:3px 7px;font-size:10.5px">📋 Copy</button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="color:#a1a1aa;font-weight:700">📌 Trạng Thái Bản Quyền:</span>
+        <span id="lic-status-badge" style="font-weight:800;color:#fbbf24">⏳ Đang kiểm tra...</span>
+      </div>
+      <div id="lic-expire-row" style="display:none;justify-content:space-between;align-items:center;gap:8px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.08)">
+        <span style="color:#a1a1aa;font-weight:700">⏱️ Hạn Sử Dụng Tới:</span>
+        <span id="lic-expire-val" style="font-family:'JetBrains Mono',monospace;font-weight:800;color:#34d399">--</span>
+      </div>
+    </div>
+
+    <!-- Ô nhập Key bản quyền -->
+    <div style="margin-bottom:12px">
+      <label style="font-size:11.5px;font-weight:800;color:#c6cad8;display:block;margin-bottom:6px">🔑 Nhập Mã Key Kích Hoạt (Định dạng <code>H3PRO-XXXX-XXXX-XXXX</code>):</label>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="lic-key-inp" class="sai-input" placeholder="Dán mã Key của bạn vào đây (VD: H3PRO-6900ABCD-01F2A1-8899AABB)..." style="font-family:'JetBrains Mono',monospace;font-size:13px !important;text-transform:uppercase" onkeydown="if(event.key==='Enter')activateLicenseKey()">
+      </div>
+    </div>
+
+    <div id="lic-msg-box" style="display:none;margin-bottom:12px;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.45;font-weight:700"></div>
+
+    <!-- Nút Kích hoạt Key & Nhận Key Dùng thử Free 24h -->
+    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:10px;margin-bottom:10px">
+      <button type="button" class="b b1" id="btn-lic-activate" onclick="activateLicenseKey()" style="padding:12px 14px;font-size:13px;font-weight:900;justify-content:center">
+        🔓 KÍCH HOẠT KEY NGAY
+      </button>
+      <button type="button" class="b b2" id="btn-lic-free-trial" onclick="claimFreeTrialKeyInApp()" style="padding:12px 12px;font-size:12px;font-weight:800;justify-content:center;border-color:rgba(16,185,129,0.45);color:#34d399">
+        🎁 Nhận Key Free (24h)
+      </button>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#a1a1aa;padding-top:6px">
+      <span>Mỗi Key gắn cố định với mã máy HWID của bạn.</span>
+      <a href="#" id="lic-open-web-link" onclick="openVercelKeyPortal();return false;" style="color:#e5d1b0;font-weight:800;text-decoration:underline">🌐 Mở Web Nhận Key &amp; Kiểm Tra &rarr;</a>
+    </div>
+
+    <!-- Khu vực dành cho Chủ Tool (Admin): Cấu hình URL Vercel & Tạo nhanh Key -->
+    <details style="margin-top:14px;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px">
+      <summary style="cursor:pointer;font-size:11.5px;font-weight:800;color:#a1a1aa;user-select:none">
+        👑 Dành cho Chủ Tool (Admin): Cấu hình link Vercel Key Server &amp; Tạo Key Nhanh
+      </summary>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;background:#101013;padding:11px 13px;border-radius:10px;border:1px solid rgba(255,255,255,0.07)">
+        <div>
+          <label style="font-size:10.5px;font-weight:800;color:#c6cad8;display:block;margin-bottom:4px">🌐 Địa chỉ Server Key trên Vercel (hoặc Local <code>http://127.0.0.1:4050</code>):</label>
+          <div style="display:flex;gap:6px">
+            <input type="text" id="lic-server-url-inp" class="sai-input" placeholder="https://your-key-server.vercel.app" style="font-family:'JetBrains Mono',monospace;font-size:11.5px !important">
+            <button type="button" class="b b2" onclick="saveLicenseServerConfig()" style="padding:6px 12px;font-size:11.5px;font-weight:800;white-space:nowrap;border-color:rgba(201,173,125,0.45);color:#e5d1b0">💾 Lưu URL</button>
+          </div>
+        </div>
+        <div style="border-top:1px dashed rgba(255,255,255,0.08);padding-top:8px">
+          <label style="font-size:10.5px;font-weight:800;color:#34d399;display:block;margin-bottom:4px">⚡ Tạo Nhanh Key Bản Quyền (Dùng chung thuật toán chữ ký với Vercel):</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <select id="lic-quick-hours" class="sai-select" style="width:auto !important;flex:1;padding:6px 8px !important;font-size:11.5px !important">
+              <option value="24">1 Ngày (24h)</option>
+              <option value="72">3 Ngày (72h)</option>
+              <option value="168" selected>7 Ngày (1 Tuần)</option>
+              <option value="720">30 Ngày (1 Tháng)</option>
+              <option value="8760">365 Ngày (1 Năm)</option>
+              <option value="876000">♾️ Vĩnh Viễn (Lifetime)</option>
+            </select>
+            <button type="button" class="b b2" onclick="adminQuickCreateKeyInApp(false)" style="padding:6px 11px;font-size:11.5px;font-weight:800;border-color:#10b981;color:#34d399">➕ Tạo &amp; Copy Key</button>
+            <button type="button" class="b b1" onclick="adminQuickCreateKeyInApp(true)" style="padding:6px 11px;font-size:11.5px;font-weight:800">⚡ Tạo &amp; Kích Hoạt Máy Này</button>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+
+<script>
+window.__h3LicenseState = { valid: true, key: '', hwid: '', key_server_url: 'http://127.0.0.1:4050' };
+
+async function checkLicenseKeyStatus(forceModalIfInvalid){
+  if(window.__gencpuEmbed) return true;
+  try {
+    const r = await fetch('/api/license/status').then(res => res.json());
+    window.__h3LicenseState = r || {};
+    const hwidEl = document.getElementById('lic-hwid-val');
+    const stBadge = document.getElementById('lic-status-badge');
+    const expRow = document.getElementById('lic-expire-row');
+    const expVal = document.getElementById('lic-expire-val');
+    const keyInp = document.getElementById('lic-key-inp');
+    const urlInp = document.getElementById('lic-server-url-inp');
+    const navBtn = document.getElementById('nav-license-key-btn');
+    const navTxt = document.getElementById('nav-license-key-txt');
+    const sbBadge = document.getElementById('sb-license-badge');
+    const closeBtn = document.getElementById('btn-close-license-modal');
+
+    if(hwidEl && r.hwid) hwidEl.textContent = r.hwid;
+    if(urlInp && r.key_server_url && !urlInp.value) urlInp.value = r.key_server_url;
+    if(keyInp && r.key && !keyInp.value) keyInp.value = r.key;
+
+    if(r && r.valid){
+      const remDays = r.remaining_hours >= 48 ? (Math.round(r.remaining_hours / 24) + ' ngày') : (r.remaining_hours + ' giờ');
+      const isLifetime = r.remaining_hours > 80000;
+      if(stBadge){
+        stBadge.style.color = '#34d399';
+        stBadge.textContent = isLifetime ? '✅ Đã kích hoạt Vĩnh Viễn' : `✅ Đang hoạt động (Còn ${remDays})`;
+      }
+      if(expRow) expRow.style.display = 'flex';
+      if(expVal) expVal.textContent = isLifetime ? '♾️ Vĩnh Viễn (Lifetime)' : (r.expires_str || '');
+      if(navBtn){
+        navBtn.style.background = 'rgba(16,185,129,0.12)';
+        navBtn.style.borderColor = 'rgba(16,185,129,0.42)';
+        navBtn.style.color = '#34d399';
+      }
+      if(navTxt) navTxt.textContent = isLifetime ? 'Key: Vĩnh Viễn' : `Key: Còn ${remDays}`;
+      if(sbBadge){ sbBadge.textContent = isLifetime ? 'VIP' : remDays; }
+      if(closeBtn) closeBtn.style.display = 'inline-flex';
+      return true;
+    } else {
+      if(stBadge){
+        stBadge.style.color = '#f87171';
+        stBadge.textContent = '🔒 ' + (r.reason || 'Chưa kích hoạt Key bản quyền');
+      }
+      if(expRow) expRow.style.display = 'none';
+      if(navBtn){
+        navBtn.style.background = 'rgba(239,68,68,0.14)';
+        navBtn.style.borderColor = 'rgba(239,68,68,0.45)';
+        navBtn.style.color = '#f87171';
+      }
+      if(navTxt) navTxt.textContent = 'Chưa Nhập Key';
+      if(sbBadge){ sbBadge.textContent = 'KHÓA'; }
+      if(forceModalIfInvalid){
+        openLicenseKeyModal(true);
+      }
+      return false;
+    }
+  } catch(e){
+    return true;
+  }
+}
+
+function openLicenseKeyModal(lockClose){
+  const m = document.getElementById('h3-license-modal');
+  if(!m) return;
+  const closeBtn = document.getElementById('btn-close-license-modal');
+  if(closeBtn) closeBtn.style.display = lockClose ? 'none' : 'inline-flex';
+  m.style.display = 'flex';
+  checkLicenseKeyStatus(false);
+}
+
+function closeLicenseKeyModal(){
+  if(!window.__gencpuEmbed && window.__h3LicenseState && !window.__h3LicenseState.valid){
+    if(typeof toast === 'function') toast('🔒 Vui lòng nhập Key bản quyền hoặc bấm "🎁 Nhận Key Free (24h)" để mở khóa H3 Studio Pro!');
+    return;
+  }
+  const m = document.getElementById('h3-license-modal');
+  if(m) m.style.display = 'none';
+}
+
+async function activateLicenseKey(){
+  const keyVal = (document.getElementById('lic-key-inp')?.value || '').trim().toUpperCase();
+  const msgBox = document.getElementById('lic-msg-box');
+  const btn = document.getElementById('btn-lic-activate');
+  if(!keyVal){
+    if(typeof toast === 'function') toast('⚠️ Vui lòng dán mã Key bản quyền (H3PRO-...)!');
+    return;
+  }
+  if(btn){ btn.disabled = true; btn.textContent = '⏳ Đang xác thực Key...'; }
+  try {
+    const res = await fetch('/api/license/activate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ key: keyVal })
+    }).then(r => r.json());
+    if(res && res.ok){
+      if(msgBox){
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(16,185,129,0.14)';
+        msgBox.style.border = '1px solid rgba(16,185,129,0.4)';
+        msgBox.style.color = '#34d399';
+        msgBox.textContent = `🎉 Kích hoạt Key thành công! Hạn sử dụng: ${res.expires_str || 'Hợp lệ'}`;
+      }
+      if(typeof toast === 'function') toast('🎉 Kích hoạt Key H3 Studio Pro thành công!');
+      await checkLicenseKeyStatus(false);
+      setTimeout(() => closeLicenseKeyModal(), 900);
+    } else {
+      if(msgBox){
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(239,68,68,0.14)';
+        msgBox.style.border = '1px solid rgba(239,68,68,0.4)';
+        msgBox.style.color = '#f87171';
+        msgBox.textContent = '❌ ' + (res?.error || 'Key không hợp lệ hoặc đã hết hạn');
+      }
+    }
+  } catch(e){
+    if(msgBox){
+      msgBox.style.display = 'block';
+      msgBox.style.color = '#f87171';
+      msgBox.textContent = '❌ Lỗi kết nối: ' + e.message;
+    }
+  } finally {
+    if(btn){ btn.disabled = false; btn.textContent = '🔓 KÍCH HOẠT KEY NGAY'; }
+  }
+}
+
+async function claimFreeTrialKeyInApp(){
+  const btn = document.getElementById('btn-lic-free-trial');
+  const msgBox = document.getElementById('lic-msg-box');
+  if(btn){ btn.disabled = true; btn.textContent = '⏳ Đang nhận Key...'; }
+  try {
+    const res = await fetch('/api/license/free-trial', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({})
+    }).then(r => r.json());
+    if(res && res.ok && res.key){
+      const inp = document.getElementById('lic-key-inp');
+      if(inp) inp.value = res.key;
+      if(msgBox){
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(16,185,129,0.14)';
+        msgBox.style.border = '1px solid rgba(16,185,129,0.4)';
+        msgBox.style.color = '#34d399';
+        msgBox.textContent = `🎁 Đã nhận & kích hoạt Key dùng thử 24h: ${res.key}`;
+      }
+      if(typeof toast === 'function') toast('🎁 Đã kích hoạt Key dùng thử miễn phí 24h!');
+      await checkLicenseKeyStatus(false);
+      setTimeout(() => closeLicenseKeyModal(), 1100);
+    } else {
+      if(msgBox){
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(239,68,68,0.14)';
+        msgBox.style.border = '1px solid rgba(239,68,68,0.4)';
+        msgBox.style.color = '#f87171';
+        msgBox.textContent = '⚠️ ' + (res?.error || 'Không thể nhận Key miễn phí');
+      }
+    }
+  } catch(e){
+    if(typeof toast === 'function') toast('Lỗi: ' + e.message);
+  } finally {
+    if(btn){ btn.disabled = false; btn.textContent = '🎁 Nhận Key Free (24h)'; }
+  }
+}
+
+async function saveLicenseServerConfig(){
+  const urlVal = (document.getElementById('lic-server-url-inp')?.value || '').trim();
+  if(!urlVal) return;
+  const res = await fetch('/api/license/config', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ key_server_url: urlVal })
+  }).then(r => r.json());
+  if(res && res.ok){
+    if(typeof toast === 'function') toast('✅ Đã lưu địa chỉ Vercel Key Server: ' + res.key_server_url);
+    checkLicenseKeyStatus(false);
+  }
+}
+
+async function adminQuickCreateKeyInApp(autoActivate){
+  const hours = Number(document.getElementById('lic-quick-hours')?.value || 168);
+  const res = await fetch('/api/license/admin-create', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ hours: hours, auto_activate: Boolean(autoActivate) })
+  }).then(r => r.json());
+  if(res && res.ok && res.key){
+    const inp = document.getElementById('lic-key-inp');
+    if(inp) inp.value = res.key;
+    try { navigator.clipboard.writeText(res.key); } catch(e){}
+    if(typeof toast === 'function') toast(`✅ Đã tạo & copy Key: ${res.key}`);
+    if(autoActivate){
+      await checkLicenseKeyStatus(false);
+      setTimeout(() => closeLicenseKeyModal(), 700);
+    }
+  }
+}
+
+function openVercelKeyPortal(){
+  const url = (window.__h3LicenseState && window.__h3LicenseState.key_server_url) || 'http://127.0.0.1:4050';
+  window.open(url, '_blank');
+}
+
+setTimeout(() => {
+  try {
+    if(!window.__gencpuEmbed){
+      checkLicenseKeyStatus(true);
+    }
+  } catch(e){}
+}, 900);
+</script>
+
 </body></html>"""
 
 
@@ -34027,6 +34345,208 @@ def perform_github_push(payload: dict) -> dict:
         return {"ok": False, "error": str(e)}
 
 
+
+# ==============================================================================
+# HỆ THỐNG BẢN QUYỀN KEY & KHÓA MÃ MÁY HWID (ĐỒNG BỘ VỚI VERCEL KEY SERVER)
+# ==============================================================================
+LICENSE_CONFIG_FILE = SCRIPT_DIR / "license_config.json"
+H3_KEY_SECRET = os.environ.get("KEY_SECRET", "h3_studio_pro_luxury_secret_2026_x99")
+
+def get_machine_hwid() -> str:
+    try:
+        import platform
+        import uuid
+        raw = f"{platform.node()}|{platform.machine()}|{platform.processor()}|{uuid.getnode()}"
+        digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12].upper()
+        return f"HWID-{digest}"
+    except Exception:
+        return "HWID-DEFAULT001"
+
+def create_h3_signed_key(duration_hours: float = 168, max_devices: int = 1) -> dict:
+    import hmac
+    exp_unix = 4102444800 if duration_hours >= 87600 else int(time.time()) + int(round(duration_hours * 3600))
+    exp_hex = f"{exp_unix:08X}"
+    dev_hex = f"{max(1, min(99, int(max_devices))):02X}"
+    nonce = f"{random.randint(0, 65535):04X}"
+    payload = f"{exp_hex}:{dev_hex}:{nonce}"
+    sig = hmac.new(H3_KEY_SECRET.encode("utf-8"), payload.encode("utf-8"), hashlib.sha256).hexdigest()[:8].upper()
+    return {
+        "key": f"H3PRO-{exp_hex}-{dev_hex}{nonce}-{sig}",
+        "expires_at": exp_unix * 1000,
+        "max_devices": int(max_devices),
+    }
+
+def verify_h3_signed_key_local(key_str: str) -> dict:
+    import hmac
+    clean = str(key_str or "").strip().upper()
+    m = re.match(r"^H3PRO-([0-9A-F]{8})-([0-9A-F]{2})([0-9A-F]{4})-([0-9A-F]{8})$", clean)
+    if not m:
+        return {"valid": False, "reason": "Định dạng mã Key không hợp lệ (Chuẩn: H3PRO-XXXX-XXXX-XXXX)"}
+    exp_hex, dev_hex, nonce, sig = m.groups()
+    payload = f"{exp_hex}:{dev_hex}:{nonce}"
+    expected_sig = hmac.new(H3_KEY_SECRET.encode("utf-8"), payload.encode("utf-8"), hashlib.sha256).hexdigest()[:8].upper()
+    if sig != expected_sig:
+        return {"valid": False, "reason": "Chữ ký bảo mật Key không đúng (Key không hợp lệ)"}
+    exp_unix = int(exp_hex, 16)
+    max_dev = int(dev_hex, 16) or 1
+    now_unix = int(time.time())
+    if now_unix > exp_unix:
+        return {"valid": False, "expired": True, "expires_at": exp_unix * 1000, "reason": "Mã Key đã hết hạn sử dụng"}
+    rem_hours = round((exp_unix - now_unix) / 3600.0, 1)
+    exp_str = "Vĩnh viễn (Lifetime)" if exp_unix >= 4000000000 else time.strftime("%d/%m/%Y %H:%M", time.localtime(exp_unix))
+    return {
+        "valid": True,
+        "key": clean,
+        "expires_at": exp_unix * 1000,
+        "expires_str": exp_str,
+        "remaining_hours": rem_hours,
+        "max_devices": max_dev,
+    }
+
+def load_license_config() -> dict:
+    cfg = {
+        "key": "",
+        "key_server_url": "http://127.0.0.1:4050",
+        "activated_at": "",
+        "trial_claimed": False,
+    }
+    if LICENSE_CONFIG_FILE.is_file():
+        try:
+            loaded = json.loads(LICENSE_CONFIG_FILE.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                cfg.update(loaded)
+        except Exception:
+            pass
+    return cfg
+
+def save_license_config(updates: dict) -> dict:
+    cfg = load_license_config()
+    for k, v in (updates or {}).items():
+        if v is not None:
+            cfg[k] = v
+    try:
+        LICENSE_CONFIG_FILE.write_text(json.dumps(cfg, indent=2, ensure_ascii=False), encoding="utf-8")
+    except Exception:
+        pass
+    return cfg
+
+def get_current_license_status() -> dict:
+    cfg = load_license_config()
+    hwid = get_machine_hwid()
+    raw_key = str(cfg.get("key") or "").strip().upper()
+    srv_url = str(cfg.get("key_server_url") or "http://127.0.0.1:4050").strip().rstrip("/")
+    if not raw_key:
+        return {
+            "ok": True,
+            "valid": False,
+            "key": "",
+            "hwid": hwid,
+            "key_server_url": srv_url,
+            "reason": "Chưa kích hoạt Key bản quyền",
+        }
+    local_chk = verify_h3_signed_key_local(raw_key)
+    if not local_chk.get("valid"):
+        return {
+            "ok": True,
+            "valid": False,
+            "key": raw_key,
+            "hwid": hwid,
+            "key_server_url": srv_url,
+            "reason": local_chk.get("reason") or "Key không hợp lệ",
+        }
+    # Đồng bộ kiểm tra HWID & trạng thái khóa từ Server Vercel (nếu server đang online)
+    if srv_url:
+        try:
+            req = urllib.request.Request(
+                f"{srv_url}/api/verify",
+                data=json.dumps({"key": raw_key, "hwid": hwid}).encode("utf-8"),
+                headers={"Content-Type": "application/json", "User-Agent": "H3-Studio-Pro-Client"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=4) as resp:
+                r_data = json.loads(resp.read().decode("utf-8", errors="ignore"))
+                if not r_data.get("ok"):
+                    return {
+                        "ok": True,
+                        "valid": False,
+                        "key": raw_key,
+                        "hwid": hwid,
+                        "key_server_url": srv_url,
+                        "reason": r_data.get("error") or "Key bị từ chối bởi máy chủ",
+                    }
+        except urllib.error.HTTPError as he:
+            try:
+                err_j = json.loads(he.read().decode("utf-8", errors="ignore"))
+                return {
+                    "ok": True,
+                    "valid": False,
+                    "key": raw_key,
+                    "hwid": hwid,
+                    "key_server_url": srv_url,
+                    "reason": err_j.get("error") or f"Key không hợp lệ (HTTP {he.code})",
+                }
+            except Exception:
+                pass
+        except Exception:
+            # Nếu máy chủ Vercel offline tạm thời, vẫn chấp nhận chữ ký mật mã HMAC-SHA256 hợp lệ
+            pass
+
+    return {
+        "ok": True,
+        "valid": True,
+        "key": raw_key,
+        "hwid": hwid,
+        "key_server_url": srv_url,
+        "expires_at": local_chk["expires_at"],
+        "expires_str": local_chk["expires_str"],
+        "remaining_hours": local_chk["remaining_hours"],
+        "max_devices": local_chk["max_devices"],
+    }
+
+def activate_h3_license_key(key_input: str) -> dict:
+    clean_key = str(key_input or "").strip().upper()
+    local_chk = verify_h3_signed_key_local(clean_key)
+    if not local_chk.get("valid"):
+        return {"ok": False, "error": local_chk.get("reason") or "Mã Key không hợp lệ"}
+
+    cfg = load_license_config()
+    srv_url = str(cfg.get("key_server_url") or "http://127.0.0.1:4050").strip().rstrip("/")
+    hwid = get_machine_hwid()
+
+    if srv_url:
+        try:
+            req = urllib.request.Request(
+                f"{srv_url}/api/verify",
+                data=json.dumps({"key": clean_key, "hwid": hwid}).encode("utf-8"),
+                headers={"Content-Type": "application/json", "User-Agent": "H3-Studio-Pro-Client"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                r_data = json.loads(resp.read().decode("utf-8", errors="ignore"))
+                if not r_data.get("ok"):
+                    return {"ok": False, "error": r_data.get("error") or "Key bị từ chối"}
+        except urllib.error.HTTPError as he:
+            try:
+                err_j = json.loads(he.read().decode("utf-8", errors="ignore"))
+                return {"ok": False, "error": err_j.get("error") or f"Key bị từ chối (HTTP {he.code})"}
+            except Exception:
+                return {"ok": False, "error": f"Key không hợp lệ (HTTP {he.code})"}
+        except Exception:
+            pass
+
+    save_license_config({
+        "key": clean_key,
+        "activated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+    })
+    return {
+        "ok": True,
+        "key": clean_key,
+        "hwid": hwid,
+        "expires_str": local_chk["expires_str"],
+        "remaining_hours": local_chk["remaining_hours"],
+    }
+
+
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
     def _req_user(self):
@@ -34061,6 +34581,8 @@ class H(BaseHTTPRequestHandler):
             p = p[10:] or "/"
         if p in ("/", ""): self._h(PAGE)
         elif p == "/favicon.ico": self.send_response(204); self.end_headers()
+        elif p == "/api/license/status":
+            self._j(get_current_license_status())
         elif p == "/api/github/status":
             from urllib.parse import parse_qs
             q = parse_qs(urlparse(self.path).query)
@@ -36611,6 +37133,51 @@ class H(BaseHTTPRequestHandler):
                 })
             except Exception as e:
                 self._j({"ok": False, "error": str(e)}, 400)
+        elif p == "/api/license/activate":
+            d = json.loads(body) if body else {}
+            res = activate_h3_license_key(d.get("key") or "")
+            self._j(res, 200 if res.get("ok") else 400)
+        elif p == "/api/license/free-trial":
+            cfg = load_license_config()
+            srv_url = str(cfg.get("key_server_url") or "http://127.0.0.1:4050").strip().rstrip("/")
+            hwid = get_machine_hwid()
+            claimed_key = ""
+            if srv_url:
+                try:
+                    req = urllib.request.Request(
+                        f"{srv_url}/api/free-key",
+                        data=json.dumps({"hwid": hwid}).encode("utf-8"),
+                        headers={"Content-Type": "application/json", "User-Agent": "H3-Studio-Pro-Client"},
+                        method="POST",
+                    )
+                    with urllib.request.urlopen(req, timeout=6) as resp:
+                        rj = json.loads(resp.read().decode("utf-8", errors="ignore"))
+                        if rj.get("ok") and rj.get("key"):
+                            claimed_key = rj["key"]
+                except Exception:
+                    pass
+            if not claimed_key:
+                if cfg.get("trial_claimed") and cfg.get("key"):
+                    claimed_key = cfg["key"]
+                else:
+                    gen = create_h3_signed_key(24, 1)
+                    claimed_key = gen["key"]
+            act_res = activate_h3_license_key(claimed_key)
+            if act_res.get("ok"):
+                save_license_config({"trial_claimed": True})
+            self._j(act_res, 200 if act_res.get("ok") else 400)
+        elif p == "/api/license/config":
+            d = json.loads(body) if body else {}
+            u = str(d.get("key_server_url") or "").strip().rstrip("/")
+            cfg = save_license_config({"key_server_url": u})
+            self._j({"ok": True, "key_server_url": cfg.get("key_server_url")})
+        elif p == "/api/license/admin-create":
+            d = json.loads(body) if body else {}
+            hrs = float(d.get("hours") or 168)
+            gen = create_h3_signed_key(hrs, 1)
+            if d.get("auto_activate"):
+                activate_h3_license_key(gen["key"])
+            self._j({"ok": True, "key": gen["key"], "expires_at": gen["expires_at"]})
         elif p == "/api/github/config":
             d = json.loads(body) if body else {}
             cfg = save_github_update_config(d)

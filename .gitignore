@@ -21,3 +21,5 @@ electron/node_modules/
 electron/dist/
 
 *.exe
+
+license_config.json
