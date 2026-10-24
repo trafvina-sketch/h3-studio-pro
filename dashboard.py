@@ -12713,11 +12713,11 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
     <button class="b b2" id="adult-mode-btn" onclick="toggleAdultMode()" title="Bật / Tắt Chế Độ 18+" style="padding:5px 10px;font-size:11.5px;font-weight:700;border-radius:8px;background:var(--surface-2);color:var(--text-muted)">
       <span id="adult-mode-icon">🔞</span> <span id="adult-mode-text">18+: TẮT</span>
     </button>
-    <button class="b b2 admin-only-el" onclick="openSettingsModal()" title="[Admin] Quản lý Tài khoản Cloud & Số dư Compute Units" style="padding:5px 11px;font-size:11.5px;font-weight:800;color:var(--em-light);border-color:var(--em-border);border-radius:8px">
-      <span>⚡ Số dư:</span> <span id="nav-cu-display">-- CU</span> <span style="color:var(--text-muted);font-weight:600;margin-left:3px">⚙️</span>
+    <button class="b b2 admin-only-el" onclick="openSettingsModal()" title="Quản lý Tài khoản Cloud & Số dư Compute Units" style="padding:5px 11px;font-size:11.5px;font-weight:800;color:var(--em-light);border-color:var(--em-border);border-radius:8px">
+      <span>⚡ Số dư:</span> <span id="nav-cu-display">-- CU</span>
     </button>
-    <button class="b b2" id="admin-mode-btn" onclick="openAdminControlModal()" title="Đăng nhập / Quản trị viên (Admin)" style="padding:5px 10px;font-size:11.5px;font-weight:800;border-radius:8px;color:var(--text-muted)">
-      <span id="admin-mode-icon">🔒</span> <span id="admin-mode-text">Admin</span>
+    <button class="b b2" id="admin-mode-btn" onclick="openAdminControlModal()" title="Cài đặt hệ thống (Tài khoản Cloud, Cookie Gemini, Cập nhật GitHub, Key)" style="padding:5px 11px;font-size:11.5px;font-weight:800;border-radius:8px;background:rgba(201,173,125,0.12);color:#e5d1b0;border:1px solid rgba(201,173,125,0.38)">
+      <span id="admin-mode-icon">⚙️</span> <span id="admin-mode-text">Cài Đặt</span>
     </button>
     <button class="b b2" id="lang-btn" onclick="toggleLanguage()" title="Đổi ngôn ngữ (VI / EN)" style="padding:5px 8px;font-size:11px;font-weight:700;border-radius:8px">
       <span id="lang-flag">🇬🇧</span> <span id="lang-code">EN</span>
@@ -17414,7 +17414,8 @@ try {
     isEmbeddedUserRole = true;
     document.body.classList.add('is-embedded-user');
   } else if(!isEmbeddedGenCpu) {
-    isAdminMode = (localStorage.getItem('h3_admin_mode') !== 'false');
+    isAdminMode = true;
+    try { localStorage.setItem('h3_admin_mode', 'true'); } catch(e){}
     document.body.classList.add('is-admin-mode');
   } else {
     isAdminMode = (localStorage.getItem('h3_admin_mode') === 'true');
@@ -17577,38 +17578,33 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function applyAdminModeUI(){
+  if(!isEmbeddedGenCpu){
+    isAdminMode = true;
+  }
   document.body.classList.toggle('is-admin-mode', Boolean(isAdminMode));
   const btn = document.getElementById('admin-mode-btn');
   const ico = document.getElementById('admin-mode-icon');
   const txtEl = document.getElementById('admin-mode-text');
   if(btn){
-    if(isAdminMode){
-      btn.style.background = 'linear-gradient(135deg, rgba(201,173,125,0.22), rgba(16,185,129,0.2))';
-      btn.style.color = '#e5d1b0';
-      btn.style.borderColor = 'rgba(201,173,125,0.55)';
-      if(ico) ico.textContent = '👑';
-      if(txtEl) txtEl.textContent = 'Admin: BẬT';
-    } else {
-      btn.style.background = 'var(--surface-2)';
-      btn.style.color = 'var(--text-muted)';
-      btn.style.borderColor = 'var(--border)';
-      if(ico) ico.textContent = '🔒';
-      if(txtEl) txtEl.textContent = 'Admin';
-    }
+    btn.style.background = 'rgba(201,173,125,0.12)';
+    btn.style.color = '#e5d1b0';
+    btn.style.borderColor = 'rgba(201,173,125,0.38)';
+    if(ico) ico.textContent = '⚙️';
+    if(txtEl) txtEl.textContent = 'Cài Đặt';
   }
 }
 
 function openAdminControlModal(){
+  if(!isEmbeddedGenCpu){
+    isAdminMode = true;
+  }
   const modal = document.getElementById('admin-control-modal');
   const loginBox = document.getElementById('admin-login-box');
   const dashBox = document.getElementById('admin-dashboard-box');
   if(!modal) return;
-  if(loginBox) loginBox.style.display = isAdminMode ? 'none' : 'flex';
-  if(dashBox) dashBox.style.display = isAdminMode ? 'flex' : 'none';
+  if(loginBox) loginBox.style.display = 'none';
+  if(dashBox) dashBox.style.display = 'flex';
   modal.style.display = 'flex';
-  if(!isAdminMode){
-    setTimeout(() => document.getElementById('admin-pass-inp')?.focus(), 80);
-  }
 }
 
 function closeAdminControlModal(){
@@ -33447,60 +33443,36 @@ loadDirectorPacks();
 loadCharacterPresets();
 onModeChange();
 </script>
-<!-- MODAL QUẢN TRỊ VIÊN (ADMIN LOGIN & VPS CONTROL PANEL) -->
-<div id="admin-control-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px">
-  <div style="width:100%;max-width:460px;background:#12141a;border:1.5px solid rgba(201,173,125,0.45);border-radius:16px;padding:20px 22px;box-shadow:0 20px 50px rgba(0,0,0,0.6);color:#f8fafc">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:20px">👑</span>
-        <h3 style="margin:0;font-size:16px;font-weight:900;color:#e5d1b0">Bảng Quản Trị Hệ Thống (Admin)</h3>
-      </div>
-      <button type="button" class="b b2" onclick="closeAdminControlModal()" style="padding:4px 9px;font-size:12px">&times; Đóng</button>
-    </div>
-
-    <!-- KHUNG ĐĂNG NHẬP ADMIN (KHI CHƯA MỞ KHÓA) -->
-    <div id="admin-login-box" style="display:flex;flex-direction:column;gap:12px">
-      <div style="font-size:12px;color:#94a3b8;line-height:1.45">
-        Nhập mật khẩu Quản trị viên để hiển thị các công cụ cấu hình hạ tầng ngầm (Quản lý Tài khoản GPU/CU, Cookie Gemini API, Thông số máy chủ VPS).
-      </div>
-      <div>
-        <label style="font-size:11px;font-weight:800;color:#cbd5e1;display:block;margin-bottom:5px">🔑 Mật Khẩu Quản Trị (Mặc định: <code>admin123</code>):</label>
-        <input type="password" id="admin-pass-inp" class="sai-input" placeholder="Nhập mật khẩu Admin..." onkeydown="if(event.key==='Enter')verifyAdminLogin()">
-      </div>
-      <button type="button" class="sai-cta-btn" onclick="verifyAdminLogin()" style="width:100%">
-        🔓 ĐĂNG NHẬP QUẢN TRỊ VIÊN (ADMIN)
-      </button>
-    </div>
-
-    <!-- KHUNG ĐIỀU KHIỂN ADMIN (KHI ĐÃ ĐĂNG NHẬP ADMIN) -->
-    <div id="admin-dashboard-box" style="display:none;flex-direction:column;gap:12px">
-      <div style="padding:10px 12px;border-radius:10px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);font-size:12px;color:#a7f3d0">
-        🟢 <b>Chế độ Admin đang BẬT:</b> Toàn bộ thanh quản lý Tài khoản GPU, Số dư CU, Cookie Gemini đã được hiển thị trên giao diện.
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button type="button" class="b b1" onclick="closeAdminControlModal();openSettingsModal()" style="padding:9px 12px;font-size:12px;font-weight:800;justify-content:center">
-          ⚙️ Quản Lý Tài Khoản &amp; CU
-        </button>
-        <button type="button" class="b b2" onclick="closeAdminControlModal();gcpuNav('scriptai');setTimeout(()=>toggleScriptAiCookiePanel(),150)" style="padding:9px 12px;font-size:12px;font-weight:800;justify-content:center;border-color:rgba(201,173,125,0.45);color:#e5d1b0">
-          🍪 Cài Đặt Cookie Gemini
-        </button>
-      </div>
-
-      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:10px">
-        <label style="font-size:11px;font-weight:800;color:#94a3b8;display:block;margin-bottom:5px">🔐 Đổi Mật Khẩu Admin Mới (Bảo vệ khi chạy trên VPS):</label>
-        <div style="display:flex;gap:8px">
-          <input type="password" id="admin-new-pass-inp" class="sai-input" placeholder="Nhập mật khẩu Admin mới...">
-          <button type="button" class="b b2" onclick="changeAdminPassword()" style="padding:8px 12px;font-size:11.5px;font-weight:800;white-space:nowrap;border-color:#10b981;color:#34d399">
-            💾 Lưu MK
-          </button>
+<!-- MODAL CÀI ĐẶT HỆ THỐNG (KHÔNG CẦN MẬT KHẨU) -->
+<div id="admin-control-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.78);backdrop-filter:blur(7px);align-items:center;justify-content:center;padding:16px">
+  <div style="width:100%;max-width:480px;background:#141417;border:1.5px solid rgba(201,173,125,0.45);border-radius:16px;padding:22px 24px;box-shadow:0 24px 60px rgba(0,0,0,0.75);color:#f4f4f5">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:22px">⚙️</span>
+        <div>
+          <h3 style="margin:0;font-size:16px;font-weight:900;color:#e5d1b0">Cài Đặt Hệ Thống (H3 Studio Pro)</h3>
+          <div style="font-size:11px;color:#a1a1aa;margin-top:2px">Cấu hình Tài khoản Cloud, Cookie Gemini, Cập nhật GitHub &amp; Bản quyền</div>
         </div>
       </div>
+      <button type="button" class="b b2" onclick="closeAdminControlModal()" style="padding:5px 10px;font-size:12px">&times; Đóng</button>
+    </div>
 
-      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:11px;color:#94a3b8">Muốn xem giao diện sạch như Người dùng?</span>
-        <button type="button" class="b b2" onclick="logoutAdminMode()" style="padding:7px 12px;font-size:11.5px;font-weight:800;color:#f87171;border-color:rgba(248,113,113,0.35)">
-          👤 Chuyển Về Chế Độ Người Dùng
+    <div id="admin-login-box" style="display:none"></div>
+
+    <!-- KHUNG CÀI ĐẶT TRỰC TIẾP (KHÔNG CẦN MẬT KHẨU) -->
+    <div id="admin-dashboard-box" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button type="button" class="b b1" onclick="closeAdminControlModal();openSettingsModal()" style="padding:12px 12px;font-size:12.5px;font-weight:800;justify-content:center;border-radius:10px">
+          ☁️ Tài Khoản Cloud &amp; CU
+        </button>
+        <button type="button" class="b b2" onclick="closeAdminControlModal();gcpuNav('scriptai');setTimeout(()=>toggleScriptAiCookiePanel(),150)" style="padding:12px 12px;font-size:12.5px;font-weight:800;justify-content:center;border-radius:10px;border-color:rgba(201,173,125,0.45);color:#e5d1b0">
+          🍪 Cookie Gemini AI
+        </button>
+        <button type="button" class="b b2" onclick="closeAdminControlModal();openGithubUpdateModal()" style="padding:12px 12px;font-size:12.5px;font-weight:800;justify-content:center;border-radius:10px;border-color:rgba(201,173,125,0.35);color:#f4f4f5">
+          🔄 Cập Nhật GitHub
+        </button>
+        <button type="button" class="b b2" onclick="closeAdminControlModal();openLicenseKeyModal(false)" style="padding:12px 12px;font-size:12.5px;font-weight:800;justify-content:center;border-radius:10px;border-color:rgba(16,185,129,0.4);color:#34d399">
+          🔑 Kích Hoạt Key &amp; HWID
         </button>
       </div>
     </div>
