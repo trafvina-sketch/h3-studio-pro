@@ -12856,6 +12856,10 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
       <button type="button" class="b b1" onclick="openSettingsModal()" style="width:100%;justify-content:center;padding:7px 10px;font-size:11.5px;border-radius:8px;margin-top:2px">
         ⚙️ Kết Nối / Nạp CU
       </button>
+      <div style="margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.08);font-size:10px;line-height:1.45;color:var(--text-muted);text-align:center">
+        <div>👑 <b style="color:var(--em-light)">Đường Thọ</b> &bull; <a href="https://zalo.me/0934415387" target="_blank" style="color:#34d399;font-weight:800;text-decoration:none">Zalo: 0934415387</a></div>
+        <div style="margin-top:2px"><a href="https://genpixo.com" target="_blank" style="color:var(--em-light);font-weight:700;text-decoration:none">genpixo.com</a> &bull; <a href="https://gencpu.com" target="_blank" style="color:var(--em-light);font-weight:700;text-decoration:none">gencpu.com</a></div>
+      </div>
     </div>
   </aside>
   <div class="gcpu-main">
@@ -33475,6 +33479,13 @@ onModeChange();
           🔑 Kích Hoạt Key &amp; HWID
         </button>
       </div>
+      <div style="margin-top:4px;padding:10px 12px;border-radius:10px;background:#101013;border:1px solid rgba(201,173,125,0.28);font-size:11.5px;line-height:1.5;color:#c6cad8;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div>
+          <div>👑 Bản quyền &amp; Hỗ trợ: <b style="color:#e5d1b0">Đường Thọ</b> &bull; <a href="https://zalo.me/0934415387" target="_blank" style="color:#34d399;font-weight:800;text-decoration:underline">Zalo: 0934415387</a></div>
+          <div style="font-size:11px;color:#a1a1aa">Hệ sinh thái AI: <a href="https://genpixo.com" target="_blank" style="color:#e5d1b0;font-weight:800;text-decoration:underline">genpixo.com</a> &bull; <a href="https://gencpu.com" target="_blank" style="color:#e5d1b0;font-weight:800;text-decoration:underline">gencpu.com</a></div>
+        </div>
+        <a href="https://zalo.me/0934415387" target="_blank" class="b b2" style="padding:6px 10px;font-size:11px;font-weight:800;border-color:#10b981;color:#34d399;text-decoration:none">💬 Zalo Hỗ Trợ</a>
+      </div>
     </div>
   </div>
 </div>
@@ -33797,6 +33808,21 @@ setTimeout(() => {
     <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#a1a1aa;padding-top:6px">
       <span>Mỗi Key gắn cố định với mã máy HWID của bạn.</span>
       <a href="#" id="lic-open-web-link" onclick="openVercelKeyPortal();return false;" style="color:#e5d1b0;font-weight:800;text-decoration:underline">🌐 Mở Web Nhận Key &amp; Kiểm Tra &rarr;</a>
+    </div>
+
+    <div style="margin-top:12px;padding:11px 13px;border-radius:11px;background:linear-gradient(135deg, rgba(201,173,125,0.10), rgba(16,185,129,0.08));border:1px solid rgba(201,173,125,0.35);font-size:11.5px;line-height:1.55;color:#f4f4f5">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <span>👑 Mua Key VIP / Đổi máy: <b style="color:#e5d1b0">Đường Thọ</b></span>
+        <a href="https://zalo.me/0934415387" target="_blank" style="color:#34d399;font-weight:800;text-decoration:underline">💬 Zalo: 0934415387</a>
+      </div>
+      <div style="font-size:11px;color:#a1a1aa;margin-top:3px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <span>🌐 Website hệ sinh thái AI:</span>
+        <span>
+          <a href="https://genpixo.com" target="_blank" style="color:#e5d1b0;font-weight:800;text-decoration:underline">genpixo.com</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://gencpu.com" target="_blank" style="color:#e5d1b0;font-weight:800;text-decoration:underline">gencpu.com</a>
+        </span>
+      </div>
     </div>
 
     <!-- Khu vực dành cho Chủ Tool (Admin): Cấu hình URL Vercel & Tạo nhanh Key -->
