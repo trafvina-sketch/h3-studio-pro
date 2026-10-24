@@ -15943,7 +15943,7 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
 
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:6px;border-top:1px solid rgba(255,255,255,0.07)">
           <span style="font-size:11px;color:#94a3b8">
-            💡 Bóc tách <b>Nhân Vật (&lt;Picture 1..N&gt;)</b> + <b>Chuỗi Cảnh Chuẩn H3</b>
+            💡 Tự tạo: <b>Sheet 3 Góc Nhân Vật Chính &amp; Phụ (Trước • Sau • Nghiêng 3/4 Mặt)</b> + <b>Prompt Bối Cảnh</b> + <b>Đạo Cụ</b> + <b>Chuỗi Cảnh H3</b>
           </span>
           <button type="button" id="btn-sai-analyze" class="sai-cta-btn" onclick="runScriptAiAnalyze()">
             🧠 PHÂN TÍCH KỊCH BẢN &amp; TẠO PROMPT CHUẨN H3
@@ -15955,24 +15955,36 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
     <!-- KHU VỰC KẾT QUẢ PHÂN TÍCH (HIỂN THỊ SAU KHI BẤM PHÂN TÍCH) -->
     <div id="sai-results-wrap" style="display:none;flex-direction:column;gap:14px">
 
-      <!-- BƯỚC 2: NHÂN VẬT & BỐI CẢNH THAM CHIẾU (<Picture 1..N>) - TẠO BẰNG KREA 2 HOẶC TẢI LÊN -->
-      <div class="sai-panel" style="border-color:rgba(13,148,136,0.45)">
+      <!-- BƯỚC 2: HỆ THỐNG PROMPT THAM CHIẾU ĐẦY ĐỦ 4 NHÓM (<Picture 1..N>) -->
+      <div class="sai-panel" style="border-color:rgba(201,173,125,0.42)">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="st-sec-title" style="margin:0">
             <span class="step-num">2</span>
-            <span>Nhân Vật &amp; Tham Chiếu Hình Ảnh (<code>&lt;Picture 1..N&gt;</code>) &mdash; Tạo Bằng Krea 2 Hoặc Tải Ảnh Lên</span>
+            <span>Bộ Prompt Tham Chiếu (<code>&lt;Picture 1..N&gt;</code>): Sheet 3 Góc Nhân Vật (Trước &bull; Sau &bull; Nghiêng 3/4 Mặt) + Bối Cảnh + Đạo Cụ + Nhân Vật Phụ</span>
           </div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <button type="button" class="b b2" onclick="addScriptAiReferenceCard()" style="font-size:11.5px;padding:6px 11px;font-weight:800">
-              ➕ Thêm Nhân Vật (&lt;Picture&gt;)
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <button type="button" class="b b2" onclick="addScriptAiReferenceCard('character_main')" style="font-size:11px;padding:5px 9px;font-weight:800" title="Thêm Nhân vật chính (Sheet 3 góc)">
+              ➕ 👤 NV Chính (Sheet 3 góc)
             </button>
-            <button type="button" id="btn-sai-gen-all-krea2" class="b b1" onclick="generateAllScriptAiRefsWithKrea2()" style="font-size:11.5px;padding:6px 13px;font-weight:800;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none;color:#fff">
-              🎨 Vẽ Tất Cả Ảnh Tham Chiếu Bằng Krea 2 (Colab)
+            <button type="button" class="b b2" onclick="addScriptAiReferenceCard('character_sub')" style="font-size:11px;padding:5px 9px;font-weight:800" title="Thêm Nhân vật phụ (Sheet 3 góc)">
+              ➕ 👥 NV Phụ (Sheet 3 góc)
+            </button>
+            <button type="button" class="b b2" onclick="addScriptAiReferenceCard('environment')" style="font-size:11px;padding:5px 9px;font-weight:800" title="Thêm Bối cảnh (Environment)">
+              ➕ 🏞️ Bối Cảnh
+            </button>
+            <button type="button" class="b b2" onclick="addScriptAiReferenceCard('prop')" style="font-size:11px;padding:5px 9px;font-weight:800" title="Thêm Đạo cụ / Vũ khí (Prop)">
+              ➕ 🗡️ Đạo Cụ
+            </button>
+            <button type="button" class="b b2" onclick="copyAllScriptAiRefPrompts()" style="font-size:11px;padding:5px 10px;font-weight:800;border-color:rgba(201,173,125,0.45);color:#e5d1b0">
+              📋 Copy Tất Cả Prompt Tham Chiếu
+            </button>
+            <button type="button" id="btn-sai-gen-all-krea2" class="b b1" onclick="generateAllScriptAiRefsWithKrea2()" style="font-size:11.5px;padding:6px 13px;font-weight:800">
+              🎨 Vẽ Tất Cả Bằng Krea 2
             </button>
           </div>
         </div>
-        <div style="font-size:11.5px;color:#94a3b8">
-          📌 Mỗi nhân vật có sẵn <b>Prompt Tạo Ảnh Tham Chiếu</b> chuẩn phong cách đã chọn. Bạn bấm <b>🎨 Tạo Bằng Krea 2</b> để GPU vẽ ngay, hoặc bấm <b>📤 Tải Ảnh Lên</b> nếu đã có sẵn ảnh!
+        <div style="font-size:11.5px;color:#a1a1aa;line-height:1.45">
+          📌 Gemini tự động bóc tách kịch bản thành 4 nhóm chuẩn: <b>👤 Nhân vật chính (Sheet 3 góc: Toàn thân Trước + Toàn thân Sau + Cận cảnh góc nghiêng 3/4 khuôn mặt)</b>, <b>👥 Nhân vật phụ (Sheet 3 góc)</b>, <b>🏞️ Bối cảnh (Environment không người)</b> và <b>🗡️ Đạo cụ / Vũ khí (Prop tách nền)</b>. Bấm <b>📋 Copy Prompt</b> để tạo ảnh hoặc <b>📤 Tải Ảnh Lên</b>!
         </div>
         <div id="sai-refs-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:12px"></div>
       </div>
@@ -23350,8 +23362,9 @@ async function runScriptAiAnalyze(){
       return {
         slot: idx + 1,
         tag: `<Picture ${idx + 1}>`,
-        name_vi: r.name_vi || `Nhân Vật #${idx + 1}`,
-        role_vi: r.role_vi || 'Nhân vật tham chiếu',
+        category: r.category || (idx === 0 ? 'character_main' : (idx === 1 ? 'character_sub' : (idx === 2 ? 'environment' : 'prop'))),
+        name_vi: r.name_vi || `Tham Chiếu #${idx + 1}`,
+        role_vi: r.role_vi || '👤 Nhân vật chính (Sheet 3 góc)',
         subject_def_en: r.subject_def_en || '',
         image_prompt_en: r.image_prompt_en || '',
         image_data: (old && old.image_data) ? old.image_data : '',
@@ -23397,9 +23410,11 @@ async function runScriptAiAnalyze(){
 function syncScriptAiDomToState(){
   scriptAiState.references.forEach((r, idx) => {
     const nmEl = document.getElementById(`sai-ref-name-${idx}`);
+    const catEl = document.getElementById(`sai-ref-cat-${idx}`);
     const defEl = document.getElementById(`sai-ref-def-${idx}`);
     const prEl = document.getElementById(`sai-ref-prompt-${idx}`);
     if(nmEl) r.name_vi = nmEl.value.trim();
+    if(catEl) r.category = catEl.value;
     if(defEl) r.subject_def_en = defEl.value.trim();
     if(prEl) r.image_prompt_en = prEl.value.trim();
   });
@@ -23411,76 +23426,180 @@ function syncScriptAiDomToState(){
   });
 }
 
+function buildRefPromptByCategory(category, subjDef){
+  const defTxt = (subjDef || 'Distinctive visual subject from the screenplay').trim().replace(/\.$/, '');
+  if(category === 'environment'){
+    return `Masterpiece Wide-Angle Establishing Environment Reference Plate: ${defTxt}. Cinematic volumetric lighting, deep atmospheric perspective, rich architectural and natural terrain details, empty background environment plate with NO characters or people in frame, 8K ultra-detailed concept art, no text, no watermark.`;
+  }
+  if(category === 'prop'){
+    return `Hero Prop & Weapon Design Reference Sheet: ${defTxt}. Showing clear front orthographic view and 3/4 angled detail view on a clean dark neutral studio background, intricate material textures, metallic/crystal reflections, engraved runes, isolated object with NO hands or people holding it, 8K studio render, no text.`;
+  }
+  return `3-Panel Character Turnaround Reference Sheet (Sheet 3 Góc: Trước - Sau - Góc nghiêng 3/4 khuôn mặt): Subject: ${defTxt}. Layout divided into 3 clean side-by-side panels on a neutral studio background: [Panel 1 - Left: Full-body FRONT view standing in a balanced pose, showing complete front costume design, footwear, and proportions], [Panel 2 - Center: Full-body BACK view showing rear garment structure, hair length from behind, cape/robe back details, and accessories], [Panel 3 - Right: High-resolution CLOSE-UP 3/4 THREE-QUARTER ANGLE FACIAL PORTRAIT capturing sharp eyes, nose bridge, jawline, skin texture, expression, and hairline details]. Consistent studio lighting, identical outfit and colors across all 3 views, 8K concept sheet, no text, no watermark.`;
+}
+
+function onChangeScriptAiRefCategory(idx, newCat){
+  syncScriptAiDomToState();
+  const r = scriptAiState.references[idx];
+  if(!r) return;
+  r.category = newCat;
+  const roleMap = {
+    character_main: '👤 Nhân vật chính (Sheet 3 góc)',
+    character_sub: '👥 Nhân vật phụ (Sheet 3 góc)',
+    environment: '🏞️ Bối cảnh (Environment)',
+    prop: '🗡️ Đạo cụ / Vũ khí (Prop)'
+  };
+  r.role_vi = roleMap[newCat] || roleMap.character_main;
+  r.image_prompt_en = buildRefPromptByCategory(newCat, r.subject_def_en);
+  renderScriptAiReferences();
+  toast(`🔄 Đã chuyển ${r.tag} sang mẫu prompt: ${r.role_vi}`);
+}
+
+function regenerateSingleRefPromptTemplate(idx){
+  syncScriptAiDomToState();
+  const r = scriptAiState.references[idx];
+  if(!r) return;
+  r.image_prompt_en = buildRefPromptByCategory(r.category || 'character_main', r.subject_def_en);
+  renderScriptAiReferences();
+  toast(`✨ Đã tạo lại Prompt chuẩn theo loại cho ${r.tag}!`);
+}
+
+function copySingleScriptAiRefPrompt(idx){
+  syncScriptAiDomToState();
+  const r = scriptAiState.references[idx];
+  if(!r || !r.image_prompt_en) return toast('⚠️ Chưa có nội dung Prompt để sao chép!');
+  navigator.clipboard.writeText(r.image_prompt_en).then(() => {
+    toast(`📋 Đã sao chép Prompt của ${r.tag} (${r.name_vi})!`);
+  }).catch(() => {});
+}
+
+function copyAllScriptAiRefPrompts(){
+  syncScriptAiDomToState();
+  if(!scriptAiState.references || !scriptAiState.references.length){
+    return toast('⚠️ Chưa có danh sách Prompt tham chiếu!');
+  }
+  const lines = scriptAiState.references.map(r =>
+    `=== ${r.tag} | ${r.role_vi || ''} | ${r.name_vi} ===
+${r.image_prompt_en}`
+  ).join('
+
+');
+  navigator.clipboard.writeText(lines).then(() => {
+    toast(`📋 Đã sao chép toàn bộ ${scriptAiState.references.length} Prompt Tham Chiếu (Sheet 3 góc + Bối cảnh + Đạo cụ)!`);
+  }).catch(() => {});
+}
+
 function renderScriptAiReferences(){
   const grid = document.getElementById('sai-refs-grid');
   if(!grid) return;
   grid.innerHTML = scriptAiState.references.map((r, idx) => {
     const hasImg = Boolean(r.image_data);
+    const cat = r.category || (idx === 0 ? 'character_main' : (idx === 1 ? 'character_sub' : (idx === 2 ? 'environment' : 'prop')));
+    const promptTitleMap = {
+      character_main: '👤 Prompt Sheet 3 Góc Nhân Vật Chính (1: Toàn thân Trước • 2: Toàn thân Sau • 3: Cận mặt góc nghiêng 3/4):',
+      character_sub: '👥 Prompt Sheet 3 Góc Nhân Vật Phụ (1: Toàn thân Trước • 2: Toàn thân Sau • 3: Cận mặt góc nghiêng 3/4):',
+      environment: '🏞️ Prompt Tạo Ảnh Bối Cảnh (Environment / Background Không Người):',
+      prop: '🗡️ Prompt Tạo Ảnh Đạo Cụ / Vũ Khí (Prop Sheet Tách Nền):'
+    };
+    const promptHeaderLabel = promptTitleMap[cat] || promptTitleMap.character_main;
     const statusBadge = hasImg
       ? `<span style="background:rgba(16,185,129,0.2);color:#34d399;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;border:1px solid rgba(16,185,129,0.4)">✅ Đã có ảnh ${escapeHtml(r.tag)}</span>`
-      : `<span style="background:rgba(245,158,11,0.16);color:#fbbf24;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;border:1px solid rgba(245,158,11,0.35)">⏳ Chưa có ảnh (Bấm Krea 2 hoặc Tải lên)</span>`;
+      : `<span style="background:rgba(245,158,11,0.16);color:#fbbf24;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;border:1px solid rgba(245,158,11,0.35)">⏳ Chưa có ảnh</span>`;
     return `
-      <div style="padding:13px 15px;background:#171a22;border:1px solid ${hasImg ? 'rgba(16,185,129,0.5)' : 'rgba(255,255,255,0.08)'};border-radius:12px;display:flex;flex-direction:column;gap:9px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div style="padding:13px 15px;background:#171a22;border:1px solid ${hasImg ? 'rgba(16,185,129,0.5)' : 'rgba(201,173,125,0.22)'};border-radius:12px;display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:6px;min-width:0;flex:1">
-            <span style="background:linear-gradient(135deg,#0d9488,#0284c7);color:#fff;font-size:11px;font-weight:900;padding:4px 9px;border-radius:6px;white-space:nowrap">${escapeHtml(r.tag)}</span>
-            <input type="text" id="sai-ref-name-${idx}" class="sai-input" value="${escapeHtml(r.name_vi)}" onchange="syncScriptAiDomToState()" style="font-size:12px !important;font-weight:800;padding:5px 9px !important;flex:1;min-width:0">
+            <span style="background:linear-gradient(135deg,#d8be94,#b89863);color:#14120e;font-size:11px;font-weight:900;padding:4px 9px;border-radius:6px;white-space:nowrap">${escapeHtml(r.tag)}</span>
+            <select id="sai-ref-cat-${idx}" class="sai-select" onchange="onChangeScriptAiRefCategory(${idx}, this.value)" style="width:auto !important;padding:4px 8px !important;font-size:11px !important;font-weight:800">
+              <option value="character_main" ${cat==='character_main'?'selected':''}>👤 Nhân vật chính (Sheet 3 góc)</option>
+              <option value="character_sub" ${cat==='character_sub'?'selected':''}>👥 Nhân vật phụ (Sheet 3 góc)</option>
+              <option value="environment" ${cat==='environment'?'selected':''}>🏞️ Bối cảnh (Environment)</option>
+              <option value="prop" ${cat==='prop'?'selected':''}>🗡️ Đạo cụ / Vũ khí (Prop)</option>
+            </select>
+            <input type="text" id="sai-ref-name-${idx}" class="sai-input" value="${escapeHtml(r.name_vi)}" onchange="syncScriptAiDomToState()" style="font-size:12px !important;font-weight:800;padding:5px 9px !important;flex:1;min-width:120px">
           </div>
           ${statusBadge}
         </div>
 
         <!-- Khung xem trước ảnh + Nút Krea 2 / Tải ảnh lên -->
         <div style="display:grid;grid-template-columns:135px 1fr;gap:10px;align-items:stretch">
-          <div style="height:145px;border-radius:9px;background:#090b10;border:1px dashed rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
+          <div style="height:145px;border-radius:9px;background:#090b10;border:1px dashed rgba(201,173,125,0.28);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
             ${hasImg
               ? `<img src="${r.image_data}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in" onclick="openCustomUrlLightbox('${r.image_data}', '${escapeHtml(r.name_vi)}', '')">`
-              : `<div style="text-align:center;padding:8px;font-size:10.5px;color:#94a3b8">🖼️ Chưa có ảnh<br><b>${escapeHtml(r.tag)}</b></div>`
+              : `<div style="text-align:center;padding:8px;font-size:10.5px;color:#a1a1aa">🖼️ Chưa có ảnh<br><b style="color:#e5d1b0">${escapeHtml(r.tag)}</b></div>`
             }
           </div>
           <div style="display:flex;flex-direction:column;justify-content:space-between;gap:6px">
             <div>
-              <label style="font-size:10.5px;font-weight:700;color:#94a3b8;display:block;margin-bottom:3px">🔒 Mô tả khóa nhận diện (Subject Definition cho H3):</label>
+              <label style="font-size:10.5px;font-weight:700;color:#a1a1aa;display:block;margin-bottom:3px">🔒 Mô tả nhận diện gốc (Subject Lock cho H3):</label>
               <textarea id="sai-ref-def-${idx}" rows="2" class="sai-textarea" onchange="syncScriptAiDomToState()" style="font-size:11px !important;line-height:1.35;padding:6px 8px !important">${escapeHtml(r.subject_def_en)}</textarea>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
-              <button type="button" id="btn-sai-krea2-${idx}" class="b b1" onclick="generateScriptAiRefWithKrea2(${idx})" style="flex:1;padding:7px 9px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none;color:#fff;cursor:pointer">
+              <button type="button" id="btn-sai-krea2-${idx}" class="b b1" onclick="generateScriptAiRefWithKrea2(${idx})" style="flex:1;padding:7px 9px;font-size:11px;font-weight:800;cursor:pointer">
                 🎨 Tạo Bằng Krea 2
               </button>
               <label class="b b2" style="padding:7px 9px;font-size:11px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin:0">
                 📤 Tải Ảnh Lên
                 <input type="file" accept="image/*" style="display:none" onchange="uploadScriptAiRefImage(${idx}, this)">
               </label>
-              ${scriptAiState.references.length > 1 ? `<button type="button" class="b b2" onclick="removeScriptAiRefCard(${idx})" style="padding:7px 8px;font-size:11px;color:#f87171" title="Xóa nhân vật này">🗑️</button>` : ''}
+              ${scriptAiState.references.length > 1 ? `<button type="button" class="b b2" onclick="removeScriptAiRefCard(${idx})" style="padding:7px 8px;font-size:11px;color:#f87171" title="Xóa mục này">🗑️</button>` : ''}
             </div>
           </div>
         </div>
 
-        <!-- Prompt tạo ảnh tham chiếu Krea 2 -->
+        <!-- Prompt tạo ảnh tham chiếu chuẩn theo loại (Sheet 3 góc / Bối cảnh / Đạo cụ) -->
         <div>
-          <label style="font-size:10.5px;font-weight:800;color:#2dd4bf;display:flex;justify-content:space-between;margin-bottom:3px">
-            <span>🎨 Prompt Tạo Ảnh Tham Chiếu (Krea 2 / Image Prompt):</span>
-            <span style="font-weight:600;color:#94a3b8">Có thể sửa trước khi bấm Tạo Bằng Krea 2</span>
-          </label>
-          <textarea id="sai-ref-prompt-${idx}" rows="3" class="sai-textarea" onchange="syncScriptAiDomToState()" style="font-size:11.5px !important;line-height:1.4;padding:6px 8px !important">${escapeHtml(r.image_prompt_en)}</textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">
+            <label style="font-size:10.5px;font-weight:800;color:#e5d1b0">${promptHeaderLabel}</label>
+            <div style="display:flex;gap:5px;align-items:center">
+              <button type="button" class="b b2" onclick="regenerateSingleRefPromptTemplate(${idx})" style="padding:3px 8px;font-size:10px;font-weight:800" title="Tạo lại Prompt chuẩn theo Mô tả nhận diện gốc">🔄 Tạo Lại Chuẩn</button>
+              <button type="button" class="b b2" onclick="copySingleScriptAiRefPrompt(${idx})" style="padding:3px 8px;font-size:10px;font-weight:800;border-color:rgba(201,173,125,0.45);color:#e5d1b0">📋 Copy Prompt</button>
+            </div>
+          </div>
+          <textarea id="sai-ref-prompt-${idx}" rows="4" class="sai-textarea" onchange="syncScriptAiDomToState()" style="font-size:11.5px !important;line-height:1.42;padding:6px 8px !important;font-family:monospace">${escapeHtml(r.image_prompt_en)}</textarea>
         </div>
       </div>
     `;
   }).join('');
 }
 
-function addScriptAiReferenceCard(){
+function addScriptAiReferenceCard(catType){
   syncScriptAiDomToState();
   if(scriptAiState.references.length >= 9){
     return toast('⚠️ MiniMax H3 hỗ trợ tối đa 9 ảnh tham chiếu (<Picture 1> .. <Picture 9>)!');
   }
+  const cat = catType || 'character_main';
   const nextSlot = scriptAiState.references.length + 1;
+  const defaults = {
+    character_main: {
+      name_vi: `Nhân Vật Chính #${nextSlot} (<Picture ${nextSlot}>)`,
+      role_vi: '👤 Nhân vật chính (Sheet 3 góc)',
+      def_en: 'Charismatic main character with sharp expressive eyes, distinct hairstyle, and detailed signature outfit.'
+    },
+    character_sub: {
+      name_vi: `Nhân Vật Phụ #${nextSlot} (<Picture ${nextSlot}>)`,
+      role_vi: '👥 Nhân vật phụ (Sheet 3 góc)',
+      def_en: 'Supporting character with distinct contrasting silhouette, clear facial identity, and signature attire.'
+    },
+    environment: {
+      name_vi: `Bối Cảnh #${nextSlot} (<Picture ${nextSlot}>)`,
+      role_vi: '🏞️ Bối cảnh (Environment)',
+      def_en: 'Grand cinematic environment with rich architectural and natural details, volumetric lighting, and atmospheric depth.'
+    },
+    prop: {
+      name_vi: `Đạo Cụ / Vũ Khí #${nextSlot} (<Picture ${nextSlot}>)`,
+      role_vi: '🗡️ Đạo cụ / Vũ khí (Prop)',
+      def_en: 'Signature hero weapon and artifact with intricate craftsmanship, metallic engravings, and glowing energy details.'
+    }
+  };
+  const cfg = defaults[cat] || defaults.character_main;
   scriptAiState.references.push({
     slot: nextSlot,
     tag: `<Picture ${nextSlot}>`,
-    name_vi: `Nhân Vật / Bối Cảnh #${nextSlot} (<Picture ${nextSlot}>)`,
-    role_vi: 'Tham chiếu bổ sung',
-    subject_def_en: 'Supporting character or environment with consistent visual identity.',
-    image_prompt_en: 'Ultra-detailed 8K cinematic reference portrait, clear lighting, sharp focus.',
+    category: cat,
+    name_vi: cfg.name_vi,
+    role_vi: cfg.role_vi,
+    subject_def_en: cfg.def_en,
+    image_prompt_en: buildRefPromptByCategory(cat, cfg.def_en),
     image_data: '',
     image_name: `Ref_Picture_${nextSlot}.png`
   });
