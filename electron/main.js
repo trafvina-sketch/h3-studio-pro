@@ -40,8 +40,34 @@ function findPythonExecutable() {
   return 'python';
 }
 
+function resolveBackendDir() {
+  const portableDir = process.env.PORTABLE_EXECUTABLE_DIR || '';
+  const exeDir = path.dirname(process.execPath || '');
+  const searchDirs = [
+    portableDir,
+    portableDir ? path.resolve(portableDir, '..') : '',
+    portableDir ? path.resolve(portableDir, '..', '..') : '',
+    path.resolve(__dirname, '..'),
+    exeDir,
+    path.resolve(exeDir, '..'),
+    path.resolve(exeDir, '..', '..'),
+    process.resourcesPath ? path.join(process.resourcesPath, 'app-backend') : '',
+    'D:\\H3 Studio Pro',
+    'd:\\H3 video\\minimax-h3-colab-skill-main'
+  ].filter(Boolean);
+
+  for (const dir of searchDirs) {
+    try {
+      if (fs.existsSync(path.join(dir, 'dashboard.py'))) {
+        return dir;
+      }
+    } catch (e) {}
+  }
+  return path.resolve(__dirname, '..');
+}
+
 function startPythonBackend() {
-  const rootDir = path.resolve(__dirname, '..');
+  const rootDir = resolveBackendDir();
   const dashboardPy = path.join(rootDir, 'dashboard.py');
   const pyExe = findPythonExecutable();
 

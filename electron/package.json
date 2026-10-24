@@ -1,8 +1,8 @@
 {
-  "name": "h3-studio",
-  "productName": "H3 Studio",
-  "version": "1.0.0",
-  "description": "MiniMax H3 Turbo AI Video Generator Desktop App (Ref2VA)",
+  "name": "h3-studio-pro",
+  "productName": "H3 Studio Pro",
+  "version": "3.5.0",
+  "description": "H3 Studio Pro - AI Video Generator Desktop App",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -10,22 +10,38 @@
     "dist": "electron-builder --win",
     "build:portable": "electron-builder --win portable"
   },
-  "author": "H3 Studio",
+  "author": "H3 Studio Pro",
   "license": "MIT",
   "devDependencies": {
     "electron": "^29.1.5",
     "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.minimax.h3studio",
-    "productName": "H3 Studio",
+    "appId": "com.gencpu.h3studiopro",
+    "productName": "H3 Studio Pro",
     "directories": {
       "output": "dist"
     },
+    "extraResources": [
+      {
+        "from": "../dashboard.py",
+        "to": "app-backend/dashboard.py"
+      },
+      {
+        "from": "../scripts",
+        "to": "app-backend/scripts",
+        "filter": ["**/*", "!__pycache__/**"]
+      },
+      {
+        "from": "../assets",
+        "to": "app-backend/assets"
+      }
+    ],
     "win": {
       "target": [
         "portable"
-      ]
+      ],
+      "artifactName": "H3 Studio Pro.exe"
     }
   }
 }

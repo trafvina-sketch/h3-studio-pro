@@ -19,3 +19,5 @@ h3_library_records.json
 scripts/accounts/
 electron/node_modules/
 electron/dist/
+
+*.exe
