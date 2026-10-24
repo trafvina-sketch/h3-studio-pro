@@ -1,0 +1,31 @@
+{
+  "name": "h3-studio",
+  "productName": "H3 Studio",
+  "version": "1.0.0",
+  "description": "MiniMax H3 Turbo AI Video Generator Desktop App (Ref2VA)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win",
+    "build:portable": "electron-builder --win portable"
+  },
+  "author": "H3 Studio",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^29.1.5",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.minimax.h3studio",
+    "productName": "H3 Studio",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
+  }
+}

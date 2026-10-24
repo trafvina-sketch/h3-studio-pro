@@ -1,0 +1,25 @@
+H3 VIDEO PROMPT | Willow Creek Farm | E01S015 | 15 seconds | 16:9
+
+MASTER VISUAL STYLE (LOCKED): Original high-end cinematic family farm drama, photorealistic live-action aesthetic, natural human faces and age-appropriate proportions, believable goat and chicken anatomy, authentic rural American farm architecture, weathered wooden fences, realistic metal gate hardware, tactile cotton clothing and natural hair, soft balanced daylight, restrained warm highlights and neutral whites, physically plausible shadows, filmic color grading, cinematic 35mm and 50mm lenses, natural depth of field, stable screen geography and grounded movement, 16:9 widescreen. Consistent exact identities, clothing, animal markings, prop materials and environment layouts from approved Ref_ images. No cartoon, no anime, no schematic, no flat vector, no illustration, no text overlay, no watermark, no synthetic plastic CGI look.
+
+APPROVED VISUAL REFERENCE FILES (must load original images; filenames alone do not guarantee appearance): Ref_Ethan_Morgan.png, Ref_Pasture_Gate.png, Ref_Old_Gate_Latch.png, Ref_New_Gate_Latch.png, Ref_Red_Toolbox.png, Ref_Wrench.png, Ref_Pasture_Entrance.png, Ref_Avery_Morgan.png
+
+SETTING / STORY BEAT: E01S015 · Pasture / barn route. 00.50–07.50s: Shot 1: Ethan and Avery beside CLOSED maingate; redtoolbox closed with Ethan, clean SILVER replacement latch with Avery, rusty OLD latch still installed.
+07.50–15.00s: Shot 2: Ethan checks worn RUSTY hardware; Avery keeps SILVER replacement in glovedhands.
+
+SUBJECTS, BLOCKING, OBJECT OWNERSHIP AND PHYSICAL CONTINUITY: At the closed main gate, Ethan sets the red toolbox on stable ground and Avery holds the new silver latch in gloved hands. Ethan points to the installed rusty old latch. The new part does not replace the old one until the repair step.
+
+CAMERA AND EDIT: Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.
+
+TIMING: 00:00–00:03 establish entry state and physical placement; 00:03–00:06 begin the first described action; 00:06–00:09 complete first action and perform motivated shot transition only if specified; 00:09–00:12 advance second described action; 00:12–00:15 finish the specified consequence and hold a readable exit state. Follow exact source action order, never invent an extra handoff or animal crossing.
+
+DIALOGUE (EXACT ENGLISH LINES, IN SOURCE ORDER):
+Ethan: "I will take the toolbox."
+Ethan: "Avery, bring the new latch."
+Ethan: "We can fix the gate now."
+
+SOUND: Natural farm ambience, restrained footsteps/hooves, believable gate and tool foley when applicable, intelligible dialogue, no overpowering music.
+
+START / END CONTINUITY: Start from the preceding scene's established positions unless source specifies an explicit cut. End exactly at the action's described resulting state; preserve prop counts, gate open/closed state, animal location, screen direction, and left/right handedness for next scene.
+
+NEGATIVE: No character or animal duplication, no unexplained teleportation, no extra props, no gate hinge reversal, no passing through fences, no frozen action, no mismatched wardrobe or animal markings, no diagram panels, no arrows, no on-image text.

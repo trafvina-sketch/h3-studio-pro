@@ -1,0 +1,25 @@
+H3 VIDEO PROMPT | Willow Creek Farm | E01S051 | 15 seconds | 16:9
+
+MASTER VISUAL STYLE (LOCKED): Original high-end cinematic family farm drama, photorealistic live-action aesthetic, natural human faces and age-appropriate proportions, believable goat and chicken anatomy, authentic rural American farm architecture, weathered wooden fences, realistic metal gate hardware, tactile cotton clothing and natural hair, soft balanced daylight, restrained warm highlights and neutral whites, physically plausible shadows, filmic color grading, cinematic 35mm and 50mm lenses, natural depth of field, stable screen geography and grounded movement, 16:9 widescreen. Consistent exact identities, clothing, animal markings, prop materials and environment layouts from approved Ref_ images. No cartoon, no anime, no schematic, no flat vector, no illustration, no text overlay, no watermark, no synthetic plastic CGI look.
+
+APPROVED VISUAL REFERENCE FILES (must load original images; filenames alone do not guarantee appearance): Ref_Daisy_Morgan.png, Ref_Claire_Morgan.png, Ref_Ethan_Morgan.png, Ref_Owen_Morgan.png, Ref_Daisy_s_Hair_Tie.png, Ref_Farmhouse_Porch.png
+
+SETTING / STORY BEAT: E01S051 · Farmhouse porch. 00.50–07.50s: Later afternoon on the porch, the family sits in their established places.
+07.50–15.00s: Daisy admits opening the gate; Owen confirms the gates are closed; Ethan invites the family to talk.
+
+SUBJECTS, BLOCKING, OBJECT OWNERSHIP AND PHYSICAL CONTINUITY: At the later-afternoon farmhouse porch, the family occupy their established seats. Daisy speaks to Ethan and Claire; Owen can be seen or heard from his own seat. No one pops into a different chair across the cut.
+
+CAMERA AND EDIT: Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.
+
+TIMING: 00:00–00:03 establish entry state and physical placement; 00:03–00:06 begin the first described action; 00:06–00:09 complete first action and perform motivated shot transition only if specified; 00:09–00:12 advance second described action; 00:12–00:15 finish the specified consequence and hold a readable exit state. Follow exact source action order, never invent an extra handoff or animal crossing.
+
+DIALOGUE (EXACT ENGLISH LINES, IN SOURCE ORDER):
+Daisy: "I opened the gate without asking."
+Owen: "All the gates are closed now."
+Ethan: "We can talk about it together."
+
+SOUND: Natural farm ambience, restrained footsteps/hooves, believable gate and tool foley when applicable, intelligible dialogue, no overpowering music.
+
+START / END CONTINUITY: Start from the preceding scene's established positions unless source specifies an explicit cut. End exactly at the action's described resulting state; preserve prop counts, gate open/closed state, animal location, screen direction, and left/right handedness for next scene.
+
+NEGATIVE: No character or animal duplication, no unexplained teleportation, no extra props, no gate hinge reversal, no passing through fences, no frozen action, no mismatched wardrobe or animal markings, no diagram panels, no arrows, no on-image text.

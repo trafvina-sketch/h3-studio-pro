@@ -1,0 +1,1288 @@
+{
+  "id": "6a332847-95ea-4a70-843d-54c754de8659",
+  "revision": 0,
+  "last_node_id": 281,
+  "last_link_id": 563,
+  "nodes": [
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        -1052.2310150497117,
+        209.30630684399208
+      ],
+      "size": [
+        360,
+        106
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "label": "type",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "label": "device",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "title": "CLIP (minimax / Qwen3-VL)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.33.0",
+        "Node name for S&R": "CLIPLoader",
+        "models": [
+          {
+            "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+            "directory": "text_encoders"
+          }
+        ],
+        "widget_ue_connectable": {
+          "clip_name": true,
+          "type": true,
+          "device": true
+        }
+      },
+      "widgets_values": [
+        "qwen3vl_32b_heretic_minimax_h3_nvfp4.safetensors",
+        "minimax",
+        "default"
+      ],
+      "widgets_values_named": {
+        "clip_name": "qwen3vl_32b_heretic_minimax_h3_nvfp4.safetensors",
+        "type": "minimax",
+        "device": "default"
+      }
+    },
+    {
+      "id": 4,
+      "type": "VAELoader",
+      "pos": [
+        -1057.4150534276848,
+        482.68920298438286
+      ],
+      "size": [
+        360,
+        58
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "title": "Audio VAE",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.33.0",
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_audio_vae_fp32.safetensors",
+            "directory": "vae"
+          }
+        ],
+        "widget_ue_connectable": {
+          "vae_name": true
+        }
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ],
+      "widgets_values_named": {
+        "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+      }
+    },
+    {
+      "id": 207,
+      "type": "MiniMaxH3TRTVAELoader",
+      "pos": [
+        -1059.2220283659963,
+        353.2178339886321
+      ],
+      "size": [
+        357.0418153892779,
+        86.59944272840437
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            404
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI-H3VAE_TRT",
+        "ver": "7131a316160b2f299239b9bc40621be46d8ce62f",
+        "Node name for S&R": "MiniMaxH3TRTVAELoader"
+      },
+      "widgets_values": [
+        "minimax_h3_vae_decoder.engine",
+        "minimax_h3_vae_encoder.engine"
+      ],
+      "widgets_values_named": {
+        "decoder": "minimax_h3_vae_decoder.engine",
+        "encoder": "minimax_h3_vae_encoder.engine"
+      }
+    },
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        -1054.4101912328845,
+        87.94917357790997
+      ],
+      "size": [
+        360,
+        82
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "label": "weight_dtype",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            562
+          ]
+        }
+      ],
+      "title": "MiniMax H3 UNET",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.33.0",
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+            "directory": "diffusion_models"
+          }
+        ],
+        "widget_ue_connectable": {
+          "weight_dtype": true,
+          "unet_name": true
+        }
+      },
+      "widgets_values": [
+        "h3ErosMax_beta5_3178732.safetensors",
+        "default"
+      ],
+      "widgets_values_named": {
+        "unet_name": "h3ErosMax_beta5_3178732.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        913.6194814126541,
+        107.0890946576653
+      ],
+      "size": [
+        254.18978776629024,
+        363.71480861468535
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "解析度參考",
+      "properties": {
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+      ],
+      "widgets_values_named": {
+        "text": "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+      },
+      "color": "#222",
+      "bgcolor": "#000"
+    },
+    {
+      "id": 177,
+      "type": "CreateVideo",
+      "pos": [
+        1237.8093713728929,
+        107.78913828881049
+      ],
+      "size": [
+        270,
+        150
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 495
+        },
+        {
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 348
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": 349
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            350
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        30,
+        8,
+        "sRGB",
+        "none"
+      ],
+      "widgets_values_named": {
+        "fps": 30,
+        "bit_depth": 8,
+        "color_space": "sRGB",
+        "codec": "none"
+      }
+    },
+    {
+      "id": 178,
+      "type": "SaveVideo",
+      "pos": [
+        1238.840662095878,
+        290.41065312108617
+      ],
+      "size": [
+        270,
+        608.3970588235294
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 350
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0"
+      },
+      "widgets_values": [
+        "MiniMaxH3",
+        "mp4",
+        "h264",
+        "auto",
+        "auto"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "MiniMaxH3",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "auto",
+        "codec": "auto"
+      }
+    },
+    {
+      "id": 12,
+      "type": "MiniMaxH3Director",
+      "pos": [
+        -283.4186195068876,
+        109.33405963061936
+      ],
+      "size": [
+        1142.1665085302718,
+        2321.3861784002243
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 532
+        },
+        {
+          "label": "video_vae",
+          "name": "video_vae",
+          "type": "VAE",
+          "link": 404
+        },
+        {
+          "label": "audio_vae",
+          "name": "audio_vae",
+          "type": "VAE",
+          "link": 13
+        },
+        {
+          "label": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 16
+        },
+        {
+          "label": "i2v_groups",
+          "name": "i2v_groups",
+          "shape": 7,
+          "type": "MMX_DIR_GROUP",
+          "link": null
+        },
+        {
+          "label": "r2v_groups",
+          "name": "r2v_groups",
+          "shape": 7,
+          "type": "MMX_DIR_GROUP",
+          "link": null
+        },
+        {
+          "name": "semantic_bridge",
+          "shape": 7,
+          "type": "MMX_DIR_SEMANTIC_BRIDGE",
+          "link": null
+        },
+        {
+          "name": "selflift",
+          "shape": 7,
+          "type": "MMX_DIR_SELFLIFT",
+          "link": 500
+        },
+        {
+          "label": "refine",
+          "name": "refine",
+          "shape": 7,
+          "type": "MMX_DIR_REFINE",
+          "link": null
+        },
+        {
+          "name": "face_refine",
+          "shape": 7,
+          "type": "MMX_DIR_FACE_REFINE",
+          "link": null
+        },
+        {
+          "name": "sigmas",
+          "shape": 7,
+          "type": "SIGMAS",
+          "link": null
+        },
+        {
+          "label": "task_type",
+          "name": "task_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "task_type"
+          },
+          "link": null
+        },
+        {
+          "label": "global_prompt",
+          "name": "global_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "global_prompt"
+          },
+          "link": null
+        },
+        {
+          "label": "bd_grp_sample",
+          "name": "bd_grp_sample",
+          "type": "BDGROUP",
+          "widget": {
+            "name": "bd_grp_sample"
+          },
+          "link": null
+        },
+        {
+          "label": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "label": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "label": "frame_rate",
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": null
+        },
+        {
+          "label": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "label": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "label": "ref_max_size",
+          "name": "ref_max_size",
+          "type": "INT",
+          "widget": {
+            "name": "ref_max_size"
+          },
+          "link": null
+        },
+        {
+          "label": "total_frames",
+          "name": "total_frames",
+          "type": "INT",
+          "widget": {
+            "name": "total_frames"
+          },
+          "link": null
+        },
+        {
+          "label": "timeline_data",
+          "name": "timeline_data",
+          "type": "STRING",
+          "widget": {
+            "name": "timeline_data"
+          },
+          "link": null
+        },
+        {
+          "label": "bd_grp_advanced",
+          "name": "bd_grp_advanced",
+          "shape": 7,
+          "type": "BDGROUP",
+          "widget": {
+            "name": "bd_grp_advanced"
+          },
+          "link": null
+        },
+        {
+          "label": "steps",
+          "name": "steps",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "label": "sampler",
+          "name": "sampler",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler"
+          },
+          "link": null
+        },
+        {
+          "label": "scheduler",
+          "name": "scheduler",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "label": "shift_video",
+          "name": "shift_video",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "shift_video"
+          },
+          "link": null
+        },
+        {
+          "label": "shift_audio",
+          "name": "shift_audio",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "shift_audio"
+          },
+          "link": null
+        },
+        {
+          "label": "bd_grp_perf",
+          "name": "bd_grp_perf",
+          "shape": 7,
+          "type": "BDGROUP",
+          "widget": {
+            "name": "bd_grp_perf"
+          },
+          "link": null
+        },
+        {
+          "label": "clear_vram_between_segments",
+          "name": "clear_vram_between_segments",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "clear_vram_between_segments"
+          },
+          "link": null
+        },
+        {
+          "label": "export_source_images",
+          "name": "export_source_images",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "export_source_images"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "images",
+          "name": "images",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            484
+          ]
+        },
+        {
+          "label": "audio",
+          "name": "audio",
+          "shape": 6,
+          "type": "AUDIO",
+          "links": [
+            348
+          ]
+        },
+        {
+          "label": "fps",
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            349
+          ]
+        },
+        {
+          "label": "frame_count",
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "source_images",
+          "name": "source_images",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "label": "report",
+          "name": "report",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "label": "images_pre_refine",
+          "name": "images_pre_refine",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "images_pre_face_refine",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "minimax-h3-director",
+        "ver": "a267324a9f88141ff4e4b0e8c1a6ed90b4e45db7",
+        "Node name for S&R": "MiniMaxH3Director",
+        "aux_id": "AIMixer/ComfyUI_MiniMaxH3_Director",
+        "widget_ue_connectable": {
+          "shift_audio": true,
+          "seed": true,
+          "shift_video": true,
+          "export_source_images": true,
+          "cfg": true,
+          "global_prompt": true,
+          "timeline_data": true,
+          "bd_grp_sample": true,
+          "frame_rate": true,
+          "steps": true,
+          "total_frames": true,
+          "sampler": true,
+          "bd_grp_perf": true,
+          "scheduler": true,
+          "clear_vram_between_segments": true,
+          "width": true,
+          "ref_max_size": true,
+          "bd_grp_advanced": true,
+          "task_type": true,
+          "height": true
+        }
+      },
+      "widgets_values": [
+        "r2v — 参考主体生视频(Reference to Video)",
+        "For the target video, at 0.00 seconds into the target video, <Picture 1> and <Picture 2> are fully referenced as cutout character references only.\n\nintegrated_multimodal_description: [Shot 1] Live-action, natural soft lighting.\n\nIdentity lock (never swap):\n- <Picture 1> is always Subject 1. Same face, body, hair entire video. Subject 1's face must never appear on Subject 2's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\n- <Picture 2> is always Subject 2. Same face, body, hair entire video. Subject 2's face must never appear on Subject 1's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\n- When roles reverse, ONLY actions reverse. No face morph, no identity exchange.\n\nAnatomy hard lock:\n- Subject 1: female body with one penis growing from the clit; may also have a vagina.\n- Subject 1's penis is COMPLETELY hidden and NOT visible while any underwear or clothes remain on. No bulge, no outline, no early reveal.\n- Subject 1's penis becomes visible ONLY in the exact moment after underwear is fully removed and off the body.\n- Subject 2: female pussy only. ZERO penis. ZERO bulge.\n- Frames where both have penises, or Subject 2 has a penis, are invalid.\n\nPenetration hard lock:\n- Subject 1's penis inserts ONLY into Subject 2's vagina (pussy).\n- Vaginal penetration only. Not anal. Not between thighs. Not the wrong hole.\n\nClothing continuity:\n- Clothing removed one-way only; NEVER put back on.\n- Do not re-dress at segment boundaries or when moving.\n- Each segment starts from the exact previous ending clothing state.\n- Any frame where removed clothing reappears is invalid.\n\nHard rules:\n- Cutout refs only; ignore source backgrounds.\n- Natural soft lighting.\n- Continuous single long take per segment; no cuts, no flashes, no jumps.\n- When both should be seen, keep BOTH faces visible (no pure POV that hides Subject 1's face).\n\nVoice: soft, breathy, sultry, highly aroused tones as described.\n\noverall_soundscape: Soft room ambience plus fabric, wet, and vocal sounds as described in each segment.\nnon_diegetic_music: N/A",
+        "采样设置",
+        1,
+        88888,
+        "fixed",
+        24,
+        608,
+        1056,
+        1056,
+        1810,
+        "{\"version\":5,\"items\":[],\"prompt_blocks\":[],\"builder_state\":{\"version\":1,\"mode\":\"FL2VA\",\"imd\":\"\",\"soundscape\":\"\",\"music\":\"\",\"duration\":5,\"ref\":{\"subject_defs\":[],\"summary_types\":[\"reference generation\"],\"summary_text\":\"\",\"retention\":[],\"style_line\":\"\",\"detail\":\"\",\"soundscape\":\"\",\"music\":\"\"},\"prompt_mode\":\"simple\",\"simple_prompt\":\"How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 2) aligns with the end mark of the target video.\\n\\nintegrated_multimodal_description: \\n\\noverall_soundscape: \\n\\nnon_diegetic_music: N/A\"},\"resolution\":null,\"editMode\":\"segment\",\"totalFrames\":1810,\"frameRate\":24,\"video\":{\"fileName\":\"\",\"videoFile\":\"\",\"subfolder\":\"\",\"type\":\"input\",\"frames\":[],\"frameMap\":[],\"sourceFrameCount\":486,\"deletedSourceRanges\":[]},\"videoClips\":[],\"global\":{\"taskType\":\"r2v — 参考主体生视频(Reference to Video)\",\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> and <Picture 2> are fully referenced as cutout character references only.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, natural soft lighting.\\n\\nIdentity lock (never swap):\\n- <Picture 1> is always Subject 1. Same face, body, hair entire video. Subject 1's face must never appear on Subject 2's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- <Picture 2> is always Subject 2. Same face, body, hair entire video. Subject 2's face must never appear on Subject 1's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- When roles reverse, ONLY actions reverse. No face morph, no identity exchange.\\n\\nAnatomy hard lock:\\n- Subject 1: female body with one penis growing from the clit; may also have a vagina.\\n- Subject 1's penis is COMPLETELY hidden and NOT visible while any underwear or clothes remain on. No bulge, no outline, no early reveal.\\n- Subject 1's penis becomes visible ONLY in the exact moment after underwear is fully removed and off the body.\\n- Subject 2: female pussy only. ZERO penis. ZERO bulge.\\n- Frames where both have penises, or Subject 2 has a penis, are invalid.\\n\\nPenetration hard lock:\\n- Subject 1's penis inserts ONLY into Subject 2's vagina (pussy).\\n- Vaginal penetration only. Not anal. Not between thighs. Not the wrong hole.\\n\\nClothing continuity:\\n- Clothing removed one-way only; NEVER put back on.\\n- Do not re-dress at segment boundaries or when moving.\\n- Each segment starts from the exact previous ending clothing state.\\n- Any frame where removed clothing reappears is invalid.\\n\\nHard rules:\\n- Cutout refs only; ignore source backgrounds.\\n- Natural soft lighting.\\n- Continuous single long take per segment; no cuts, no flashes, no jumps.\\n- When both should be seen, keep BOTH faces visible (no pure POV that hides Subject 1's face).\\n\\nVoice: soft, breathy, sultry, highly aroused tones as described.\\n\\noverall_soundscape: Soft room ambience plus fabric, wet, and vocal sounds as described in each segment.\\nnon_diegetic_music: N/A\",\"refs\":[{\"index\":2,\"imageFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"}],\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"continuousReference\":false,\"genImage\":{\"imageFile\":\"\"},\"sourceWidth\":768,\"sourceHeight\":1376,\"refAudios\":[],\"refVideos\":[],\"commonEnabled\":true,\"commonCollapsed\":false},\"output\":{\"mode\":\"fixed\",\"aspectRatio\":\"9:16 (竖屏)\",\"megapixels\":0.6,\"multiple\":32,\"longEdge\":1056,\"width\":608,\"height\":1056,\"maxExportFrames\":0,\"exportMode\":\"all\",\"audioMode\":\"generate\",\"exportSourceImages\":false,\"exportPreFaceRefine\":false,\"refImageSize\":\"match\",\"continuityEnabled\":true,\"continuityOverlapFrames\":22,\"continuityMode\":\"continue\",\"continuityRedraw\":0.35,\"continuityKeepTail\":true},\"runSelectEnabled\":true,\"runSelection\":[0,1,2,3,4],\"segments\":[{\"id\":\"mt0sjvt1pniuw\",\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuous single long take with no cuts, no flashes, and no jumps. Medium full shot. Both faces visible. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nStarting state: both fully clothed. No nudity. No genitals visible. No penis visible.\\n\\nOne-way undressing only. Each wears only her own clothes. Never share underwear. Never put clothes back on.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's outer top; it stays off.\\n2. Subject 1 removes Subject 2's outer top; it stays off, revealing Subject 2's own bra.\\n3. Subject 2 pushes down Subject 1's outer bottoms; Subject 1 steps out; remains in her own underwear only. Still no penis visible.\\n4. Subject 1 pushes down Subject 2's outer bottoms; Subject 2 steps out; remains in her own bra and panties only. Subject 2 has no penis.\\n5. Throughout this entire segment Subject 1 remains in underwear or clothes; Subject 1's penis must NOT appear at all. No bulge, no outline, no visible penis until a later segment when underwear is fully removed.\\n\\nAfter both are in underwear only, Subject 1 caresses Subject 2's breasts over the bra, then rubs Subject 2's pussy over the panties. Subject 2's body gives a light sensitive tremble and she lets out a soft breathy \\\"嗯\\\". Then Subject 2 says with a teasing, sultry voice (S2): <d>[Chinese] 那麼急啊~</d>\\n\\nEnding state: both in their own underwear only; outer clothes gone; no penis visible on anyone; Subject 2 has no penis; both faces correct.\\n\\noverall_soundscape: Soft fabric rustling, soft sensitive \\\"嗯\\\", teasing line, quiet breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"bad video\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":false,\"refImageSize\":\"match\"},{\"id\":\"mub7qm7j00k2y\",\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from both in their own underwear. Continuous single long take with no cuts, no flashes, and no jumps. Both faces visible when in frame. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nClothing gate: At the start both still wear underwear. Subject 1's penis is completely hidden — no bulge, no outline, not visible. No genitals show through fabric. Do not put clothes back on.\\n\\nAnatomy: Penis ONLY on Subject 1, and ONLY after underwear is fully off. Subject 2 has pussy only — never a penis.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's underwear completely and takes it fully off the body. Only after the underwear is completely removed and gone does Subject 1's penis growing from the clit become visible for the first time. Before that exact moment, zero penis visibility.\\n2. Subject 1 removes Subject 2's bra and panties completely; Subject 2 is fully nude with female pussy only (no penis).\\n3. Both are now fully nude. Penis only on Subject 1; pussy only on Subject 2. Never both with penises.\\n4. Looking at Subject 1's penis, Subject 2 says with a breathy, sultry voice (S2): <d>[Chinese] 哇你的好大喔，快讓我吃~~</d>\\n5. Subject 2 uses both hands to firmly push Subject 1 backward and down onto the bed until Subject 1 is lying back. Subject 1 reacts sensitively: body jolts, breath hitches, soft shaky \\\"嗯…\\\", thighs tensing.\\n6. Only after Subject 1 is pushed down does Subject 2 lower herself, open her mouth, and take Subject 1's penis into her mouth. Clear mouth-on-penis oral sex. No mouth-to-mouth kissing.\\nAt the same time, Subject 2 uses one hand to slide her fingers into Subject 1's vagina and thrusts her fingers in and out while continuing to suck the penis. Wet oral sounds on the penis and wet fingering squelching from the vagina happen together. While fingering, a small amount of sticky milky-white fluid slowly seeps and lightly squirts from Subject 1's vagina around the fingers.\\n\\nAs oral and fingering continue together, Subject 1 is highly sensitive: hips twitch, stomach tightens, soft involuntary moans. Subject 2 looks flushed while sucking and fingering. Subject 2 still has no penis.\\n\\nEnding state: both fully nude; Subject 1 lying back; oral on Subject 1's penis plus fingering Subject 1's vagina with light sticky fluid; penis only on Subject 1; Subject 2 pussy only.\\n\\noverall_soundscape: Fabric as underwear is removed, sultry line, push-down, sensitive \\\"嗯…\\\", continuous wet oral sounds on the penis, wet fingering and light sticky squelching from the vagina, soft sensitive moans.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"},{\"id\":\"mub7r18v99toe\",\"start\":724,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from oral sex with fingering, both already fully nude. Continuous single long take with no cuts. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nCamera: slightly elevated front-side so both faces can be seen. Subject 1 lying on her back. Do not hide Subject 1's face. No cuts.\\n\\nSubject 2 continues oral sex on Subject 1's penis while fingering Subject 1's vagina; small sticky fluid continues to lightly wet the fingers. Subject 1 is very sensitive: legs tremble, hips twitch, soft \\\"嗯…啊…\\\".\\n\\nSubject 1's body tenses hard. With a trembling voice (S1) she says: <d>[Chinese] 我要射了~~不行了</d>\\nSubject 1 ejaculates during oral sex; body shudders strongly. Subject 2 slowly pulls her mouth off the penis; a long, thick, very obvious wet string of saliva and semen stretches clearly between her lips and the tip of Subject 1's penis, hanging and stretching before slowly breaking.\\n\\nSubject 2 then brings the same wet fingers (that were inside Subject 1's vagina) up to her own mouth, sensually sucks and licks the sticky fluid off her fingers. With a sexy, teasing, sultry voice (S2) she says: <d>[Chinese] 妳的下面好濕喔~~</d>\\n\\nStill continuous, Subject 2 moves up and straddles above Subject 1's hips without sitting down yet. Subject 2 says with a sultry, slightly breathless voice (S2): <d>[Chinese] 快點來吧</d>\\n\\nSubject 2 uses both hands to spread her own pussy wide open above Subject 1's penis, clearly showing the vaginal opening. Then she slowly lowers her hips and gradually sits down so Subject 1's penis slowly enters Subject 2's vagina only (vaginal penetration only, not anal, not the wrong hole). The slow insertion into the pussy is clearly visible.\\n\\nAs she slowly sits down and becomes fully filled vaginally, Subject 1 says with a strained, pleasure-filled voice (S1): <d>[Chinese] 妳的好緊，好熱</d>\\n\\nEnding state: fully inserted in Subject 2's vagina only; Subject 2 seated on Subject 1; penis only on Subject 1; both faces visible.\\n\\noverall_soundscape: Wet oral and fingering sounds, sensitive moans, climax line, strong shudder, wet release, long obvious sticky strand, sensual finger-sucking, teasing wet line, sultry line, slow wet vaginal insertion, tight-hot line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"},{\"id\":\"mub7r1uf18u2c\",\"start\":1086,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from full vaginal insertion already completed. Both fully nude. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises. Never give Subject 2 a penis.\\n\\nPosition lock: Subject 2 straddles Subject 1 in a clear cowgirl position, thighs open around Subject 1's hips. Subject 1 lies on her back. Subject 1's penis is between Subject 2's legs.\\n\\nPenetration lock (repeat and maintain):\\n- Subject 1's penis thrusts vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame for the whole segment.\\n\\nCamera lock: medium shot from a slightly elevated front-side angle, looking at the center of the action so the penis entering Subject 2's vagina is visible, together with both faces. No pure POV that hides the penetration or Subject 1's face. No cut.\\n\\nSubject 2 rides with clear vertical up-and-down strokes, fully rising and sinking while Subject 1's penis keeps thrusting into her vagina. Wet vaginal thrusting and skin-slap squelching sounds are clear with every stroke. While riding, Subject 2 also uses one hand to finger her own vagina alongside the penetration. A small amount of sticky milky-white fluid continuously seeps and lightly squirts from Subject 2's vagina around the penis and fingers.\\n\\nSubject 1 grabs and squeezes Subject 2's breasts with both hands. Subject 2's breasts bounce and sway rhythmically with each thrust into her vagina. Subject 2 lets out continuous soft sexy \\\"嗯嗯\\\" \\\"啊啊\\\". Subject 1 shows sensitive facial reactions. Both faces stay correct and visible.\\n\\nSpeed gradually increases. Sticky fluid continues in small amounts. Penetration remains into Subject 2's vagina only.\\n\\noverall_soundscape: Dense wet vaginal thrusting and squelching synchronized with each stroke into the vagina, Subject 2 self-fingering wet sounds, continuous light sticky fluid, sexy \\\"嗯嗯\\\" \\\"啊啊\\\", Subject 1 sensitive sounds, heavy breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"},{\"id\":\"mue4gu72absxt\",\"start\":1448,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from the previous cowgirl vaginal riding. Both still fully nude in the same position. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nPosition lock: Subject 2 remains straddling Subject 1 in cowgirl position, thighs open around Subject 1's hips.\\n\\nPenetration lock (repeat and maintain until withdrawal after climax):\\n- Subject 1's penis keeps thrusting vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame.\\n\\nCamera lock: same slightly elevated front-side medium shot focused on the center of the action; penis entering Subject 2's vagina remains visible; BOTH faces visible entire segment. No pure POV. No cut.\\n\\nSubject 2 keeps fingering her own vagina while being penetrated. Small sticky milky-white fluid continues to seep and lightly squirt from her pussy around the penis. Then the thrusting into her vagina becomes extremely hard, deep, and violent — powerful rapid strokes. Continuous nonstop breathy then louder sexy teasing moans \\\"嗯~~嗯\\\" \\\"啊~~啊\\\" from Subject 2; Subject 1 rapid heavy panting.\\n\\nIn the final climax both cry out loudly together in a sexy, teasing, highly aroused tone (sensual pleasure screams, not harsh or angry) while the violent thrusting into Subject 2's vagina continues. Subject 2 squirts strongly from her vagina; Subject 1 ejaculates inside Subject 2's vagina. Bodies convulse hard. Both faces stay visible.\\n\\nAfter the peak, Subject 2 lifts her hips; the penis slips out of her vagina. Thick milky-white sticky semen slowly flows out from Subject 2's pussy (vaginal opening). Subject 2 scoops the fluid with her fingers, brings them to her mouth, and sensually licks. With a soft, gentle, sultry voice (S2) she says: <d>[Chinese] 真好吃，還想要!</d>\\nSubject 1's face remains visible; Subject 2 still has no penis.\\n\\noverall_soundscape: Extremely rapid violent wet vaginal thrusting and squelching into the vagina, self-fingering, continuous light sticky fluid then strong release, nonstop aroused moans rising to loud sexy teasing climax cries from both, wet ejaculation and vaginal squirting, soft drip, soft licking, final soft sultry line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"}],\"timelineMode\":\"prompt_batch\",\"width\":608,\"height\":1056,\"refMaxSize\":1056,\"gen\":{\"defaultFrameCount\":124},\"keyframes\":[{\"id\":\"msdtx3zi62ktv\",\"imageFile\":\"\",\"width\":768,\"height\":1376,\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic. The woman shown in <Picture 1> begins exactly from the pose, appearance, facial features, clothing, and environment of the reference image, with her face, overall look, and the entire background locked identical throughout the whole video. The scene and background never change at any point. She maintains a continuous seductive and highly erotic expression, half-lidded eyes filled with desire and invitation, corners of the mouth slightly raised in a teasing smile. The camera holds a continuous single long take with no cuts, no flashes, and no jumps.\\n\\nA beautiful woman with a continuous seductive and highly erotic expression, half-lidded eyes filled with desire, teasing smile. Live-action, cinematic, single continuous long take with no cuts.\\n\\nShe slowly turns her body in a full circle, the camera staying in close-up. When the camera focuses on her breasts, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私の胸を触りたいですか?</d> When the camera focuses on her buttocks, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私のお尻、いい感じでしょ？!!</d>. The camera lingers on her breasts and then her buttocks as she rotates, emphasizing her curves with smooth, sensual movement. After she completes the full turn, the camera slowly pulls back and zooms out to a medium full shot framing from her knees up to her head.\\n\\nShe then walks sexily toward the camera with swaying hips and alluring body language.\\n\\nShe grips the hem of her top and slowly pulls it upward and off, revealing a randomly styled and randomly colored sexy bra. She then forcefully flings the removed top toward the camera with a strong swinging motion.\\n\\nShe then pushes her bottoms down over her hips, letting them slide down her legs and fall to the floor, revealing randomly styled and randomly colored sexy panties. She picks up the removed bottoms and forcefully flings them toward the camera.\\n\\nShe reaches behind her back, unhooks the bra, and slowly slides the straps off her shoulders, fully exposing her firm breasts, protruding nipples, and very small pink areolas. She holds the removed bra in her hand, spins it around once in the air, then forcefully throws it toward the camera. She says with a sultry, teasing voice: <d>[Korean] 내 엉덩이 예뻐 보이지??</d>.\\n\\nShe then pulls her panties down and completely off, revealing randomly styled and randomly colored sparse pubic hair. She holds the removed panties up to her nose, takes a sniff, then forcefully throws them toward the camera. She says with a breathy, teasing voice: <d>[Korean] 으악! 거기 아래선 별의별 걸 다 봤구나!! </d>. She is now fully nude.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"isStartFrame\":true,\"isEndFrame\":false},{\"id\":\"msdtx87njf33g\",\"imageFile\":\"\",\"width\":0,\"height\":0,\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"She straddles and lowers herself onto an electric dildo fixed on the ground, her vagina being penetrated as she sits down on it. The electric dildo suddenly starts vibrating at high speed. Her body begins to tremble and shake in sync with the intense vibrations, her breathing turning into rapid, shaky gasps that gradually become faster and more intense.\\n\\nAt the same time, clear liquid squirts forcefully from her genitals directly toward the camera. She lets out a loud cry of pleasure, her body convulsing strongly with the orgasm, then the intense trembling gradually stops.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"isStartFrame\":true,\"isEndFrame\":false}],\"durationSec\":30,\"shots\":[{\"id\":\"msdtx3zi62ktv\",\"durationSec\":15,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic. The woman shown in <Picture 1> begins exactly from the pose, appearance, facial features, clothing, and environment of the reference image, with her face, overall look, and the entire background locked identical throughout the whole video. The scene and background never change at any point. She maintains a continuous seductive and highly erotic expression, half-lidded eyes filled with desire and invitation, corners of the mouth slightly raised in a teasing smile. The camera holds a continuous single long take with no cuts, no flashes, and no jumps.\\n\\nA beautiful woman with a continuous seductive and highly erotic expression, half-lidded eyes filled with desire, teasing smile. Live-action, cinematic, single continuous long take with no cuts.\\n\\nShe slowly turns her body in a full circle, the camera staying in close-up. When the camera focuses on her breasts, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私の胸を触りたいですか?</d> When the camera focuses on her buttocks, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私のお尻、いい感じでしょ？!!</d>. The camera lingers on her breasts and then her buttocks as she rotates, emphasizing her curves with smooth, sensual movement. After she completes the full turn, the camera slowly pulls back and zooms out to a medium full shot framing from her knees up to her head.\\n\\nShe then walks sexily toward the camera with swaying hips and alluring body language.\\n\\nShe grips the hem of her top and slowly pulls it upward and off, revealing a randomly styled and randomly colored sexy bra. She then forcefully flings the removed top toward the camera with a strong swinging motion.\\n\\nShe then pushes her bottoms down over her hips, letting them slide down her legs and fall to the floor, revealing randomly styled and randomly colored sexy panties. She picks up the removed bottoms and forcefully flings them toward the camera.\\n\\nShe reaches behind her back, unhooks the bra, and slowly slides the straps off her shoulders, fully exposing her firm breasts, protruding nipples, and very small pink areolas. She holds the removed bra in her hand, spins it around once in the air, then forcefully throws it toward the camera. She says with a sultry, teasing voice: <d>[Korean] 내 엉덩이 예뻐 보이지??</d>.\\n\\nShe then pulls her panties down and completely off, revealing randomly styled and randomly colored sparse pubic hair. She holds the removed panties up to her nose, takes a sniff, then forcefully throws them toward the camera. She says with a breathy, teasing voice: <d>[Korean] 으악! 거기 아래선 별의별 걸 다 봤구나!! </d>. She is now fully nude.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"startImage\":{\"imageFile\":\"\",\"width\":768,\"height\":1376},\"endImage\":null},{\"id\":\"msdtx87njf33g\",\"durationSec\":15,\"prompt\":\"She straddles and lowers herself onto an electric dildo fixed on the ground, her vagina being penetrated as she sits down on it. The electric dildo suddenly starts vibrating at high speed. Her body begins to tremble and shake in sync with the intense vibrations, her breathing turning into rapid, shaky gasps that gradually become faster and more intense.\\n\\nAt the same time, clear liquid squirts forcefully from her genitals directly toward the camera. She lets out a loud cry of pleasure, her body convulsing strongly with the orgasm, then the intense trembling gradually stops.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"startImage\":null,\"endImage\":null}],\"liveTaePreview\":false,\"batchDetailMode\":\"all\",\"batchWorkspaces\":{\"r2v\":{\"selectedIndex\":0,\"editMode\":\"segment\",\"runSelectEnabled\":true,\"runSelection\":[0,1,2,3,4],\"segments\":[{\"id\":\"mt0sjvt1pniuw\",\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuous single long take with no cuts, no flashes, and no jumps. Medium full shot. Both faces visible. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nStarting state: both fully clothed. No nudity. No genitals visible. No penis visible.\\n\\nOne-way undressing only. Each wears only her own clothes. Never share underwear. Never put clothes back on.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's outer top; it stays off.\\n2. Subject 1 removes Subject 2's outer top; it stays off, revealing Subject 2's own bra.\\n3. Subject 2 pushes down Subject 1's outer bottoms; Subject 1 steps out; remains in her own underwear only. Still no penis visible.\\n4. Subject 1 pushes down Subject 2's outer bottoms; Subject 2 steps out; remains in her own bra and panties only. Subject 2 has no penis.\\n5. Throughout this entire segment Subject 1 remains in underwear or clothes; Subject 1's penis must NOT appear at all. No bulge, no outline, no visible penis until a later segment when underwear is fully removed.\\n\\nAfter both are in underwear only, Subject 1 caresses Subject 2's breasts over the bra, then rubs Subject 2's pussy over the panties. Subject 2's body gives a light sensitive tremble and she lets out a soft breathy \\\"嗯\\\". Then Subject 2 says with a teasing, sultry voice (S2): <d>[Chinese] 那麼急啊~</d>\\n\\nEnding state: both in their own underwear only; outer clothes gone; no penis visible on anyone; Subject 2 has no penis; both faces correct.\\n\\noverall_soundscape: Soft fabric rustling, soft sensitive \\\"嗯\\\", teasing line, quiet breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"bad video\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":false,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mub7qm7j00k2y\",\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from both in their own underwear. Continuous single long take with no cuts, no flashes, and no jumps. Both faces visible when in frame. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nClothing gate: At the start both still wear underwear. Subject 1's penis is completely hidden — no bulge, no outline, not visible. No genitals show through fabric. Do not put clothes back on.\\n\\nAnatomy: Penis ONLY on Subject 1, and ONLY after underwear is fully off. Subject 2 has pussy only — never a penis.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's underwear completely and takes it fully off the body. Only after the underwear is completely removed and gone does Subject 1's penis growing from the clit become visible for the first time. Before that exact moment, zero penis visibility.\\n2. Subject 1 removes Subject 2's bra and panties completely; Subject 2 is fully nude with female pussy only (no penis).\\n3. Both are now fully nude. Penis only on Subject 1; pussy only on Subject 2. Never both with penises.\\n4. Looking at Subject 1's penis, Subject 2 says with a breathy, sultry voice (S2): <d>[Chinese] 哇你的好大喔，快讓我吃~~</d>\\n5. Subject 2 uses both hands to firmly push Subject 1 backward and down onto the bed until Subject 1 is lying back. Subject 1 reacts sensitively: body jolts, breath hitches, soft shaky \\\"嗯…\\\", thighs tensing.\\n6. Only after Subject 1 is pushed down does Subject 2 lower herself, open her mouth, and take Subject 1's penis into her mouth. Clear mouth-on-penis oral sex. No mouth-to-mouth kissing.\\nAt the same time, Subject 2 uses one hand to slide her fingers into Subject 1's vagina and thrusts her fingers in and out while continuing to suck the penis. Wet oral sounds on the penis and wet fingering squelching from the vagina happen together. While fingering, a small amount of sticky milky-white fluid slowly seeps and lightly squirts from Subject 1's vagina around the fingers.\\n\\nAs oral and fingering continue together, Subject 1 is highly sensitive: hips twitch, stomach tightens, soft involuntary moans. Subject 2 looks flushed while sucking and fingering. Subject 2 still has no penis.\\n\\nEnding state: both fully nude; Subject 1 lying back; oral on Subject 1's penis plus fingering Subject 1's vagina with light sticky fluid; penis only on Subject 1; Subject 2 pussy only.\\n\\noverall_soundscape: Fabric as underwear is removed, sultry line, push-down, sensitive \\\"嗯…\\\", continuous wet oral sounds on the penis, wet fingering and light sticky squelching from the vagina, soft sensitive moans.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mub7r18v99toe\",\"start\":724,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from oral sex with fingering, both already fully nude. Continuous single long take with no cuts. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nCamera: slightly elevated front-side so both faces can be seen. Subject 1 lying on her back. Do not hide Subject 1's face. No cuts.\\n\\nSubject 2 continues oral sex on Subject 1's penis while fingering Subject 1's vagina; small sticky fluid continues to lightly wet the fingers. Subject 1 is very sensitive: legs tremble, hips twitch, soft \\\"嗯…啊…\\\".\\n\\nSubject 1's body tenses hard. With a trembling voice (S1) she says: <d>[Chinese] 我要射了~~不行了</d>\\nSubject 1 ejaculates during oral sex; body shudders strongly. Subject 2 slowly pulls her mouth off the penis; a long, thick, very obvious wet string of saliva and semen stretches clearly between her lips and the tip of Subject 1's penis, hanging and stretching before slowly breaking.\\n\\nSubject 2 then brings the same wet fingers (that were inside Subject 1's vagina) up to her own mouth, sensually sucks and licks the sticky fluid off her fingers. With a sexy, teasing, sultry voice (S2) she says: <d>[Chinese] 妳的下面好濕喔~~</d>\\n\\nStill continuous, Subject 2 moves up and straddles above Subject 1's hips without sitting down yet. Subject 2 says with a sultry, slightly breathless voice (S2): <d>[Chinese] 快點來吧</d>\\n\\nSubject 2 uses both hands to spread her own pussy wide open above Subject 1's penis, clearly showing the vaginal opening. Then she slowly lowers her hips and gradually sits down so Subject 1's penis slowly enters Subject 2's vagina only (vaginal penetration only, not anal, not the wrong hole). The slow insertion into the pussy is clearly visible.\\n\\nAs she slowly sits down and becomes fully filled vaginally, Subject 1 says with a strained, pleasure-filled voice (S1): <d>[Chinese] 妳的好緊，好熱</d>\\n\\nEnding state: fully inserted in Subject 2's vagina only; Subject 2 seated on Subject 1; penis only on Subject 1; both faces visible.\\n\\noverall_soundscape: Wet oral and fingering sounds, sensitive moans, climax line, strong shudder, wet release, long obvious sticky strand, sensual finger-sucking, teasing wet line, sultry line, slow wet vaginal insertion, tight-hot line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mub7r1uf18u2c\",\"start\":1086,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from full vaginal insertion already completed. Both fully nude. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises. Never give Subject 2 a penis.\\n\\nPosition lock: Subject 2 straddles Subject 1 in a clear cowgirl position, thighs open around Subject 1's hips. Subject 1 lies on her back. Subject 1's penis is between Subject 2's legs.\\n\\nPenetration lock (repeat and maintain):\\n- Subject 1's penis thrusts vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame for the whole segment.\\n\\nCamera lock: medium shot from a slightly elevated front-side angle, looking at the center of the action so the penis entering Subject 2's vagina is visible, together with both faces. No pure POV that hides the penetration or Subject 1's face. No cut.\\n\\nSubject 2 rides with clear vertical up-and-down strokes, fully rising and sinking while Subject 1's penis keeps thrusting into her vagina. Wet vaginal thrusting and skin-slap squelching sounds are clear with every stroke. While riding, Subject 2 also uses one hand to finger her own vagina alongside the penetration. A small amount of sticky milky-white fluid continuously seeps and lightly squirts from Subject 2's vagina around the penis and fingers.\\n\\nSubject 1 grabs and squeezes Subject 2's breasts with both hands. Subject 2's breasts bounce and sway rhythmically with each thrust into her vagina. Subject 2 lets out continuous soft sexy \\\"嗯嗯\\\" \\\"啊啊\\\". Subject 1 shows sensitive facial reactions. Both faces stay correct and visible.\\n\\nSpeed gradually increases. Sticky fluid continues in small amounts. Penetration remains into Subject 2's vagina only.\\n\\noverall_soundscape: Dense wet vaginal thrusting and squelching synchronized with each stroke into the vagina, Subject 2 self-fingering wet sounds, continuous light sticky fluid, sexy \\\"嗯嗯\\\" \\\"啊啊\\\", Subject 1 sensitive sounds, heavy breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mue4gu72absxt\",\"start\":1448,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from the previous cowgirl vaginal riding. Both still fully nude in the same position. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nPosition lock: Subject 2 remains straddling Subject 1 in cowgirl position, thighs open around Subject 1's hips.\\n\\nPenetration lock (repeat and maintain until withdrawal after climax):\\n- Subject 1's penis keeps thrusting vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame.\\n\\nCamera lock: same slightly elevated front-side medium shot focused on the center of the action; penis entering Subject 2's vagina remains visible; BOTH faces visible entire segment. No pure POV. No cut.\\n\\nSubject 2 keeps fingering her own vagina while being penetrated. Small sticky milky-white fluid continues to seep and lightly squirt from her pussy around the penis. Then the thrusting into her vagina becomes extremely hard, deep, and violent — powerful rapid strokes. Continuous nonstop breathy then louder sexy teasing moans \\\"嗯~~嗯\\\" \\\"啊~~啊\\\" from Subject 2; Subject 1 rapid heavy panting.\\n\\nIn the final climax both cry out loudly together in a sexy, teasing, highly aroused tone (sensual pleasure screams, not harsh or angry) while the violent thrusting into Subject 2's vagina continues. Subject 2 squirts strongly from her vagina; Subject 1 ejaculates inside Subject 2's vagina. Bodies convulse hard. Both faces stay visible.\\n\\nAfter the peak, Subject 2 lifts her hips; the penis slips out of her vagina. Thick milky-white sticky semen slowly flows out from Subject 2's pussy (vaginal opening). Subject 2 scoops the fluid with her fingers, brings them to her mouth, and sensually licks. With a soft, gentle, sultry voice (S2) she says: <d>[Chinese] 真好吃，還想要!</d>\\nSubject 1's face remains visible; Subject 2 still has no penis.\\n\\noverall_soundscape: Extremely rapid violent wet vaginal thrusting and squelching into the vagina, self-fingering, continuous light sticky fluid then strong release, nonstop aroused moans rising to loud sexy teasing climax cries from both, wet ejaculation and vaginal squirting, soft drip, soft licking, final soft sultry line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24}],\"globalCommon\":{\"commonEnabled\":true,\"commonCollapsed\":false,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> and <Picture 2> are fully referenced as cutout character references only.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, natural soft lighting.\\n\\nIdentity lock (never swap):\\n- <Picture 1> is always Subject 1. Same face, body, hair entire video. Subject 1's face must never appear on Subject 2's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- <Picture 2> is always Subject 2. Same face, body, hair entire video. Subject 2's face must never appear on Subject 1's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- When roles reverse, ONLY actions reverse. No face morph, no identity exchange.\\n\\nAnatomy hard lock:\\n- Subject 1: female body with one penis growing from the clit; may also have a vagina.\\n- Subject 1's penis is COMPLETELY hidden and NOT visible while any underwear or clothes remain on. No bulge, no outline, no early reveal.\\n- Subject 1's penis becomes visible ONLY in the exact moment after underwear is fully removed and off the body.\\n- Subject 2: female pussy only. ZERO penis. ZERO bulge.\\n- Frames where both have penises, or Subject 2 has a penis, are invalid.\\n\\nPenetration hard lock:\\n- Subject 1's penis inserts ONLY into Subject 2's vagina (pussy).\\n- Vaginal penetration only. Not anal. Not between thighs. Not the wrong hole.\\n\\nClothing continuity:\\n- Clothing removed one-way only; NEVER put back on.\\n- Do not re-dress at segment boundaries or when moving.\\n- Each segment starts from the exact previous ending clothing state.\\n- Any frame where removed clothing reappears is invalid.\\n\\nHard rules:\\n- Cutout refs only; ignore source backgrounds.\\n- Natural soft lighting.\\n- Continuous single long take per segment; no cuts, no flashes, no jumps.\\n- When both should be seen, keep BOTH faces visible (no pure POV that hides Subject 1's face).\\n\\nVoice: soft, breathy, sultry, highly aroused tones as described.\\n\\noverall_soundscape: Soft room ambience plus fabric, wet, and vocal sounds as described in each segment.\\nnon_diegetic_music: N/A\",\"refs\":[{\"index\":2,\"imageFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"}],\"refAudios\":[],\"refVideos\":[]}},\"i2v\":{\"selectedIndex\":0,\"editMode\":\"segment\",\"runSelectEnabled\":false,\"runSelection\":[],\"segments\":[{\"id\":\"mt412vefn1yte\",\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic. The woman shown in <Picture 1> begins exactly from the pose, appearance, facial features, clothing, and environment of the reference image, with her face, overall look, and the entire background locked identical throughout the whole video. The scene and background never change at any point. She maintains a continuous seductive and highly erotic expression, half-lidded eyes filled with desire and invitation, corners of the mouth slightly raised in a teasing smile. The camera holds a continuous single long take with no cuts, no flashes, and no jumps.\\n\\nA beautiful woman with a continuous seductive and highly erotic expression, half-lidded eyes filled with desire, teasing smile. Live-action, cinematic, single continuous long take with no cuts.\\n\\nShe slowly turns her body in a full circle, the camera staying in close-up. When the camera focuses on her breasts, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私の胸を触りたいですか?</d> When the camera focuses on her buttocks, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私のお尻、いい感じでしょ？!!</d>. The camera lingers on her breasts and then her buttocks as she rotates, emphasizing her curves with smooth, sensual movement. After she completes the full turn, the camera slowly pulls back and zooms out to a medium full shot framing from her knees up to her head.\\n\\nShe then walks sexily toward the camera with swaying hips and alluring body language.\\n\\nShe grips the hem of her top and slowly pulls it upward and off, revealing a randomly styled and randomly colored sexy bra. She then forcefully flings the removed top toward the camera with a strong swinging motion.\\n\\nShe then pushes her bottoms down over her hips, letting them slide down her legs and fall to the floor, revealing randomly styled and randomly colored sexy panties. She picks up the removed bottoms and forcefully flings them toward the camera.\\n\\nShe reaches behind her back, unhooks the bra, and slowly slides the straps off her shoulders, fully exposing her firm breasts, protruding nipples, and very small pink areolas. She holds the removed bra in her hand, spins it around once in the air, then forcefully throws it toward the camera. She says with a sultry, teasing voice: <d>[Korean] 내 엉덩이 예뻐 보이지??</d>.\\n\\nShe then pulls her panties down and completely off, revealing randomly styled and randomly colored sparse pubic hair. She holds the removed panties up to her nose, takes a sniff, then forcefully throws them toward the camera. She says with a breathy, teasing voice: <d>[Korean] 으악! 거기 아래선 별의별 걸 다 봤구나!! </d>. She is now fully nude.\\n\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":false,\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mt42ew7fjk39f\",\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"She straddles and lowers herself onto an electric dildo fixed on the ground, her vagina being penetrated as she sits down on it. The electric dildo suddenly starts vibrating at high speed. Her body begins to tremble and shake in sync with the intense vibrations, her breathing turning into rapid, shaky gasps that gradually become faster and more intense.\\n\\nAt the same time, clear liquid squirts forcefully from her genitals directly toward the camera. She lets out a loud cry of pleasure, her body convulsing strongly with the orgasm, then the intense trembling gradually stops.\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24}],\"globalCommon\":{\"commonEnabled\":false,\"commonCollapsed\":false,\"prompt\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[]}},\"t2v\":{\"selectedIndex\":0,\"editMode\":\"segment\",\"runSelectEnabled\":false,\"runSelection\":[],\"segments\":[{\"id\":\"mt42u95y4fskk\",\"start\":0,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"previewFps\":24,\"_videoFrameCount\":124}],\"globalCommon\":{\"commonEnabled\":false,\"commonCollapsed\":false,\"prompt\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[]}}},\"resolved_prompt\":\"How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 2) aligns with the end mark of the target video.\\n\\nintegrated_multimodal_description: \\n\\noverall_soundscape: \\n\\nnon_diegetic_music: N/A\"}",
+        "高级采样",
+        8,
+        "euler",
+        "simple",
+        12,
+        3,
+        false,
+        false,
+        "性能",
+        true,
+        true,
+        true,
+        "raw",
+        ""
+      ],
+      "widgets_values_named": {
+        "task_type": "r2v — 参考主体生视频(Reference to Video)",
+        "global_prompt": "For the target video, at 0.00 seconds into the target video, <Picture 1> and <Picture 2> are fully referenced as cutout character references only.\n\nintegrated_multimodal_description: [Shot 1] Live-action, natural soft lighting.\n\nIdentity lock (never swap):\n- <Picture 1> is always Subject 1. Same face, body, hair entire video. Subject 1's face must never appear on Subject 2's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\n- <Picture 2> is always Subject 2. Same face, body, hair entire video. Subject 2's face must never appear on Subject 1's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\n- When roles reverse, ONLY actions reverse. No face morph, no identity exchange.\n\nAnatomy hard lock:\n- Subject 1: female body with one penis growing from the clit; may also have a vagina.\n- Subject 1's penis is COMPLETELY hidden and NOT visible while any underwear or clothes remain on. No bulge, no outline, no early reveal.\n- Subject 1's penis becomes visible ONLY in the exact moment after underwear is fully removed and off the body.\n- Subject 2: female pussy only. ZERO penis. ZERO bulge.\n- Frames where both have penises, or Subject 2 has a penis, are invalid.\n\nPenetration hard lock:\n- Subject 1's penis inserts ONLY into Subject 2's vagina (pussy).\n- Vaginal penetration only. Not anal. Not between thighs. Not the wrong hole.\n\nClothing continuity:\n- Clothing removed one-way only; NEVER put back on.\n- Do not re-dress at segment boundaries or when moving.\n- Each segment starts from the exact previous ending clothing state.\n- Any frame where removed clothing reappears is invalid.\n\nHard rules:\n- Cutout refs only; ignore source backgrounds.\n- Natural soft lighting.\n- Continuous single long take per segment; no cuts, no flashes, no jumps.\n- When both should be seen, keep BOTH faces visible (no pure POV that hides Subject 1's face).\n\nVoice: soft, breathy, sultry, highly aroused tones as described.\n\noverall_soundscape: Soft room ambience plus fabric, wet, and vocal sounds as described in each segment.\nnon_diegetic_music: N/A",
+        "bd_grp_sample": "采样设置",
+        "cfg": 1,
+        "seed": 88888,
+        "control_after_generate": "fixed",
+        "frame_rate": 24,
+        "width": 608,
+        "height": 1056,
+        "ref_max_size": 1056,
+        "total_frames": 1810,
+        "timeline_data": "{\"version\":5,\"items\":[],\"prompt_blocks\":[],\"builder_state\":{\"version\":1,\"mode\":\"FL2VA\",\"imd\":\"\",\"soundscape\":\"\",\"music\":\"\",\"duration\":5,\"ref\":{\"subject_defs\":[],\"summary_types\":[\"reference generation\"],\"summary_text\":\"\",\"retention\":[],\"style_line\":\"\",\"detail\":\"\",\"soundscape\":\"\",\"music\":\"\"},\"prompt_mode\":\"simple\",\"simple_prompt\":\"How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 2) aligns with the end mark of the target video.\\n\\nintegrated_multimodal_description: \\n\\noverall_soundscape: \\n\\nnon_diegetic_music: N/A\"},\"resolution\":null,\"editMode\":\"segment\",\"totalFrames\":1810,\"frameRate\":24,\"video\":{\"fileName\":\"\",\"videoFile\":\"\",\"subfolder\":\"\",\"type\":\"input\",\"frames\":[],\"frameMap\":[],\"sourceFrameCount\":486,\"deletedSourceRanges\":[]},\"videoClips\":[],\"global\":{\"taskType\":\"r2v — 参考主体生视频(Reference to Video)\",\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> and <Picture 2> are fully referenced as cutout character references only.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, natural soft lighting.\\n\\nIdentity lock (never swap):\\n- <Picture 1> is always Subject 1. Same face, body, hair entire video. Subject 1's face must never appear on Subject 2's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- <Picture 2> is always Subject 2. Same face, body, hair entire video. Subject 2's face must never appear on Subject 1's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- When roles reverse, ONLY actions reverse. No face morph, no identity exchange.\\n\\nAnatomy hard lock:\\n- Subject 1: female body with one penis growing from the clit; may also have a vagina.\\n- Subject 1's penis is COMPLETELY hidden and NOT visible while any underwear or clothes remain on. No bulge, no outline, no early reveal.\\n- Subject 1's penis becomes visible ONLY in the exact moment after underwear is fully removed and off the body.\\n- Subject 2: female pussy only. ZERO penis. ZERO bulge.\\n- Frames where both have penises, or Subject 2 has a penis, are invalid.\\n\\nPenetration hard lock:\\n- Subject 1's penis inserts ONLY into Subject 2's vagina (pussy).\\n- Vaginal penetration only. Not anal. Not between thighs. Not the wrong hole.\\n\\nClothing continuity:\\n- Clothing removed one-way only; NEVER put back on.\\n- Do not re-dress at segment boundaries or when moving.\\n- Each segment starts from the exact previous ending clothing state.\\n- Any frame where removed clothing reappears is invalid.\\n\\nHard rules:\\n- Cutout refs only; ignore source backgrounds.\\n- Natural soft lighting.\\n- Continuous single long take per segment; no cuts, no flashes, no jumps.\\n- When both should be seen, keep BOTH faces visible (no pure POV that hides Subject 1's face).\\n\\nVoice: soft, breathy, sultry, highly aroused tones as described.\\n\\noverall_soundscape: Soft room ambience plus fabric, wet, and vocal sounds as described in each segment.\\nnon_diegetic_music: N/A\",\"refs\":[{\"index\":2,\"imageFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"}],\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"continuousReference\":false,\"genImage\":{\"imageFile\":\"\"},\"sourceWidth\":768,\"sourceHeight\":1376,\"refAudios\":[],\"refVideos\":[],\"commonEnabled\":true,\"commonCollapsed\":false},\"output\":{\"mode\":\"fixed\",\"aspectRatio\":\"9:16 (竖屏)\",\"megapixels\":0.6,\"multiple\":32,\"longEdge\":1056,\"width\":608,\"height\":1056,\"maxExportFrames\":0,\"exportMode\":\"all\",\"audioMode\":\"generate\",\"exportSourceImages\":false,\"exportPreFaceRefine\":false,\"refImageSize\":\"match\",\"continuityEnabled\":true,\"continuityOverlapFrames\":22,\"continuityMode\":\"continue\",\"continuityRedraw\":0.35,\"continuityKeepTail\":true},\"runSelectEnabled\":true,\"runSelection\":[0,1,2,3,4],\"segments\":[{\"id\":\"mt0sjvt1pniuw\",\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuous single long take with no cuts, no flashes, and no jumps. Medium full shot. Both faces visible. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nStarting state: both fully clothed. No nudity. No genitals visible. No penis visible.\\n\\nOne-way undressing only. Each wears only her own clothes. Never share underwear. Never put clothes back on.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's outer top; it stays off.\\n2. Subject 1 removes Subject 2's outer top; it stays off, revealing Subject 2's own bra.\\n3. Subject 2 pushes down Subject 1's outer bottoms; Subject 1 steps out; remains in her own underwear only. Still no penis visible.\\n4. Subject 1 pushes down Subject 2's outer bottoms; Subject 2 steps out; remains in her own bra and panties only. Subject 2 has no penis.\\n5. Throughout this entire segment Subject 1 remains in underwear or clothes; Subject 1's penis must NOT appear at all. No bulge, no outline, no visible penis until a later segment when underwear is fully removed.\\n\\nAfter both are in underwear only, Subject 1 caresses Subject 2's breasts over the bra, then rubs Subject 2's pussy over the panties. Subject 2's body gives a light sensitive tremble and she lets out a soft breathy \\\"嗯\\\". Then Subject 2 says with a teasing, sultry voice (S2): <d>[Chinese] 那麼急啊~</d>\\n\\nEnding state: both in their own underwear only; outer clothes gone; no penis visible on anyone; Subject 2 has no penis; both faces correct.\\n\\noverall_soundscape: Soft fabric rustling, soft sensitive \\\"嗯\\\", teasing line, quiet breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"bad video\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":false,\"refImageSize\":\"match\"},{\"id\":\"mub7qm7j00k2y\",\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from both in their own underwear. Continuous single long take with no cuts, no flashes, and no jumps. Both faces visible when in frame. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nClothing gate: At the start both still wear underwear. Subject 1's penis is completely hidden — no bulge, no outline, not visible. No genitals show through fabric. Do not put clothes back on.\\n\\nAnatomy: Penis ONLY on Subject 1, and ONLY after underwear is fully off. Subject 2 has pussy only — never a penis.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's underwear completely and takes it fully off the body. Only after the underwear is completely removed and gone does Subject 1's penis growing from the clit become visible for the first time. Before that exact moment, zero penis visibility.\\n2. Subject 1 removes Subject 2's bra and panties completely; Subject 2 is fully nude with female pussy only (no penis).\\n3. Both are now fully nude. Penis only on Subject 1; pussy only on Subject 2. Never both with penises.\\n4. Looking at Subject 1's penis, Subject 2 says with a breathy, sultry voice (S2): <d>[Chinese] 哇你的好大喔，快讓我吃~~</d>\\n5. Subject 2 uses both hands to firmly push Subject 1 backward and down onto the bed until Subject 1 is lying back. Subject 1 reacts sensitively: body jolts, breath hitches, soft shaky \\\"嗯…\\\", thighs tensing.\\n6. Only after Subject 1 is pushed down does Subject 2 lower herself, open her mouth, and take Subject 1's penis into her mouth. Clear mouth-on-penis oral sex. No mouth-to-mouth kissing.\\nAt the same time, Subject 2 uses one hand to slide her fingers into Subject 1's vagina and thrusts her fingers in and out while continuing to suck the penis. Wet oral sounds on the penis and wet fingering squelching from the vagina happen together. While fingering, a small amount of sticky milky-white fluid slowly seeps and lightly squirts from Subject 1's vagina around the fingers.\\n\\nAs oral and fingering continue together, Subject 1 is highly sensitive: hips twitch, stomach tightens, soft involuntary moans. Subject 2 looks flushed while sucking and fingering. Subject 2 still has no penis.\\n\\nEnding state: both fully nude; Subject 1 lying back; oral on Subject 1's penis plus fingering Subject 1's vagina with light sticky fluid; penis only on Subject 1; Subject 2 pussy only.\\n\\noverall_soundscape: Fabric as underwear is removed, sultry line, push-down, sensitive \\\"嗯…\\\", continuous wet oral sounds on the penis, wet fingering and light sticky squelching from the vagina, soft sensitive moans.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"},{\"id\":\"mub7r18v99toe\",\"start\":724,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from oral sex with fingering, both already fully nude. Continuous single long take with no cuts. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nCamera: slightly elevated front-side so both faces can be seen. Subject 1 lying on her back. Do not hide Subject 1's face. No cuts.\\n\\nSubject 2 continues oral sex on Subject 1's penis while fingering Subject 1's vagina; small sticky fluid continues to lightly wet the fingers. Subject 1 is very sensitive: legs tremble, hips twitch, soft \\\"嗯…啊…\\\".\\n\\nSubject 1's body tenses hard. With a trembling voice (S1) she says: <d>[Chinese] 我要射了~~不行了</d>\\nSubject 1 ejaculates during oral sex; body shudders strongly. Subject 2 slowly pulls her mouth off the penis; a long, thick, very obvious wet string of saliva and semen stretches clearly between her lips and the tip of Subject 1's penis, hanging and stretching before slowly breaking.\\n\\nSubject 2 then brings the same wet fingers (that were inside Subject 1's vagina) up to her own mouth, sensually sucks and licks the sticky fluid off her fingers. With a sexy, teasing, sultry voice (S2) she says: <d>[Chinese] 妳的下面好濕喔~~</d>\\n\\nStill continuous, Subject 2 moves up and straddles above Subject 1's hips without sitting down yet. Subject 2 says with a sultry, slightly breathless voice (S2): <d>[Chinese] 快點來吧</d>\\n\\nSubject 2 uses both hands to spread her own pussy wide open above Subject 1's penis, clearly showing the vaginal opening. Then she slowly lowers her hips and gradually sits down so Subject 1's penis slowly enters Subject 2's vagina only (vaginal penetration only, not anal, not the wrong hole). The slow insertion into the pussy is clearly visible.\\n\\nAs she slowly sits down and becomes fully filled vaginally, Subject 1 says with a strained, pleasure-filled voice (S1): <d>[Chinese] 妳的好緊，好熱</d>\\n\\nEnding state: fully inserted in Subject 2's vagina only; Subject 2 seated on Subject 1; penis only on Subject 1; both faces visible.\\n\\noverall_soundscape: Wet oral and fingering sounds, sensitive moans, climax line, strong shudder, wet release, long obvious sticky strand, sensual finger-sucking, teasing wet line, sultry line, slow wet vaginal insertion, tight-hot line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"},{\"id\":\"mub7r1uf18u2c\",\"start\":1086,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from full vaginal insertion already completed. Both fully nude. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises. Never give Subject 2 a penis.\\n\\nPosition lock: Subject 2 straddles Subject 1 in a clear cowgirl position, thighs open around Subject 1's hips. Subject 1 lies on her back. Subject 1's penis is between Subject 2's legs.\\n\\nPenetration lock (repeat and maintain):\\n- Subject 1's penis thrusts vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame for the whole segment.\\n\\nCamera lock: medium shot from a slightly elevated front-side angle, looking at the center of the action so the penis entering Subject 2's vagina is visible, together with both faces. No pure POV that hides the penetration or Subject 1's face. No cut.\\n\\nSubject 2 rides with clear vertical up-and-down strokes, fully rising and sinking while Subject 1's penis keeps thrusting into her vagina. Wet vaginal thrusting and skin-slap squelching sounds are clear with every stroke. While riding, Subject 2 also uses one hand to finger her own vagina alongside the penetration. A small amount of sticky milky-white fluid continuously seeps and lightly squirts from Subject 2's vagina around the penis and fingers.\\n\\nSubject 1 grabs and squeezes Subject 2's breasts with both hands. Subject 2's breasts bounce and sway rhythmically with each thrust into her vagina. Subject 2 lets out continuous soft sexy \\\"嗯嗯\\\" \\\"啊啊\\\". Subject 1 shows sensitive facial reactions. Both faces stay correct and visible.\\n\\nSpeed gradually increases. Sticky fluid continues in small amounts. Penetration remains into Subject 2's vagina only.\\n\\noverall_soundscape: Dense wet vaginal thrusting and squelching synchronized with each stroke into the vagina, Subject 2 self-fingering wet sounds, continuous light sticky fluid, sexy \\\"嗯嗯\\\" \\\"啊啊\\\", Subject 1 sensitive sounds, heavy breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"},{\"id\":\"mue4gu72absxt\",\"start\":1448,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from the previous cowgirl vaginal riding. Both still fully nude in the same position. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nPosition lock: Subject 2 remains straddling Subject 1 in cowgirl position, thighs open around Subject 1's hips.\\n\\nPenetration lock (repeat and maintain until withdrawal after climax):\\n- Subject 1's penis keeps thrusting vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame.\\n\\nCamera lock: same slightly elevated front-side medium shot focused on the center of the action; penis entering Subject 2's vagina remains visible; BOTH faces visible entire segment. No pure POV. No cut.\\n\\nSubject 2 keeps fingering her own vagina while being penetrated. Small sticky milky-white fluid continues to seep and lightly squirt from her pussy around the penis. Then the thrusting into her vagina becomes extremely hard, deep, and violent — powerful rapid strokes. Continuous nonstop breathy then louder sexy teasing moans \\\"嗯~~嗯\\\" \\\"啊~~啊\\\" from Subject 2; Subject 1 rapid heavy panting.\\n\\nIn the final climax both cry out loudly together in a sexy, teasing, highly aroused tone (sensual pleasure screams, not harsh or angry) while the violent thrusting into Subject 2's vagina continues. Subject 2 squirts strongly from her vagina; Subject 1 ejaculates inside Subject 2's vagina. Bodies convulse hard. Both faces stay visible.\\n\\nAfter the peak, Subject 2 lifts her hips; the penis slips out of her vagina. Thick milky-white sticky semen slowly flows out from Subject 2's pussy (vaginal opening). Subject 2 scoops the fluid with her fingers, brings them to her mouth, and sensually licks. With a soft, gentle, sultry voice (S2) she says: <d>[Chinese] 真好吃，還想要!</d>\\nSubject 1's face remains visible; Subject 2 still has no penis.\\n\\noverall_soundscape: Extremely rapid violent wet vaginal thrusting and squelching into the vagina, self-fingering, continuous light sticky fluid then strong release, nonstop aroused moans rising to loud sexy teasing climax cries from both, wet ejaculation and vaginal squirting, soft drip, soft licking, final soft sultry line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"startImage\":null,\"endImage\":null,\"continuityFromPrev\":true,\"refImageSize\":\"match\"}],\"timelineMode\":\"prompt_batch\",\"width\":608,\"height\":1056,\"refMaxSize\":1056,\"gen\":{\"defaultFrameCount\":124},\"keyframes\":[{\"id\":\"msdtx3zi62ktv\",\"imageFile\":\"\",\"width\":768,\"height\":1376,\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic. The woman shown in <Picture 1> begins exactly from the pose, appearance, facial features, clothing, and environment of the reference image, with her face, overall look, and the entire background locked identical throughout the whole video. The scene and background never change at any point. She maintains a continuous seductive and highly erotic expression, half-lidded eyes filled with desire and invitation, corners of the mouth slightly raised in a teasing smile. The camera holds a continuous single long take with no cuts, no flashes, and no jumps.\\n\\nA beautiful woman with a continuous seductive and highly erotic expression, half-lidded eyes filled with desire, teasing smile. Live-action, cinematic, single continuous long take with no cuts.\\n\\nShe slowly turns her body in a full circle, the camera staying in close-up. When the camera focuses on her breasts, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私の胸を触りたいですか?</d> When the camera focuses on her buttocks, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私のお尻、いい感じでしょ？!!</d>. The camera lingers on her breasts and then her buttocks as she rotates, emphasizing her curves with smooth, sensual movement. After she completes the full turn, the camera slowly pulls back and zooms out to a medium full shot framing from her knees up to her head.\\n\\nShe then walks sexily toward the camera with swaying hips and alluring body language.\\n\\nShe grips the hem of her top and slowly pulls it upward and off, revealing a randomly styled and randomly colored sexy bra. She then forcefully flings the removed top toward the camera with a strong swinging motion.\\n\\nShe then pushes her bottoms down over her hips, letting them slide down her legs and fall to the floor, revealing randomly styled and randomly colored sexy panties. She picks up the removed bottoms and forcefully flings them toward the camera.\\n\\nShe reaches behind her back, unhooks the bra, and slowly slides the straps off her shoulders, fully exposing her firm breasts, protruding nipples, and very small pink areolas. She holds the removed bra in her hand, spins it around once in the air, then forcefully throws it toward the camera. She says with a sultry, teasing voice: <d>[Korean] 내 엉덩이 예뻐 보이지??</d>.\\n\\nShe then pulls her panties down and completely off, revealing randomly styled and randomly colored sparse pubic hair. She holds the removed panties up to her nose, takes a sniff, then forcefully throws them toward the camera. She says with a breathy, teasing voice: <d>[Korean] 으악! 거기 아래선 별의별 걸 다 봤구나!! </d>. She is now fully nude.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"isStartFrame\":true,\"isEndFrame\":false},{\"id\":\"msdtx87njf33g\",\"imageFile\":\"\",\"width\":0,\"height\":0,\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"She straddles and lowers herself onto an electric dildo fixed on the ground, her vagina being penetrated as she sits down on it. The electric dildo suddenly starts vibrating at high speed. Her body begins to tremble and shake in sync with the intense vibrations, her breathing turning into rapid, shaky gasps that gradually become faster and more intense.\\n\\nAt the same time, clear liquid squirts forcefully from her genitals directly toward the camera. She lets out a loud cry of pleasure, her body convulsing strongly with the orgasm, then the intense trembling gradually stops.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"isStartFrame\":true,\"isEndFrame\":false}],\"durationSec\":30,\"shots\":[{\"id\":\"msdtx3zi62ktv\",\"durationSec\":15,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic. The woman shown in <Picture 1> begins exactly from the pose, appearance, facial features, clothing, and environment of the reference image, with her face, overall look, and the entire background locked identical throughout the whole video. The scene and background never change at any point. She maintains a continuous seductive and highly erotic expression, half-lidded eyes filled with desire and invitation, corners of the mouth slightly raised in a teasing smile. The camera holds a continuous single long take with no cuts, no flashes, and no jumps.\\n\\nA beautiful woman with a continuous seductive and highly erotic expression, half-lidded eyes filled with desire, teasing smile. Live-action, cinematic, single continuous long take with no cuts.\\n\\nShe slowly turns her body in a full circle, the camera staying in close-up. When the camera focuses on her breasts, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私の胸を触りたいですか?</d> When the camera focuses on her buttocks, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私のお尻、いい感じでしょ？!!</d>. The camera lingers on her breasts and then her buttocks as she rotates, emphasizing her curves with smooth, sensual movement. After she completes the full turn, the camera slowly pulls back and zooms out to a medium full shot framing from her knees up to her head.\\n\\nShe then walks sexily toward the camera with swaying hips and alluring body language.\\n\\nShe grips the hem of her top and slowly pulls it upward and off, revealing a randomly styled and randomly colored sexy bra. She then forcefully flings the removed top toward the camera with a strong swinging motion.\\n\\nShe then pushes her bottoms down over her hips, letting them slide down her legs and fall to the floor, revealing randomly styled and randomly colored sexy panties. She picks up the removed bottoms and forcefully flings them toward the camera.\\n\\nShe reaches behind her back, unhooks the bra, and slowly slides the straps off her shoulders, fully exposing her firm breasts, protruding nipples, and very small pink areolas. She holds the removed bra in her hand, spins it around once in the air, then forcefully throws it toward the camera. She says with a sultry, teasing voice: <d>[Korean] 내 엉덩이 예뻐 보이지??</d>.\\n\\nShe then pulls her panties down and completely off, revealing randomly styled and randomly colored sparse pubic hair. She holds the removed panties up to her nose, takes a sniff, then forcefully throws them toward the camera. She says with a breathy, teasing voice: <d>[Korean] 으악! 거기 아래선 별의별 걸 다 봤구나!! </d>. She is now fully nude.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"startImage\":{\"imageFile\":\"\",\"width\":768,\"height\":1376},\"endImage\":null},{\"id\":\"msdtx87njf33g\",\"durationSec\":15,\"prompt\":\"She straddles and lowers herself onto an electric dildo fixed on the ground, her vagina being penetrated as she sits down on it. The electric dildo suddenly starts vibrating at high speed. Her body begins to tremble and shake in sync with the intense vibrations, her breathing turning into rapid, shaky gasps that gradually become faster and more intense.\\n\\nAt the same time, clear liquid squirts forcefully from her genitals directly toward the camera. She lets out a loud cry of pleasure, her body convulsing strongly with the orgasm, then the intense trembling gradually stops.\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"bad video\",\"startImage\":null,\"endImage\":null}],\"liveTaePreview\":false,\"batchDetailMode\":\"all\",\"batchWorkspaces\":{\"r2v\":{\"selectedIndex\":0,\"editMode\":\"segment\",\"runSelectEnabled\":true,\"runSelection\":[0,1,2,3,4],\"segments\":[{\"id\":\"mt0sjvt1pniuw\",\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuous single long take with no cuts, no flashes, and no jumps. Medium full shot. Both faces visible. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nStarting state: both fully clothed. No nudity. No genitals visible. No penis visible.\\n\\nOne-way undressing only. Each wears only her own clothes. Never share underwear. Never put clothes back on.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's outer top; it stays off.\\n2. Subject 1 removes Subject 2's outer top; it stays off, revealing Subject 2's own bra.\\n3. Subject 2 pushes down Subject 1's outer bottoms; Subject 1 steps out; remains in her own underwear only. Still no penis visible.\\n4. Subject 1 pushes down Subject 2's outer bottoms; Subject 2 steps out; remains in her own bra and panties only. Subject 2 has no penis.\\n5. Throughout this entire segment Subject 1 remains in underwear or clothes; Subject 1's penis must NOT appear at all. No bulge, no outline, no visible penis until a later segment when underwear is fully removed.\\n\\nAfter both are in underwear only, Subject 1 caresses Subject 2's breasts over the bra, then rubs Subject 2's pussy over the panties. Subject 2's body gives a light sensitive tremble and she lets out a soft breathy \\\"嗯\\\". Then Subject 2 says with a teasing, sultry voice (S2): <d>[Chinese] 那麼急啊~</d>\\n\\nEnding state: both in their own underwear only; outer clothes gone; no penis visible on anyone; Subject 2 has no penis; both faces correct.\\n\\noverall_soundscape: Soft fabric rustling, soft sensitive \\\"嗯\\\", teasing line, quiet breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"bad video\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":false,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mub7qm7j00k2y\",\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from both in their own underwear. Continuous single long take with no cuts, no flashes, and no jumps. Both faces visible when in frame. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nClothing gate: At the start both still wear underwear. Subject 1's penis is completely hidden — no bulge, no outline, not visible. No genitals show through fabric. Do not put clothes back on.\\n\\nAnatomy: Penis ONLY on Subject 1, and ONLY after underwear is fully off. Subject 2 has pussy only — never a penis.\\n\\nSequence:\\n1. Subject 2 removes Subject 1's underwear completely and takes it fully off the body. Only after the underwear is completely removed and gone does Subject 1's penis growing from the clit become visible for the first time. Before that exact moment, zero penis visibility.\\n2. Subject 1 removes Subject 2's bra and panties completely; Subject 2 is fully nude with female pussy only (no penis).\\n3. Both are now fully nude. Penis only on Subject 1; pussy only on Subject 2. Never both with penises.\\n4. Looking at Subject 1's penis, Subject 2 says with a breathy, sultry voice (S2): <d>[Chinese] 哇你的好大喔，快讓我吃~~</d>\\n5. Subject 2 uses both hands to firmly push Subject 1 backward and down onto the bed until Subject 1 is lying back. Subject 1 reacts sensitively: body jolts, breath hitches, soft shaky \\\"嗯…\\\", thighs tensing.\\n6. Only after Subject 1 is pushed down does Subject 2 lower herself, open her mouth, and take Subject 1's penis into her mouth. Clear mouth-on-penis oral sex. No mouth-to-mouth kissing.\\nAt the same time, Subject 2 uses one hand to slide her fingers into Subject 1's vagina and thrusts her fingers in and out while continuing to suck the penis. Wet oral sounds on the penis and wet fingering squelching from the vagina happen together. While fingering, a small amount of sticky milky-white fluid slowly seeps and lightly squirts from Subject 1's vagina around the fingers.\\n\\nAs oral and fingering continue together, Subject 1 is highly sensitive: hips twitch, stomach tightens, soft involuntary moans. Subject 2 looks flushed while sucking and fingering. Subject 2 still has no penis.\\n\\nEnding state: both fully nude; Subject 1 lying back; oral on Subject 1's penis plus fingering Subject 1's vagina with light sticky fluid; penis only on Subject 1; Subject 2 pussy only.\\n\\noverall_soundscape: Fabric as underwear is removed, sultry line, push-down, sensitive \\\"嗯…\\\", continuous wet oral sounds on the penis, wet fingering and light sticky squelching from the vagina, soft sensitive moans.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mub7r18v99toe\",\"start\":724,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from oral sex with fingering, both already fully nude. Continuous single long take with no cuts. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nCamera: slightly elevated front-side so both faces can be seen. Subject 1 lying on her back. Do not hide Subject 1's face. No cuts.\\n\\nSubject 2 continues oral sex on Subject 1's penis while fingering Subject 1's vagina; small sticky fluid continues to lightly wet the fingers. Subject 1 is very sensitive: legs tremble, hips twitch, soft \\\"嗯…啊…\\\".\\n\\nSubject 1's body tenses hard. With a trembling voice (S1) she says: <d>[Chinese] 我要射了~~不行了</d>\\nSubject 1 ejaculates during oral sex; body shudders strongly. Subject 2 slowly pulls her mouth off the penis; a long, thick, very obvious wet string of saliva and semen stretches clearly between her lips and the tip of Subject 1's penis, hanging and stretching before slowly breaking.\\n\\nSubject 2 then brings the same wet fingers (that were inside Subject 1's vagina) up to her own mouth, sensually sucks and licks the sticky fluid off her fingers. With a sexy, teasing, sultry voice (S2) she says: <d>[Chinese] 妳的下面好濕喔~~</d>\\n\\nStill continuous, Subject 2 moves up and straddles above Subject 1's hips without sitting down yet. Subject 2 says with a sultry, slightly breathless voice (S2): <d>[Chinese] 快點來吧</d>\\n\\nSubject 2 uses both hands to spread her own pussy wide open above Subject 1's penis, clearly showing the vaginal opening. Then she slowly lowers her hips and gradually sits down so Subject 1's penis slowly enters Subject 2's vagina only (vaginal penetration only, not anal, not the wrong hole). The slow insertion into the pussy is clearly visible.\\n\\nAs she slowly sits down and becomes fully filled vaginally, Subject 1 says with a strained, pleasure-filled voice (S1): <d>[Chinese] 妳的好緊，好熱</d>\\n\\nEnding state: fully inserted in Subject 2's vagina only; Subject 2 seated on Subject 1; penis only on Subject 1; both faces visible.\\n\\noverall_soundscape: Wet oral and fingering sounds, sensitive moans, climax line, strong shudder, wet release, long obvious sticky strand, sensual finger-sucking, teasing wet line, sultry line, slow wet vaginal insertion, tight-hot line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mub7r1uf18u2c\",\"start\":1086,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from full vaginal insertion already completed. Both fully nude. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises. Never give Subject 2 a penis.\\n\\nPosition lock: Subject 2 straddles Subject 1 in a clear cowgirl position, thighs open around Subject 1's hips. Subject 1 lies on her back. Subject 1's penis is between Subject 2's legs.\\n\\nPenetration lock (repeat and maintain):\\n- Subject 1's penis thrusts vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame for the whole segment.\\n\\nCamera lock: medium shot from a slightly elevated front-side angle, looking at the center of the action so the penis entering Subject 2's vagina is visible, together with both faces. No pure POV that hides the penetration or Subject 1's face. No cut.\\n\\nSubject 2 rides with clear vertical up-and-down strokes, fully rising and sinking while Subject 1's penis keeps thrusting into her vagina. Wet vaginal thrusting and skin-slap squelching sounds are clear with every stroke. While riding, Subject 2 also uses one hand to finger her own vagina alongside the penetration. A small amount of sticky milky-white fluid continuously seeps and lightly squirts from Subject 2's vagina around the penis and fingers.\\n\\nSubject 1 grabs and squeezes Subject 2's breasts with both hands. Subject 2's breasts bounce and sway rhythmically with each thrust into her vagina. Subject 2 lets out continuous soft sexy \\\"嗯嗯\\\" \\\"啊啊\\\". Subject 1 shows sensitive facial reactions. Both faces stay correct and visible.\\n\\nSpeed gradually increases. Sticky fluid continues in small amounts. Penetration remains into Subject 2's vagina only.\\n\\noverall_soundscape: Dense wet vaginal thrusting and squelching synchronized with each stroke into the vagina, Subject 2 self-fingering wet sounds, continuous light sticky fluid, sexy \\\"嗯嗯\\\" \\\"啊啊\\\", Subject 1 sensitive sounds, heavy breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mue4gu72absxt\",\"start\":1448,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"integrated_multimodal_description: [Shot 1] Live-action, natural soft lighting. Continuing seamlessly from the previous cowgirl vaginal riding. Both still fully nude in the same position. Continuous single long take with no cuts, no flashes, and no jumps. Subject 1 = <Picture 1>, Subject 2 = <Picture 2>. Do not swap faces.\\n\\nAnatomy lock: penis ONLY on Subject 1; pussy ONLY on Subject 2. Never both with penises.\\n\\nPosition lock: Subject 2 remains straddling Subject 1 in cowgirl position, thighs open around Subject 1's hips.\\n\\nPenetration lock (repeat and maintain until withdrawal after climax):\\n- Subject 1's penis keeps thrusting vigorously in and out of Subject 2's vagina only.\\n- Each stroke clearly enters Subject 2's vaginal opening.\\n- Vaginal penetration only. Not anal. Not between the thighs. Not the wrong hole.\\n- The vaginal penetration stays clearly visible in frame.\\n\\nCamera lock: same slightly elevated front-side medium shot focused on the center of the action; penis entering Subject 2's vagina remains visible; BOTH faces visible entire segment. No pure POV. No cut.\\n\\nSubject 2 keeps fingering her own vagina while being penetrated. Small sticky milky-white fluid continues to seep and lightly squirt from her pussy around the penis. Then the thrusting into her vagina becomes extremely hard, deep, and violent — powerful rapid strokes. Continuous nonstop breathy then louder sexy teasing moans \\\"嗯~~嗯\\\" \\\"啊~~啊\\\" from Subject 2; Subject 1 rapid heavy panting.\\n\\nIn the final climax both cry out loudly together in a sexy, teasing, highly aroused tone (sensual pleasure screams, not harsh or angry) while the violent thrusting into Subject 2's vagina continues. Subject 2 squirts strongly from her vagina; Subject 1 ejaculates inside Subject 2's vagina. Bodies convulse hard. Both faces stay visible.\\n\\nAfter the peak, Subject 2 lifts her hips; the penis slips out of her vagina. Thick milky-white sticky semen slowly flows out from Subject 2's pussy (vaginal opening). Subject 2 scoops the fluid with her fingers, brings them to her mouth, and sensually licks. With a soft, gentle, sultry voice (S2) she says: <d>[Chinese] 真好吃，還想要!</d>\\nSubject 1's face remains visible; Subject 2 still has no penis.\\n\\noverall_soundscape: Extremely rapid violent wet vaginal thrusting and squelching into the vagina, self-fingering, continuous light sticky fluid then strong release, nonstop aroused moans rising to loud sexy teasing climax cries from both, wet ejaculation and vaginal squirting, soft drip, soft licking, final soft sultry line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"refImageSize\":\"match\",\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24}],\"globalCommon\":{\"commonEnabled\":true,\"commonCollapsed\":false,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> and <Picture 2> are fully referenced as cutout character references only.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, natural soft lighting.\\n\\nIdentity lock (never swap):\\n- <Picture 1> is always Subject 1. Same face, body, hair entire video. Subject 1's face must never appear on Subject 2's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- <Picture 2> is always Subject 2. Same face, body, hair entire video. Subject 2's face must never appear on Subject 1's body. HMBreasts, medium perky breasts, tiny sized pale pink areoles and erect pink nipples.\\n- When roles reverse, ONLY actions reverse. No face morph, no identity exchange.\\n\\nAnatomy hard lock:\\n- Subject 1: female body with one penis growing from the clit; may also have a vagina.\\n- Subject 1's penis is COMPLETELY hidden and NOT visible while any underwear or clothes remain on. No bulge, no outline, no early reveal.\\n- Subject 1's penis becomes visible ONLY in the exact moment after underwear is fully removed and off the body.\\n- Subject 2: female pussy only. ZERO penis. ZERO bulge.\\n- Frames where both have penises, or Subject 2 has a penis, are invalid.\\n\\nPenetration hard lock:\\n- Subject 1's penis inserts ONLY into Subject 2's vagina (pussy).\\n- Vaginal penetration only. Not anal. Not between thighs. Not the wrong hole.\\n\\nClothing continuity:\\n- Clothing removed one-way only; NEVER put back on.\\n- Do not re-dress at segment boundaries or when moving.\\n- Each segment starts from the exact previous ending clothing state.\\n- Any frame where removed clothing reappears is invalid.\\n\\nHard rules:\\n- Cutout refs only; ignore source backgrounds.\\n- Natural soft lighting.\\n- Continuous single long take per segment; no cuts, no flashes, no jumps.\\n- When both should be seen, keep BOTH faces visible (no pure POV that hides Subject 1's face).\\n\\nVoice: soft, breathy, sultry, highly aroused tones as described.\\n\\noverall_soundscape: Soft room ambience plus fabric, wet, and vocal sounds as described in each segment.\\nnon_diegetic_music: N/A\",\"refs\":[{\"index\":2,\"imageFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"}],\"refAudios\":[],\"refVideos\":[]}},\"i2v\":{\"selectedIndex\":0,\"editMode\":\"segment\",\"runSelectEnabled\":false,\"runSelection\":[],\"segments\":[{\"id\":\"mt412vefn1yte\",\"start\":0,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\\n\\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic. The woman shown in <Picture 1> begins exactly from the pose, appearance, facial features, clothing, and environment of the reference image, with her face, overall look, and the entire background locked identical throughout the whole video. The scene and background never change at any point. She maintains a continuous seductive and highly erotic expression, half-lidded eyes filled with desire and invitation, corners of the mouth slightly raised in a teasing smile. The camera holds a continuous single long take with no cuts, no flashes, and no jumps.\\n\\nA beautiful woman with a continuous seductive and highly erotic expression, half-lidded eyes filled with desire, teasing smile. Live-action, cinematic, single continuous long take with no cuts.\\n\\nShe slowly turns her body in a full circle, the camera staying in close-up. When the camera focuses on her breasts, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私の胸を触りたいですか?</d> When the camera focuses on her buttocks, she says with a breathy, sultry, teasing voice: <d>[Japanese] 私のお尻、いい感じでしょ？!!</d>. The camera lingers on her breasts and then her buttocks as she rotates, emphasizing her curves with smooth, sensual movement. After she completes the full turn, the camera slowly pulls back and zooms out to a medium full shot framing from her knees up to her head.\\n\\nShe then walks sexily toward the camera with swaying hips and alluring body language.\\n\\nShe grips the hem of her top and slowly pulls it upward and off, revealing a randomly styled and randomly colored sexy bra. She then forcefully flings the removed top toward the camera with a strong swinging motion.\\n\\nShe then pushes her bottoms down over her hips, letting them slide down her legs and fall to the floor, revealing randomly styled and randomly colored sexy panties. She picks up the removed bottoms and forcefully flings them toward the camera.\\n\\nShe reaches behind her back, unhooks the bra, and slowly slides the straps off her shoulders, fully exposing her firm breasts, protruding nipples, and very small pink areolas. She holds the removed bra in her hand, spins it around once in the air, then forcefully throws it toward the camera. She says with a sultry, teasing voice: <d>[Korean] 내 엉덩이 예뻐 보이지??</d>.\\n\\nShe then pulls her panties down and completely off, revealing randomly styled and randomly colored sparse pubic hair. She holds the removed panties up to her nose, takes a sniff, then forcefully throws them toward the camera. She says with a breathy, teasing voice: <d>[Korean] 으악! 거기 아래선 별의별 걸 다 봤구나!! </d>. She is now fully nude.\\n\\n\\noverall_soundscape: Natural room ambience, soft fabric rustling as clothes are removed, the sharp sound of clothing being forcefully flung, wet thrusting and squelching sounds from the hand-held vibrator inside her vagina, continuous light squirting of clear fluid, natural heavy breathing, escalating moans, a short sharp cry, and a final loud scream of orgasm. No other sounds.\\n\\nnon_diegetic_music: N/A\\nShe only has two hands throughout the entire video. One hand is always on her breast playing with the nipple, the other hand is always holding and thrusting the vibrator. No third hand, no extra limbs, no supporting hand on the floor.\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":false,\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24},{\"id\":\"mt42ew7fjk39f\",\"start\":362,\"length\":362,\"frameCount\":362,\"durationSec\":15,\"prompt\":\"She straddles and lowers herself onto an electric dildo fixed on the ground, her vagina being penetrated as she sits down on it. The electric dildo suddenly starts vibrating at high speed. Her body begins to tremble and shake in sync with the intense vibrations, her breathing turning into rapid, shaky gasps that gradually become faster and more intense.\\n\\nAt the same time, clear liquid squirts forcefully from her genitals directly toward the camera. She lets out a loud cry of pleasure, her body convulsing strongly with the orgasm, then the intense trembling gradually stops.\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"continuityFromPrev\":true,\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"_videoFrameCount\":362,\"previewFps\":24}],\"globalCommon\":{\"commonEnabled\":false,\"commonCollapsed\":false,\"prompt\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[]}},\"t2v\":{\"selectedIndex\":0,\"editMode\":\"segment\",\"runSelectEnabled\":false,\"runSelection\":[],\"segments\":[{\"id\":\"mt42u95y4fskk\",\"start\":0,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"\",\"negativePrompt\":\"\",\"taskType\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"},\"previewFps\":24,\"_videoFrameCount\":124}],\"globalCommon\":{\"commonEnabled\":false,\"commonCollapsed\":false,\"prompt\":\"\",\"refs\":[],\"refAudios\":[],\"refVideos\":[]}}},\"resolved_prompt\":\"How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 2) aligns with the end mark of the target video.\\n\\nintegrated_multimodal_description: \\n\\noverall_soundscape: \\n\\nnon_diegetic_music: N/A\"}",
+        "bd_grp_advanced": "高级采样",
+        "steps": 8,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "shift_video": 12,
+        "shift_audio": 3,
+        "export_source_images": false,
+        "export_pre_face_refine": false,
+        "bd_grp_perf": "性能",
+        "clear_vram_between_segments": true,
+        "clear_vram_before_refine": true,
+        "clear_vram_before_face_refine": true,
+        "cache_frames_codec": "raw",
+        "minimax_director_ui": ""
+      }
+    },
+    {
+      "id": 247,
+      "type": "VRAMCleanup",
+      "pos": [
+        925.2745303886275,
+        526.4544331512376
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 484
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [
+            494
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui_memory_cleanup",
+        "ver": "58de13a6090e04408e343501ff8902c034d9f518",
+        "Node name for S&R": "VRAMCleanup"
+      },
+      "widgets_values": [
+        true,
+        true
+      ],
+      "widgets_values_named": {
+        "offload_model": true,
+        "offload_cache": true
+      }
+    },
+    {
+      "id": 252,
+      "type": "RTXVideoSuperResolution",
+      "pos": [
+        913.7031596319865,
+        650.6861717819893
+      ],
+      "size": [
+        285.6272796630859,
+        106
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 494
+        }
+      ],
+      "outputs": [
+        {
+          "name": "upscaled_images",
+          "type": "IMAGE",
+          "links": [
+            495
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui_nvidia_rtx_nodes",
+        "ver": "892515e3eb9a4920a131a502a047e47adca9eb0d",
+        "Node name for S&R": "RTXVideoSuperResolution"
+      },
+      "widgets_values": [
+        "scale by multiplier",
+        1.87,
+        "ULTRA"
+      ],
+      "widgets_values_named": {
+        "resize_type": "scale by multiplier",
+        "resize_type.scale": 1.87,
+        "quality": "ULTRA"
+      }
+    },
+    {
+      "id": 255,
+      "type": "MiniMaxH3DirectorSelfLift",
+      "pos": [
+        -681.7862247554207,
+        96.45734007192574
+      ],
+      "size": [
+        295.2570100391165,
+        400
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_hires",
+          "shape": 7,
+          "type": "MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "selflift",
+          "type": "MMX_DIR_SELFLIFT",
+          "links": [
+            500
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "minimax-h3-director",
+        "ver": "62e70f4faedcde1cd24823033d0501708390d550",
+        "Node name for S&R": "MiniMaxH3DirectorSelfLift",
+        "aux_id": "AIMixer/ComfyUI_MiniMaxH3_Director"
+      },
+      "widgets_values": [
+        "渐进采样",
+        "highres_steps",
+        2,
+        6,
+        0.5,
+        "follow_director",
+        true,
+        "提升 / 3D",
+        "minimax_h3_latent_upscaler_3d_conv_v1_bf16.safetensors",
+        "bilinear",
+        0,
+        0.5,
+        1,
+        false,
+        "高清分块",
+        false,
+        2,
+        128
+      ],
+      "widgets_values_named": {
+        "bd_grp_selflift_sample": "渐进采样",
+        "split_mode": "highres_steps",
+        "highres_steps": 2,
+        "transition_step": 6,
+        "lowres_scale": 0.5,
+        "sampler_mode": "follow_director",
+        "native_low_carry": true,
+        "bd_grp_selflift_lift": "提升 / 3D",
+        "latent_upscale_model": "minimax_h3_latent_upscaler_3d_conv_v1_bf16.safetensors",
+        "latent_upsample": "bilinear",
+        "rho": 0,
+        "w_min": 0.5,
+        "w_max": 1,
+        "enable_latent_chunking": false,
+        "bd_grp_selflift_tile": "高清分块",
+        "enable_tiling": false,
+        "tile_count": 2,
+        "tile_overlap": 128
+      }
+    },
+    {
+      "id": 267,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -275.81182957703373,
+        814.7234383898652
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": []
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "MysticXXX_MMH3-V4-ref2va.safetensors",
+        1
+      ],
+      "widgets_values_named": {
+        "lora_name": "MysticXXX_MMH3-V4-ref2va.safetensors",
+        "strength_model": 1
+      }
+    },
+    {
+      "id": 271,
+      "type": "ModelAttentionBackend",
+      "pos": [
+        -1056.5205153804147,
+        590.871399915926
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 563
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            532
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "ModelAttentionBackend"
+      },
+      "widgets_values": [
+        "comfy kitchen attention"
+      ],
+      "widgets_values_named": {
+        "attention": "comfy kitchen attention"
+      }
+    },
+    {
+      "id": 281,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -722.9238295007535,
+        689.832750481273
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 562
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            563
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "MysticXXX_MMH3-V4-ref2va.safetensors",
+        0.5
+      ],
+      "widgets_values_named": {
+        "lora_name": "MysticXXX_MMH3-V4-ref2va.safetensors",
+        "strength_model": 0.5
+      }
+    }
+  ],
+  "links": [
+    [
+      13,
+      4,
+      0,
+      12,
+      2,
+      "VAE"
+    ],
+    [
+      16,
+      2,
+      0,
+      12,
+      3,
+      "CLIP"
+    ],
+    [
+      348,
+      12,
+      1,
+      177,
+      1,
+      "AUDIO"
+    ],
+    [
+      349,
+      12,
+      2,
+      177,
+      2,
+      "FLOAT"
+    ],
+    [
+      404,
+      207,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      484,
+      12,
+      0,
+      247,
+      0,
+      "IMAGE"
+    ],
+    [
+      495,
+      252,
+      0,
+      177,
+      0,
+      "IMAGE"
+    ],
+    [
+      500,
+      255,
+      0,
+      12,
+      7,
+      "MMX_DIR_SELFLIFT"
+    ],
+    [
+      532,
+      271,
+      0,
+      12,
+      0,
+      "MODEL"
+    ],
+    [
+      350,
+      177,
+      0,
+      178,
+      0,
+      "VIDEO"
+    ],
+    [
+      494,
+      247,
+      0,
+      252,
+      0,
+      "IMAGE"
+    ],
+    [
+      562,
+      1,
+      0,
+      281,
+      0,
+      "MODEL"
+    ],
+    [
+      563,
+      281,
+      0,
+      271,
+      0,
+      "MODEL"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "模型加载 (MiniMax H3)",
+      "bounding": [
+        -1068.5089443478475,
+        15.209388591086661,
+        676.0759908092396,
+        972.2510104349291
+      ],
+      "color": "#3f789e",
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "MiniMax H3 Director",
+      "bounding": [
+        -309.88131021535463,
+        40,
+        1189.2581530058937,
+        2460.097770068444
+      ],
+      "color": "#8A8",
+      "flags": {
+        "pinned": true
+      }
+    },
+    {
+      "id": 3,
+      "title": "输出",
+      "bounding": [
+        899.4630501740214,
+        38.98812259975102,
+        614.9684350059656,
+        1143.679001667337
+      ],
+      "color": "#b58",
+      "flags": {
+        "pinned": true
+      }
+    }
+  ],
+  "config": {},
+  "extra": {
+    "links_added_by_ue": [],
+    "note": "MiniMax H3 Director · t2v",
+    "xzgGroups": {},
+    "ue_links": [],
+    "0246.VERSION": [
+      0,
+      0,
+      4
+    ],
+    "pixaromaGroups": [],
+    "frontendVersion": "1.53.6",
+    "ds": {
+      "scale": 0.7390384147254233,
+      "offset": [
+        376.5388728946372,
+        -81.99613442981425
+      ]
+    },
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

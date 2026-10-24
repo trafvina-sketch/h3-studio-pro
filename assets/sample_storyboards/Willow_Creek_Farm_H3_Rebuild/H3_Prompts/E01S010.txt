@@ -1,0 +1,25 @@
+H3 VIDEO PROMPT | Willow Creek Farm | E01S010 | 15 seconds | 16:9
+
+MASTER VISUAL STYLE (LOCKED): Original high-end cinematic family farm drama, photorealistic live-action aesthetic, natural human faces and age-appropriate proportions, believable goat and chicken anatomy, authentic rural American farm architecture, weathered wooden fences, realistic metal gate hardware, tactile cotton clothing and natural hair, soft balanced daylight, restrained warm highlights and neutral whites, physically plausible shadows, filmic color grading, cinematic 35mm and 50mm lenses, natural depth of field, stable screen geography and grounded movement, 16:9 widescreen. Consistent exact identities, clothing, animal markings, prop materials and environment layouts from approved Ref_ images. No cartoon, no anime, no schematic, no flat vector, no illustration, no text overlay, no watermark, no synthetic plastic CGI look.
+
+APPROVED VISUAL REFERENCE FILES (must load original images; filenames alone do not guarantee appearance): Ref_Avery_Morgan.png, Ref_Owen_Morgan.png, Ref_Ethan_Morgan.png, Ref_Feed_Bucket.png, Ref_Water_Tub.png, Ref_Avery_s_Work_Gloves.png, Ref_Pasture_Entrance.png
+
+SETTING / STORY BEAT: E01S010 · Pasture / barn route. 00.50–07.50s: Avery holds the filled feed bucket; Owen finds the smaller empty bucket in the path while Ethan listens.
+07.50–15.00s: Owen moves the empty bucket to the side wall; Avery keeps the filled bucket.
+
+SUBJECTS, BLOCKING, OBJECT OWNERSHIP AND PHYSICAL CONTINUITY: Avery keeps the filled feed bucket in one hand. Owen grips the smaller empty bucket, carries it from the walking path to the side wall, and sets its base down before releasing. Ethan may listen nearby. The filled bucket never changes owner.
+
+CAMERA AND EDIT: Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.
+
+TIMING: 00:00–00:03 establish entry state and physical placement; 00:03–00:06 begin the first described action; 00:06–00:09 complete first action and perform motivated shot transition only if specified; 00:09–00:12 advance second described action; 00:12–00:15 finish the specified consequence and hold a readable exit state. Follow exact source action order, never invent an extra handoff or animal crossing.
+
+DIALOGUE (EXACT ENGLISH LINES, IN SOURCE ORDER):
+Ethan: "Owen, you look worried."
+Owen: "This empty bucket blocks the path."
+Owen: "I will move it here."
+
+SOUND: Natural farm ambience, restrained footsteps/hooves, believable gate and tool foley when applicable, intelligible dialogue, no overpowering music.
+
+START / END CONTINUITY: Start from the preceding scene's established positions unless source specifies an explicit cut. End exactly at the action's described resulting state; preserve prop counts, gate open/closed state, animal location, screen direction, and left/right handedness for next scene.
+
+NEGATIVE: No character or animal duplication, no unexplained teleportation, no extra props, no gate hinge reversal, no passing through fences, no frozen action, no mismatched wardrobe or animal markings, no diagram panels, no arrows, no on-image text.

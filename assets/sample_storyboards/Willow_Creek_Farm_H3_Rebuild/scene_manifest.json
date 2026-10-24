@@ -1,0 +1,1066 @@
+[
+  {
+    "scene": "E01S001",
+    "title": "E01S001 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Clover_Goat.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_Water_Tub.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.00–07.50s: Shot 1: Daisy at closed pasture gate outside hinge sweep, reaching rusty latch.\n07.50–15.00s: Shot 2: Daisy and Clover. Gate opened fully aside, Daisy holds it out of passage; Clover walks through clear opening from pasture to lane.",
+    "movement": "Daisy stands lane-side of the closed pasture gate, outside its hinge sweep. Her right hand moves from her side to the old rusty latch. She releases the latch, swings the gate away from the lane path, and holds the leaf against the fence. Clover starts inside the pasture and walks left-to-right through the clear opening to the lane; the water tub stays fixed behind the fence.",
+    "camera": "Shot A (0–7.5s): a slow short dolly-in from eye-level medium-wide to medium-close on Daisy and the old latch, easing to a complete stop before she releases it. The camera travels forward on the lane side without crossing the gate swing or the 180° axis; this is physical camera travel, not digital zoom. Shot B (7.5–15s): a matched cut to a locked eye-level medium-wide side view showing the whole clear opening and Clover’s grounded left-to-right crossing.",
+    "dialogue": "Daisy: \"Clover, do you want more grass?\"\nDaisy: \"There is some outside.\"\nDaisy: \"I can open this gate.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S002",
+    "title": "E01S002 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Hazel.png",
+      "Ref_Bramble.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_Water_Tub.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Pasture_Entrance.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Hazel and Bramble walk single file through same OPEN passage in same direction; Daisy and Clover offscreen.\n07.50–15.00s: Shot 2: Daisy worried beside still OPEN gate, all three same goats outside offscreen; no gate closing.",
+    "movement": "Hazel then Bramble follow Clover left-to-right through that same open gate, one body length apart. Daisy stays beside the hinge, out of their route; the gate remains open until both tails clear. She takes one small step back and looks at the three goats now in the lane.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"I cannot close it yet.\"\nDaisy: \"They are still coming through.\"\nDaisy: \"I will step back.\"\nDaisy: \"Oh dear.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S003",
+    "title": "E01S003 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Pasture_Entrance.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy and Avery in yard; Daisy tells Avery gate is open.\n07.50–15.00s: Shot 2: Daisy and Avery finishing exchange, both empty hands.",
+    "movement": "Daisy moves from the gate toward Avery along the yard path, left-to-right, then stops at speaking distance. Avery turns toward her without changing location. Their hands stay empty; the three goats remain on the established lane route, not suddenly inside a pen.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Daisy: \"Avery, please come here.\"\nDaisy: \"The gate is open.\"\nDaisy: \"Clover is going to the garden.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S004",
+    "title": "E01S004 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Greenhouse_Path.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Explicit cut to garden entrance: Daisy and Claire; Claire holds ONE existing red apple, Daisy right hand empty.\n07.50–15.00s: Shot 2: Daisy and Claire: one clear apple handoff finished, apple in Daisy RIGHT hand; Claire releases, no duplicate apple.",
+    "movement": "At the garden entrance Claire faces Daisy. One red apple begins in Claire’s hand. Claire extends it across the clear space; Daisy grips it with her right hand before Claire releases. The apple ends only in Daisy’s right hand. Neither person steps through a bed.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Claire: \"Here is an apple.\"\nClaire: \"Clover knows this smell.\"\nClaire: \"Hold it low.\"\nClaire: \"Walk slowly with me.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S005",
+    "title": "E01S005 · Barn approach",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Barn_Doorway.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Avery and Ethan at barn approach, Avery reports two loose goats.\n07.50–15.00s: Shot 2: Avery and Ethan listening in same positions.",
+    "movement": "Avery leaves the garden-side path and approaches Ethan at the barn, left-to-right, then stops. Ethan faces Avery and listens. The toolbox and the old latch stay where established; no goat crosses this shot.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Avery: \"I will tell Dad about the other goats.\"\nAvery: \"You can help Clover here.\"\nEthan: \"Tell me what happened.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S006",
+    "title": "E01S006 · Barn approach",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Rusty.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_Rusty_s_Bandana.png",
+      "Ref_Barn_Doorway.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan and Rusty, Ethan calls dog to his side; goats offscreen lane.\n07.50–15.00s: Shot 2: Ethan and Rusty, dog grounded beside Ethan; no new animal or goat already enclosed.",
+    "movement": "Ethan turns toward Rusty and gives a calm hand cue. Rusty walks two grounded steps to Ethan’s side and stops; Ethan stays in place. Both then face the lane. The goats continue at their established offscreen positions.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Ethan: \"Thank you for telling me.\"\nEthan: \"I will help the goats.\"\nEthan: \"Rusty can stay beside me.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S007",
+    "title": "E01S007 · Orchard enclosure",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Hazel.png",
+      "Ref_Bramble.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_Orchard_Enclosure.png",
+      "Ref_Rusty.png"
+    ],
+    "action": "00.50–07.50s: Ethan and Rusty guide Hazel and Bramble toward the open orchard gateway; the goats enter one at a time.\n07.50–15.00s: Hazel and Bramble fully clear the opening and stop inside; Ethan and Rusty remain outside.",
+    "movement": "Ethan and Rusty guide from behind at a safe distance. Hazel enters the orchard gateway left-to-right; Bramble follows one body length later. The gate is already open and held outside the path. Both goats stop inside the orchard before the shot ends.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Ethan: \"Come with me, Rusty.\"\nEthan: \"Give the goats some space.\"\nEthan: \"We will walk slowly.\"\nEthan: \"Good. They are inside.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S008",
+    "title": "E01S008 · Orchard enclosure",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Rusty.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_Rusty_s_Bandana.png",
+      "Ref_Orchard_Enclosure.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan and Rusty outside orchard gate, Ethan closes it AFTER both goats clear, goats offscreen inside.\n07.50–15.00s: Shot 2: Ethan and Rusty beside CLOSED gate, Ethan checks secured latch; no repeated entrance.",
+    "movement": "With both goats fully inside, Ethan grips the orchard gate and swings it toward its post without touching Rusty. The leaf travels only on its real hinge arc. Ethan fastens the latch once and tests it; Rusty remains grounded at his side.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Ethan: \"Stay here for now.\"\nEthan: \"You have shade and plenty of space.\"\nEthan: \"I will check the others.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S009",
+    "title": "E01S009 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Maple.png",
+      "Ref_Feed_Bucket.png",
+      "Ref_Water_Tub.png",
+      "Ref_Maple_s_Collar.png",
+      "Ref_Maple_s_Bell.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Owen tells Ethan that Maple is outside the side pen near the barn.\n07.50–15.00s: Cut to Maple by the single original water tub; the separate small empty bucket blocks part of the side path.",
+    "movement": "Owen turns toward Ethan at the barn and points to Maple’s true location outside the side pen. A cut shows Maple standing by the single original water tub. The small empty bucket is separate from the tub and remains on the path until the next scene.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Ethan: \"The goats are safe in the orchard.\"\nOwen: \"Maple is still by the water tub.\"\nEthan: \"Let us help her.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S010",
+    "title": "E01S010 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Feed_Bucket.png",
+      "Ref_Water_Tub.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Avery holds the filled feed bucket; Owen finds the smaller empty bucket in the path while Ethan listens.\n07.50–15.00s: Owen moves the empty bucket to the side wall; Avery keeps the filled bucket.",
+    "movement": "Avery keeps the filled feed bucket in one hand. Owen grips the smaller empty bucket, carries it from the walking path to the side wall, and sets its base down before releasing. Ethan may listen nearby. The filled bucket never changes owner.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Ethan: \"Owen, you look worried.\"\nOwen: \"This empty bucket blocks the path.\"\nOwen: \"I will move it here.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S011",
+    "title": "E01S011 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Maple.png",
+      "Ref_Feed_Bucket.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Maple_s_Collar.png",
+      "Ref_Maple_s_Bell.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Avery and Maple, low filledfeedbucket leads along clear path toward OPEN sidegate.\n07.50–15.00s: Shot 2: Avery and Maple, cow fully enters through clear opening; camera side stays fixed, gate leaf outside passage.",
+    "movement": "Avery carries the filled feed bucket low, walking left-to-right from Maple’s water-tub area toward the open side gate. Maple follows on four grounded legs at a safe gap. The gate leaf remains outside the passage; both pass through the opening in the same direction.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"Maple, look at this bucket.\"\nAvery: \"I have your feed here.\"\nAvery: \"The barn is close.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S012",
+    "title": "E01S012 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Maple.png",
+      "Ref_Feed_Bucket.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Maple_s_Collar.png",
+      "Ref_Maple_s_Bell.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Owen at sidegate, closes AFTER Avery and Maple clear inside offscreen; Maple may be cropped behind fence if needed, still INSIDE.\n07.50–15.00s: Shot 2: Owen checks CLOSED latched side gate; Maple remains INSIDE, no reverse travel or new exit.",
+    "movement": "After Avery and Maple clear into the side pen, Owen stands outside the hinge sweep, draws the side gate shut on its hinge, fastens the latch once, then tests it. Maple remains inside. Avery holds the same feed bucket inside the pen.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"Come this way, Maple.\"\nOwen: \"I was scared I would make it worse.\"\nOwen: \"Maple is so big.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S013",
+    "title": "E01S013 · Barn approach",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Barn_Doorway.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Ethan, Avery, Owen. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Owen explains the side-gate mistake. Focus on: Owen. Other established characters retain their positions.",
+    "movement": "Ethan, Avery and Owen hold their established positions by the secured side gate. Owen points back to the cleared path while explaining his choice; Ethan nods. No gate, animal or bucket moves.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Ethan: \"You stopped and asked for help.\"\nEthan: \"That was a good choice.\"\nEthan: \"You kept the path clear too.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S014",
+    "title": "E01S014 · Barn approach",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Barn_Doorway.png",
+      "Ref_Owen_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Avery admits seeing the weak main-gate latch and not speaking up.\n07.50–15.00s: Ethan admits he also delayed the repair and decides to fix it now.",
+    "movement": "Avery faces Ethan by the side pen and admits noticing the weak main-gate latch. Ethan answers while standing still, then gestures toward the main gate. Owen may remain in the established group position; nobody teleports to the gate yet.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Avery: \"I saw the weak latch.\"\nAvery: \"I should have told you.\"\nEthan: \"I saw it too. We will fix it.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S015",
+    "title": "E01S015 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Red_Toolbox.png",
+      "Ref_Wrench.png",
+      "Ref_Pasture_Entrance.png",
+      "Ref_Avery_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan and Avery beside CLOSED maingate; redtoolbox closed with Ethan, clean SILVER replacement latch with Avery, rusty OLD latch still installed.\n07.50–15.00s: Shot 2: Ethan checks worn RUSTY hardware; Avery keeps SILVER replacement in glovedhands.",
+    "movement": "At the closed main gate, Ethan sets the red toolbox on stable ground and Avery holds the new silver latch in gloved hands. Ethan points to the installed rusty old latch. The new part does not replace the old one until the repair step.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Ethan: \"I will take the toolbox.\"\nEthan: \"Avery, bring the new latch.\"\nEthan: \"We can fix the gate now.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S016",
+    "title": "E01S016 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Red_Toolbox.png",
+      "Ref_Wrench.png",
+      "Ref_Pasture_Entrance.png",
+      "Ref_Avery_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan opens redtoolbox and selects original wrench; no latch removal yet.\n07.50–15.00s: Shot 2: Ethan ready with wrench; Avery holds same SILVER replacement, closedgate still has rusty OLD latch.",
+    "movement": "Ethan opens the red toolbox lid on its hinge and lifts the original wrench by its handle. Avery stays clear of the gate swing and continues holding the silver replacement latch. The old rusty latch remains mounted.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Ethan: \"I need this wrench.\"\nEthan: \"It fits the bolt.\"\nEthan: \"Keep the new latch beside you, Avery.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S017",
+    "title": "E01S017 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Gate_Bolt.png",
+      "Ref_Pasture_Entrance.png",
+      "Ref_Avery_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan removes rusty OLD main-gate latch while gate held CLOSED; Avery remains at same safe offscreen staging spot.\n07.50–15.00s: Shot 2: Hardware insert: removed old rusty latch and original tool, gate stays closed and physically supported.",
+    "movement": "Ethan places the wrench on the old bolt and turns it while Avery steadies the rail from a safe position. Ethan removes the old rusty latch into his hand, then sets it beside the open toolbox. The gate remains shut and supported.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Ethan: \"Hold the rail steady, please.\"\nEthan: \"That helps me turn the bolt.\"\nAvery: \"The gate is steady.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S018",
+    "title": "E01S018 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Old_Gate_Latch.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Gate_Bolt.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Explicit repair-time CUT: same gate now fitted with NEW galvanized SILVER latch secured by TWO bolts, no rust or black coating.\n07.50–15.00s: Shot 2: Stable hardware insert showing same clean SILVER latch and exactly TWO fastening bolts, gate closed.",
+    "movement": "After an explicit repair-time cut, the same main gate is still closed. The new galvanized silver latch is fixed with exactly two bolts; the old rusty latch rests by the toolbox. Ethan’s hand tests the new hardware gently, without changing its color or creating another latch.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Ethan: \"The new latch is fitted.\"\nEthan: \"We still need to test it.\"\nEthan: \"A gate can look strong.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S019",
+    "title": "E01S019 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Red_Toolbox.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Avery and Ethan; Avery tests repaired clean SILVER main latch, CLOSED gate.\n07.50–15.00s: Shot 2: Avery completes secondcheck, gate returns fullyclosed and secured.",
+    "movement": "Avery grips the silver main-gate latch, pulls once, releases, then repeats a second careful test. Ethan watches nearby. The main gate stays closed and secured after each test; no goat appears through it.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"I will pull once.\"\nAvery: \"It stays closed.\"\nAvery: \"Now I will check again.\"\nAvery: \"It still holds.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S020",
+    "title": "E01S020 · Pasture / barn route",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Red_Toolbox.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Pasture_Entrance.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan closes original redtoolbox, then picks it up by handle; gate SILVERlatch staysclosed.\n07.50–15.00s: Shot 2: Ethan and Avery leave along clear route, secured CLOSED maingate with same SILVERlatch remains visible; no new gateopening.",
+    "movement": "Ethan closes the red toolbox lid, grips its handle, and carries it away along the path. Avery walks beside him toward the coop route, left-to-right. The repaired silver main-gate latch remains shut in the background.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Ethan: \"Avery, please check the chickens.\"\nEthan: \"I will go to the garden.\"\nEthan: \"Count them carefully.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S021",
+    "title": "E01S021 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Claire_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Claire, Ethan. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Ethan tells Claire the animals and gates are secure. Focus on: Claire, Ethan. Other established characters retain their positions.",
+    "movement": "Ethan meets Claire near the garden path and stops. He points back toward the secured goat area and main gate, then listens to Claire. The goats remain in their established locations and no animal arrives in this crop.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Ethan: \"Claire, the goats are safe.\"\nEthan: \"I have checked the main gate too.\"\nEthan: \"How is Clover doing?\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S022",
+    "title": "E01S022 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Claire_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Daisy_Morgan.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Claire, Ethan. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Claire notices the damaged lettuce and returns to Daisy; Clover is still loose near the garden, not already in the paddock. Focus on: Claire. Other established characters retain their positions.",
+    "movement": "Claire turns from Ethan toward Daisy and the damaged garden bed, moving left-to-right along the clear path. Ethan stays at the garden entrance. Clover is still loose near the garden at this point; no premature paddock cut.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Claire: \"Clover damaged a few plants.\"\nClaire: \"Most are still growing.\"\nClaire: \"We can plant more later.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S023",
+    "title": "E01S023 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Daisy_Morgan.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy RIGHT hand holds ONE same redapple low; Claire behind and Clover ahead on clear garden path.\n07.50–15.00s: Shot 2: Daisy and Clover take small forward steps on same clear route, Claire behind, no handoff or bite.",
+    "movement": "Daisy holds the one red apple low in her right hand. She walks left-to-right along the garden path; Clover follows the scent at a small gap. Claire follows behind Daisy. All three keep to the path and avoid the garden beds.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Claire: \"I am behind you, Daisy.\"\nClaire: \"Keep the apple low.\"\nClaire: \"Call Clover softly.\"\nClaire: \"Good.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S024",
+    "title": "E01S024 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Daisy_Morgan.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Clover follows apple scent slowly; Daisy remains outside solid garden beds.\n07.50–15.00s: Shot 2: Daisy Claire Clover pause on path, apple still in Daisy RIGHT hand.",
+    "movement": "Daisy slows and stops on the path, apple still in her right hand. Clover takes two slow grounded steps toward the apple and stops without biting. Claire remains behind, leaving Clover space. The path direction remains left-to-right.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Claire: \"Let Clover choose to follow you.\"\nClaire: \"Keep your hand low.\"\nClaire: \"Give her room.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S025",
+    "title": "E01S025 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Terracotta_Pot.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy Claire Clover near original claypot, Daisy RIGHT hand holds sameapple.\n07.50–15.00s: Shot 2: Clover lightly brushes pot at ground edge, no body intersects pot.",
+    "movement": "Daisy resumes a slow left-to-right walk toward Clover’s paddock with the apple held low. Clover follows beside the path and brushes one existing clay pot at the edge with her flank. Claire follows; the pot has not tipped yet.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"This way, Clover.\"\nDaisy: \"We are going to your paddock.\"\nDaisy: \"I will walk slowly.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S026",
+    "title": "E01S026 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Terracotta_Pot.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Same claypot now tipped INTACT onto softsoil, no shattered extra pieces; Daisy stops.\n07.50–15.00s: Shot 2: Claire calmly guides Daisy, Clover grounded beside path; SAME tippedpot remains, sameapple held.",
+    "movement": "The same clay pot tips once onto soft soil and stays intact. Daisy stops without stepping on it. Clover pauses on the path. Claire gestures forward; Daisy keeps the apple in her right hand and resumes guiding Clover.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"You can follow me.\"\nClaire: \"Leave the pot for later.\"\nClaire: \"Clover needs us now.\"\nClaire: \"Keep the apple low.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S027",
+    "title": "E01S027 · Greenhouse path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Claire_Morgan.png",
+      "Ref_Clover_Goat.png",
+      "Ref_Daisy_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Greenhouse_Path.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy Claire Clover pause outside OPEN greenhouse doorway; apple stays low in Daisy RIGHT hand.\n07.50–15.00s: Shot 2: Claire closes greenhouse door after ensuring Clover outside and clear of sweep.",
+    "movement": "Daisy, Claire and Clover stop outside the open greenhouse door. Claire checks that Clover and Daisy are clear of the door swing, then pulls the greenhouse door closed once. The apple remains with Daisy; the tipped pot remains behind them.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"All right, Mom.\"\nDaisy: \"Clover comes first.\"\nDaisy: \"The pot can wait.\"\nDaisy: \"Clover, follow me this way.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S028",
+    "title": "E01S028 · Greenhouse path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Clover_Goat.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Greenhouse_Path.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Claire checks CLOSED greenhouse door, no hinge flip.\n07.50–15.00s: Shot 2: Daisy and Clover wait OUTSIDE greenhouse on path; sameapple, greenhouse CLOSED behind.",
+    "movement": "Claire tests the closed greenhouse door from the path. Daisy and Clover wait outside, with the apple still low in Daisy’s right hand. The three then turn toward the paddock route; no one enters the greenhouse.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"That was a good idea, Mom.\"\nDaisy: \"I did not see the door.\"\nDaisy: \"Clover could have gone inside.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S029",
+    "title": "E01S029 · Goat paddock",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Clover_Goat.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Goat_Paddock.png"
+    ],
+    "action": "00.50–07.50s: Claire holds the paddock gate clear while Daisy guides Clover inside.\n07.50–15.00s: Inside the paddock, Daisy sets the one apple on clean ground and releases it.",
+    "movement": "Claire controls the paddock gate, keeping its leaf outside the clear opening. Daisy and Clover travel left-to-right into the paddock. Once inside, Daisy bends, places the single red apple on clean ground, and releases it only after it rests stably.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Claire: \"The path is clear.\"\nDaisy: \"Come inside, Clover.\"\nDaisy: \"Here is your apple.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S030",
+    "title": "E01S030 · Goat paddock",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Goat_Paddock.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy and Claire OUTSIDE after Daisy exits; Claire closes gate AFTER bodies clear, Clover remains insideoffscreen.\n07.50–15.00s: Shot 2: Daisy and Claire, Daisy tests CLOSEDlatchedgate; hands empty, Clover andapple INSIDEoffscreen.",
+    "movement": "Daisy exits the paddock through the open gate with empty hands while Clover and the apple remain inside. After Daisy’s whole body clears, Claire closes and latches the gate. Daisy tests the rail once from outside; no animal reverses direction.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"Closed.\"\nDaisy: \"Really closed.\"\nDaisy: \"I checked the rail, Mom.\"\nDaisy: \"It holds.\"\nDaisy: \"Clover is safe inside.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S031",
+    "title": "E01S031 · Goat paddock",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Goat_Paddock.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Daisy, Claire. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Beside the secured paddock, Daisy admits her mistake and Claire responds kindly. Focus on: Daisy, Claire. Other established characters retain their positions.",
+    "movement": "Daisy and Claire stay outside the closed paddock gate. Daisy looks down and admits opening the earlier gate; Claire turns toward her. Clover remains inside at the apple. No gate opens or closes again.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Daisy: \"I am sorry I opened the gate.\"\nDaisy: \"I did not ask you.\"\nClaire: \"Thank you for telling me.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S032",
+    "title": "E01S032 · Goat paddock",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Red_Apple.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Goat_Paddock.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Daisy, Claire. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Daisy's hands are empty; Clover remains inside with the apple. Focus on: Daisy. Other established characters retain their positions.",
+    "movement": "Claire answers Daisy beside the same closed paddock gate. Daisy raises her eyes, then nods. Both remain outside; the apple and Clover stay inside. Their hands remain empty.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Claire: \"Opening it without asking was wrong.\"\nClaire: \"You told the truth.\"\nClaire: \"Now you are helping.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S033",
+    "title": "E01S033 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Clover_Goat.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Daisy, Claire. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Return to the damaged garden bed. Focus on: Daisy, Claire. Other established characters retain their positions.",
+    "movement": "Daisy and Claire leave the paddock gate and walk along the clear path back to the damaged lettuce bed, left-to-right after the establishing cut. They stop at the bed edge; no one steps on plants.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Daisy: \"I want to see the lettuce.\"\nDaisy: \"Clover ate some leaves.\"\nClaire: \"We can help the plants.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S034",
+    "title": "E01S034 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Lettuce_Garden.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Daisy, Claire. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Claire shows the crushed lettuce beside intact plants and reassures Daisy that they can repair this small area. Focus on: Daisy, Claire. Other established characters retain their positions.",
+    "movement": "Claire points to the small crushed lettuce area and then to healthy neighboring plants. Daisy leans forward but stays on the path. The existing plant count and damaged area do not change.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Claire: \"A few plants are damaged.\"\nClaire: \"Most are healthy.\"\nClaire: \"We can put new plants in this row.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S035",
+    "title": "E01S035 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Hand_Trowel.png",
+      "Ref_Lettuce_Seedling_Tray.png",
+      "Ref_Lettuce_Seedling.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Lettuce_Garden.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Daisy, Claire. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Claire brings the existing seedling tray beside the bed and prepares the first small hole with the hand trowel. Focus on: Claire. Other established characters retain their positions.",
+    "movement": "Claire carries the established seedling tray to the bed edge, sets it down, then uses the same hand trowel to prepare the first hole. Daisy watches nearby. The tray and tool do not duplicate.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Claire: \"These are small lettuce plants.\"\nClaire: \"They are ready for the garden.\"\nClaire: \"We can use two.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S036",
+    "title": "E01S036 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Hand_Trowel.png",
+      "Ref_Lettuce_Seedling_Tray.png",
+      "Ref_Lettuce_Seedling.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Lettuce_Garden.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Listen and maintain the previous action state; no repeated action. Focus on: Daisy, Claire. Other established characters retain their positions.\n07.50–15.00s: Shot 2: Daisy waits with empty hands. Focus on: Daisy. Other established characters retain their positions.",
+    "movement": "Claire completes a second small hole next to the first, places the trowel safely beside the tray, then shows Daisy how to support a seedling by its soil. Daisy stays on the path with empty hands until she takes it.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Claire: \"This hole is ready.\"\nClaire: \"Pick up the plant with its soil.\"\nClaire: \"Do not pull the leaves.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S037",
+    "title": "E01S037 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Metal_Watering_Can.png",
+      "Ref_Lettuce_Seedling.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Lettuce_Garden.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy and Claire, original tray beside TWO preparedholes in damagedbed; other intactplants unchanged.\n07.50–15.00s: Shot 2: Daisy and Claire, exactly TWO replacementseedlings planted into thoseholes, one each.",
+    "movement": "Daisy lifts the first seedling with its soil and places it into hole one; Claire places the second into hole two. Both release only after roots sit in soil. Exactly two replacement seedlings end upright in the damaged row.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"I am holding the soil, Mom.\"\nDaisy: \"The leaves are safe.\"\nDaisy: \"I will put it in the hole.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S038",
+    "title": "E01S038 · Garden path",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Metal_Watering_Can.png",
+      "Ref_Lettuce_Seedling.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Lettuce_Garden.png",
+      "Ref_Owen_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Daisy gives those TWO seedlings ONEbrief watering, not allgardenrefilled.\n07.50–15.00s: Shot 2: Avery Daisy Claire, Avery arrives reports missinghens; both replantedseedlings remain fixed.",
+    "movement": "Daisy lifts the existing watering can, gives the two new seedlings one brief pour, then sets the can beside the bed. Avery approaches along the garden path and stops to report the count. Claire turns to listen; no hen appears here.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"Seven chickens are in the coop.\"\nAvery: \"Four are missing.\"\nAvery: \"I checked twice.\"\nAvery: \"Owen is by the gate.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S039",
+    "title": "E01S039 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Hen_Checklist.png",
+      "Ref_Feed_Cup.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Farmyard_and_Coop.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Owen and Avery at chickengate, Owen checks original checklist indicating seven inside/fourmissing; no flock panorama.\n07.50–15.00s: Shot 2: Claire and Daisy with original chicken-feedcup at same farmyard.",
+    "movement": "Owen checks the original tan hen checklist at the chicken gate: seven inside and four missing. After a clear cut, Claire and Daisy stand with the original chicken feed cup in the yard. Claire points to the search path; the count does not change.",
+    "camera": "Shot A: locked medium view showing the owners and complete prop path. Shot B: matched detail at the same side of the axis, with the object’s start and end positions visible. No camera move during the handoff or hardware action.",
+    "dialogue": "Claire: \"We will check calmly.\"\nClaire: \"Daisy, leave the watering can beside this bed.\"\nClaire: \"The plants have water.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S040",
+    "title": "E01S040 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Feed_Cup.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Farmyard_and_Coop.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Avery and Owen choose their separate search route, no instant arrival elsewhere.\n07.50–15.00s: Shot 2: Claire and Daisy set out on clearpath to logstack; counts remain seveninside fourmissing.",
+    "movement": "Avery and Owen agree on separate search routes at the coop, then move along their assigned paths without teleporting. Claire and Daisy start toward the woodpile, left-to-right. Seven hens remain inside and four remain missing.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Daisy: \"One hen likes the wood pile, Mom.\"\nDaisy: \"I saw her near the logs before.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S041",
+    "title": "E01S041 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Brown_Hen.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Farm_Log_Stack.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Claire Daisy BrownHen at logstack, Claire lays shortfeedtrail.\n07.50–15.00s: Shot 2: BrownHen follows clearfeedtrail out from logs, no extra hen.",
+    "movement": "At the woodpile, Claire lowers a short trail from the one feed cup. One brown hen steps out from under the logs and follows the grain left-to-right toward the coop route. Daisy stands back, leaving an open path.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Daisy: \"I hear a hen under there.\"\nDaisy: \"Listen, Mom.\"\nDaisy: \"The sound comes from the logs.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S042",
+    "title": "E01S042 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Owen_Morgan.png",
+      "Ref_Brown_Hen.png",
+      "Ref_Farm_Log_Stack.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: BrownHen walks finalsteps through open coopentry, no wallpenetration.\n07.50–15.00s: Shot 2: Explicit CUT to Owen at originalchecklist, now eightinside/threemissing.",
+    "movement": "The same brown hen walks the last steps through the actual open coop doorway, left-to-right; it does not pass through mesh. After a cut, Owen changes the physical checklist count to eight inside and three missing. No second hen appears.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Owen: \"Eight hens are inside.\"\nOwen: \"Three are still missing.\"\nOwen: \"I will mark this one.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S043",
+    "title": "E01S043 · Tractor shed / coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_White_Hen.png",
+      "Ref_Buff_Hen.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Tractor_Shed.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Avery and Owen, Avery opens tractorshed door then steps aside outside sweep.\n07.50–15.00s: Shot 2: WhiteHen and BuffHen follow shortgraintrail from shed, no new hen or vehicle.",
+    "movement": "Avery grips the tractor-shed door, opens it on the correct hinge, then steps outside its sweep. The existing white hen and buff hen emerge one after the other and follow a short grain trail left-to-right. No vehicle moves.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"I hear something inside the shed.\"\nAvery: \"It sounds like scratching.\"\nAvery: \"Maybe chickens are there.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S044",
+    "title": "E01S044 · Tractor shed / coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_White_Hen.png",
+      "Ref_Buff_Hen.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Tractor_Shed.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: WhiteHen and BuffHen walk laststeps into opencoop clearpassage, Owen offscreen guides.\n07.50–15.00s: Shot 2: Owen and Avery confirm teninside/one missing using existingchecklist.",
+    "movement": "The white hen enters the open coop first; the buff hen follows on the same left-to-right route. Owen waits until both clear the doorway, then confirms ten inside and one missing on the original checklist. Avery stays beside him.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"Both hens are following the trail.\"\nAvery: \"They are almost home.\"\nAvery: \"We will wait until they go inside.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S045",
+    "title": "E01S045 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Speckled_Hen.png",
+      "Ref_Chicken_Feed_Tray.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Farmyard_and_Coop.png"
+    ],
+    "action": "00.50–07.50s: Daisy discovers the one speckled hen on the low fence.\n07.50–15.00s: Ethan walks up with the same small feed tray; the hen stays on the fence.",
+    "movement": "Daisy notices the one speckled hen perched on the low fence. Ethan approaches from the clear path carrying the same small feed tray, then stops beside Daisy. The hen remains on the fence; all other hens remain in their known positions.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Daisy: \"There is one hen on the fence.\"\nEthan: \"I will bring the small feed tray.\"\nDaisy: \"She is still there.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S046",
+    "title": "E01S046 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Speckled_Hen.png",
+      "Ref_Chicken_Feed_Tray.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Farmyard_and_Coop.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan and SpeckledHen, Ethan stops safe distance without lifting hen or moving fence.\n07.50–15.00s: Shot 2: Daisy Ethan SpeckledHen, tray heldready, hen still on LOWfence, no newarrival.",
+    "movement": "Ethan stops at a safe distance from the low fence and lowers the feed tray while Daisy points to the one speckled hen. The hen balances on the fence and does not jump yet. No duplicate hen appears in reverse angle.",
+    "camera": "Shot A: smooth lateral tracking left-to-right at walking pace, eye-level, maintaining a medium two-shot and the established axis. Shot B: settle to a locked medium frame before the line finishes; no sudden zoom.",
+    "dialogue": "Daisy: \"There she is, Dad.\"\nDaisy: \"She is on the low fence.\"\nDaisy: \"She looks happy up there.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S047",
+    "title": "E01S047 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Speckled_Hen.png",
+      "Ref_Farmyard_and_Coop.png",
+      "Ref_Daisy_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Ethan sets the existing tray down and steps back. Visible Ethan and the single Speckled Hen on the fence.\n07.50–15.00s: The same Speckled Hen hops safely onto clear ground beside the existing tray. Visible this hen.",
+    "movement": "Ethan sets the small feed tray on clear ground and releases it, then steps back beside Daisy. The same speckled hen hops once from the low fence to the ground next to the tray, landing on both feet; the fence remains fixed.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Ethan: \"Yes.\"\nEthan: \"We will use this feed tray.\"\nEthan: \"Stay beside me, Daisy.\"\nEthan: \"I will put it down.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S048",
+    "title": "E01S048 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Owen_Morgan.png",
+      "Ref_Hen_Checklist.png",
+      "Ref_Farmyard_and_Coop.png",
+      "Ref_Speckled_Hen.png"
+    ],
+    "action": "00.50–07.50s: A short grain trail guides the same single Speckled Hen into the open coop. Other hens remain inside OFFSCREEN.\n07.50–15.00s: Medium close Owen OUTSIDE coop confirms exactly eleven original hens safely INSIDE OFFSCREEN. Visible Owen with original Hen Checklist.",
+    "movement": "A short grain trail leads the same speckled hen from the tray left-to-right through the open coop entrance. Once she is fully inside, cut to Owen outside the coop checking the original tan checklist: exactly eleven hens inside and zero missing.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Owen: \"I am counting again.\"\nOwen: \"Ten. Eleven.\"\nOwen: \"All eleven hens are inside now.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S049",
+    "title": "E01S049 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Farmyard_and_Coop.png"
+    ],
+    "action": "00.50–07.50s: Avery and Owen outside closed chicken coop, all animals remain securely enclosed OFFSCREEN.\n07.50–15.00s: Avery checks original BLACK coop latch. No animal visible, including behind mesh.",
+    "movement": "Owen and Avery stand outside the coop. Avery closes the coop door only after the last hen is inside, fastens the original black latch, and tests it once. The eleven hens remain behind the secured door; no reverse exit.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Owen: \"Every chicken is back.\"\nOwen: \"Eleven are inside.\"\nOwen: \"You closed the gate, Avery.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S050",
+    "title": "E01S050 · Farmyard / chicken coop",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Avery_Morgan.png",
+      "Ref_Pasture_Gate.png",
+      "Ref_New_Gate_Latch.png",
+      "Ref_Farmyard_and_Coop.png",
+      "Ref_Owen_Morgan.png"
+    ],
+    "action": "00.50–07.50s: Explicit cut: Avery and Owen outside closed MAIN pasture gate; no animal visible.\n07.50–15.00s: Owen checks MAIN gate newly repaired GALVANIZED SILVER latch with Avery beside him. No animals visible.",
+    "movement": "After a later cut, Avery and Owen stand outside the closed main pasture gate. Owen tests the newly repaired galvanized silver latch once while Avery watches. The gate stays shut, and no animal changes pen.",
+    "camera": "Shot A: locked eye-level medium-wide on the established side of the 180° axis, keeping the full route, hinge sweep, feet/hooves and landing area in view. Shot B: matched side-angle medium or detail; camera remains locked. No orbit or screen-direction flip.",
+    "dialogue": "Avery: \"This new latch holds.\"\nOwen: \"I checked it too.\"\nAvery: \"We can leave the gate closed.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S051",
+    "title": "E01S051 · Farmhouse porch",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Farmhouse_Porch.png"
+    ],
+    "action": "00.50–07.50s: Later afternoon on the porch, the family sits in their established places.\n07.50–15.00s: Daisy admits opening the gate; Owen confirms the gates are closed; Ethan invites the family to talk.",
+    "movement": "At the later-afternoon farmhouse porch, the family occupy their established seats. Daisy speaks to Ethan and Claire; Owen can be seen or heard from his own seat. No one pops into a different chair across the cut.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Daisy: \"I opened the gate without asking.\"\nOwen: \"All the gates are closed now.\"\nEthan: \"We can talk about it together.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S052",
+    "title": "E01S052 · Farmhouse porch",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Farmhouse_Porch.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Ethan Daisy, Ethan admits delaying knownlatchrepair, no newprop.\n07.50–15.00s: Shot 2: Avery Owen quietly listening from fixedseats, otherfamilyoffscreen.",
+    "movement": "Ethan stays seated on the same porch and admits delaying the main-gate repair. Daisy faces him; Avery and Owen listen from their fixed seats. Hands and seats stay consistent across coverage.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Ethan: \"I knew the latch was weak.\"\nEthan: \"I waited too long to fix it.\"\nEthan: \"That was my mistake.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S053",
+    "title": "E01S053 · Farmhouse porch",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Farmhouse_Porch.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Avery Ethan seatedon sameporch; Avery admits stayingquiet about knownlatch.\n07.50–15.00s: Shot 2: Avery Ethan listening, no stand/teleport.",
+    "movement": "Avery remains seated in her original porch position and admits staying quiet about the latch. Ethan listens and nods. The other family members remain at their established seats, whether visible or outside this crop.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Avery: \"I saw the problem too.\"\nAvery: \"I did not speak up.\"\nAvery: \"I thought it could wait.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S054",
+    "title": "E01S054 · Farmhouse porch",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Claire_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Farmhouse_Porch.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Owen Claire matchedporchpair, Owen reflects on sidegate mistake.\n07.50–15.00s: Shot 2: Owen Claire finishresponse, otherfamilyfixedoffscreen.",
+    "movement": "Owen remains seated beside Claire on the porch and reflects on asking for help at the side gate. Claire answers with a small nod. No seat changes, new props or animal entrances.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Owen: \"I felt scared.\"\nOwen: \"Asking for help was better.\"\nOwen: \"I can stop and ask first.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S055",
+    "title": "E01S055 · Farmhouse porch",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Avery_Morgan.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Avery_s_Work_Gloves.png",
+      "Ref_Farmhouse_Porch.png"
+    ],
+    "action": "00.50–07.50s: Shot 1: Claire Daisy at originalfamily porchgathering, Claire discusses sharedresponsibility.\n07.50–15.00s: Shot 2: Ethan Avery quietlylisten in theirsamefixedseats.",
+    "movement": "Claire speaks to the family from her established porch seat. Daisy looks at her; Ethan and Avery listen from their seats. A wider composition may show everyone already present, without cloning or swapping positions.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Claire: \"We all made mistakes.\"\nClaire: \"We fixed them together.\"\nDaisy: \"We helped each other.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  },
+  {
+    "scene": "E01S056",
+    "title": "E01S056 · Farmhouse porch",
+    "duration_seconds": 15,
+    "references": [
+      "Ref_Daisy_Morgan.png",
+      "Ref_Claire_Morgan.png",
+      "Ref_Owen_Morgan.png",
+      "Ref_Ethan_Morgan.png",
+      "Ref_Daisy_s_Hair_Tie.png",
+      "Ref_Farmhouse_Porch.png"
+    ],
+    "action": "00.50–07.50s: Claire reflects on what the family learned while everyone stays seated.\n07.50–15.00s: Ethan gives the closing line from his seat; the porch arrangement remains unchanged.",
+    "movement": "The seated family holds its final porch arrangement. Daisy looks toward Claire, then Ethan gives the closing line from his established seat. The camera eases back slightly to reveal the same family and fixed farm background; all animals remain secured elsewhere.",
+    "camera": "Shot A: stable eye-level medium view. Shot B: a slow, short dolly-in to a medium-close reaction, stopping before the final line; keep lens perspective natural and stay on the established side of the action axis.",
+    "dialogue": "Claire: \"We all learned from today.\"\nEthan: \"See you next time at Willow Creek Farm.\"",
+    "storyboard_status": "not regenerated",
+    "references_status": "source filenames only; original reference bytes not supplied"
+  }
+]
