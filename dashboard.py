@@ -12385,10 +12385,7 @@ body.is-embedded .admin-only-el {
   display: none !important;
 }
 .embed-h3-subnav {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  display: none !important;
 }
 .embed-h3-pill {
   padding: 5px 11px;
@@ -12693,9 +12690,9 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
       <button type="button" class="embed-h3-pill" data-emb-nav="gallery" onclick="embedSwitchH3('gallery',null,this)">📂 Lịch Sử Video H3</button>
       <button type="button" class="embed-h3-pill" data-emb-nav="queue" onclick="embedSwitchH3('queue',null,this)">⏳ Hàng Đợi</button>
     </div>
-    <div class="gcpu-status-pill admin-only-el" title="Chỉ hiển thị cho Quản trị viên (Admin)">
-      <span>👑</span>
-      <span>ADMIN &middot; Cụm GPU Cloud A100 80GB &middot; H3VideoUpsampler AI x2</span>
+    <div class="gcpu-status-pill">
+      <span>🔥</span>
+      <span>H3 MiniMax Studio Pro</span>
     </div>
   </div>
 
