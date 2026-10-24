@@ -12089,7 +12089,7 @@ body.is-embedded [onclick*="openKrea2StudioModal"] {
 #st-sec-settings > .st-sec-head {
   display: none !important;
 }
-#gen-ready { display: none !important; }
+#gen-ready, #adv-settings { display: none !important; }
 /* 2-column compact select row (Duration | Aspect Ratio) — Resolution is mandatory AI x2 by default */
 .gcpu-3col-footer {
   display: grid;
@@ -23478,11 +23478,8 @@ function copyAllScriptAiRefPrompts(){
     return toast('⚠️ Chưa có danh sách Prompt tham chiếu!');
   }
   const lines = scriptAiState.references.map(r =>
-    `=== ${r.tag} | ${r.role_vi || ''} | ${r.name_vi} ===
-${r.image_prompt_en}`
-  ).join('
-
-');
+    `=== ${r.tag} | ${r.role_vi || ''} | ${r.name_vi} ===\n${r.image_prompt_en}`
+  ).join('\n\n');
   navigator.clipboard.writeText(lines).then(() => {
     toast(`📋 Đã sao chép toàn bộ ${scriptAiState.references.length} Prompt Tham Chiếu (Sheet 3 góc + Bối cảnh + Đạo cụ)!`);
   }).catch(() => {});
@@ -33675,8 +33672,7 @@ async function triggerGithubPullUpdate(){
   if(logBox){
     logBox.style.display = 'block';
     logBox.style.color = '#e5d1b0';
-    logBox.textContent = '🔄 Đang kết nối GitHub (' + repoUrl + ' - nhánh ' + branch + ')...
-Đang tải mã nguồn mới và bảo toàn dữ liệu cá nhân...';
+    logBox.textContent = '🔄 Đang kết nối GitHub (' + repoUrl + ' - nhánh ' + branch + ')...\nĐang tải mã nguồn mới và bảo toàn dữ liệu cá nhân...';
   }
   try {
     const res = await fetch('/api/github/update', {
@@ -33687,10 +33683,7 @@ async function triggerGithubPullUpdate(){
     if(res && res.ok){
       if(logBox){
         logBox.style.color = '#34d399';
-        logBox.textContent = `✅ Cập nhật thành công (${res.method || 'GitHub'})!
-• Phiên bản mới: #${res.new_commit || 'latest'}
-• Số file cập nhật: ${res.updated_files || 0}
-⏳ Đang tự động khởi động lại H3 Studio sau 2 giây...`;
+        logBox.textContent = `✅ Cập nhật thành công (${res.method || 'GitHub'})!\n• Phiên bản mới: #${res.new_commit || 'latest'}\n• Số file cập nhật: ${res.updated_files || 0}\n⏳ Đang tự động khởi động lại H3 Studio sau 2 giây...`;
       }
       if(typeof toast === 'function') toast('🎉 Cập nhật H3 Studio thành công! Đang tải lại giao diện...');
       setTimeout(() => { window.location.reload(); }, 2400);
@@ -33738,18 +33731,14 @@ async function triggerGithubPushUpdate(){
     if(res && res.ok){
       if(logBox){
         logBox.style.color = '#34d399';
-        logBox.textContent = `✅ Đã đẩy code lên GitHub thành công!
-• Commit: #${res.commit || 'latest'}
-• Nhánh: ${branch}
-${res.log || ''}`;
+        logBox.textContent = `✅ Đã đẩy code lên GitHub thành công!\n• Commit: #${res.commit || 'latest'}\n• Nhánh: ${branch}\n${res.log || ''}`;
       }
       if(typeof toast === 'function') toast('🎉 Đã Push bản cập nhật lên GitHub thành công!');
       checkGithubUpdateStatus(false);
     } else {
       if(logBox){
         logBox.style.color = '#f87171';
-        logBox.textContent = '❌ Lỗi khi Push lên GitHub:
-' + (res.error || 'Không xác định');
+        logBox.textContent = '❌ Lỗi khi Push lên GitHub:\n' + (res.error || 'Không xác định');
       }
     }
   } catch(e){
