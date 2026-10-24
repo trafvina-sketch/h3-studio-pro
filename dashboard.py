@@ -34354,6 +34354,7 @@ H3_KEY_SECRET = os.environ.get("KEY_SECRET", "h3_studio_pro_luxury_secret_2026_x
 
 def get_machine_hwid() -> str:
     try:
+        import hashlib
         import platform
         import uuid
         raw = f"{platform.node()}|{platform.machine()}|{platform.processor()}|{uuid.getnode()}"
@@ -34363,6 +34364,7 @@ def get_machine_hwid() -> str:
         return "HWID-DEFAULT001"
 
 def create_h3_signed_key(duration_hours: float = 168, max_devices: int = 1) -> dict:
+    import hashlib
     import hmac
     exp_unix = 4102444800 if duration_hours >= 87600 else int(time.time()) + int(round(duration_hours * 3600))
     exp_hex = f"{exp_unix:08X}"
@@ -34377,6 +34379,7 @@ def create_h3_signed_key(duration_hours: float = 168, max_devices: int = 1) -> d
     }
 
 def verify_h3_signed_key_local(key_str: str) -> dict:
+    import hashlib
     import hmac
     clean = str(key_str or "").strip().upper()
     m = re.match(r"^H3PRO-([0-9A-F]{8})-([0-9A-F]{2})([0-9A-F]{4})-([0-9A-F]{8})$", clean)
