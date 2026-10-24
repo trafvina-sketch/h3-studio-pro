@@ -33806,7 +33806,7 @@ setTimeout(() => {
       </summary>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;background:#101013;padding:11px 13px;border-radius:10px;border:1px solid rgba(255,255,255,0.07)">
         <div>
-          <label style="font-size:10.5px;font-weight:800;color:#c6cad8;display:block;margin-bottom:4px">🌐 Địa chỉ Server Key trên Vercel (hoặc Local <code>http://127.0.0.1:4050</code>):</label>
+          <label style="font-size:10.5px;font-weight:800;color:#c6cad8;display:block;margin-bottom:4px">🌐 Địa chỉ Server Key trên Vercel (hoặc Local <code>https://h3-vercel-key-server.vercel.app</code>):</label>
           <div style="display:flex;gap:6px">
             <input type="text" id="lic-server-url-inp" class="sai-input" placeholder="https://your-key-server.vercel.app" style="font-family:'JetBrains Mono',monospace;font-size:11.5px !important">
             <button type="button" class="b b2" onclick="saveLicenseServerConfig()" style="padding:6px 12px;font-size:11.5px;font-weight:800;white-space:nowrap;border-color:rgba(201,173,125,0.45);color:#e5d1b0">💾 Lưu URL</button>
@@ -33833,7 +33833,7 @@ setTimeout(() => {
 </div>
 
 <script>
-window.__h3LicenseState = { valid: true, key: '', hwid: '', key_server_url: 'http://127.0.0.1:4050' };
+window.__h3LicenseState = { valid: true, key: '', hwid: '', key_server_url: 'https://h3-vercel-key-server.vercel.app' };
 
 async function checkLicenseKeyStatus(forceModalIfInvalid){
   if(window.__gencpuEmbed) return true;
@@ -34033,7 +34033,7 @@ async function adminQuickCreateKeyInApp(autoActivate){
 }
 
 function openVercelKeyPortal(){
-  const url = (window.__h3LicenseState && window.__h3LicenseState.key_server_url) || 'http://127.0.0.1:4050';
+  const url = (window.__h3LicenseState && window.__h3LicenseState.key_server_url) || 'https://h3-vercel-key-server.vercel.app';
   window.open(url, '_blank');
 }
 
@@ -34381,7 +34381,7 @@ def verify_h3_signed_key_local(key_str: str) -> dict:
 def load_license_config() -> dict:
     cfg = {
         "key": "",
-        "key_server_url": "http://127.0.0.1:4050",
+        "key_server_url": "https://h3-vercel-key-server.vercel.app",
         "activated_at": "",
         "trial_claimed": False,
     }
@@ -34409,7 +34409,7 @@ def get_current_license_status() -> dict:
     cfg = load_license_config()
     hwid = get_machine_hwid()
     raw_key = str(cfg.get("key") or "").strip().upper()
-    srv_url = str(cfg.get("key_server_url") or "http://127.0.0.1:4050").strip().rstrip("/")
+    srv_url = str(cfg.get("key_server_url") or "https://h3-vercel-key-server.vercel.app").strip().rstrip("/")
     if not raw_key:
         return {
             "ok": True,
@@ -34485,7 +34485,7 @@ def activate_h3_license_key(key_input: str) -> dict:
         return {"ok": False, "error": local_chk.get("reason") or "Mã Key không hợp lệ"}
 
     cfg = load_license_config()
-    srv_url = str(cfg.get("key_server_url") or "http://127.0.0.1:4050").strip().rstrip("/")
+    srv_url = str(cfg.get("key_server_url") or "https://h3-vercel-key-server.vercel.app").strip().rstrip("/")
     hwid = get_machine_hwid()
 
     if srv_url:
@@ -37114,7 +37114,7 @@ class H(BaseHTTPRequestHandler):
             self._j(res, 200 if res.get("ok") else 400)
         elif p == "/api/license/free-trial":
             cfg = load_license_config()
-            srv_url = str(cfg.get("key_server_url") or "http://127.0.0.1:4050").strip().rstrip("/")
+            srv_url = str(cfg.get("key_server_url") or "https://h3-vercel-key-server.vercel.app").strip().rstrip("/")
             hwid = get_machine_hwid()
             claimed_key = ""
             if srv_url:
