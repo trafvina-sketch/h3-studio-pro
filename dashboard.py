@@ -34082,7 +34082,7 @@ GITHUB_UPDATE_CONFIG_FILE = SCRIPT_DIR / "github_update_config.json"
 
 def load_github_update_config() -> dict:
     cfg = {
-        "repo_url": "",
+        "repo_url": "https://github.com/trafvina-sketch/h3-studio-pro",
         "branch": "main",
         "github_token": "",
         "local_commit": "",
@@ -34214,12 +34214,13 @@ def perform_github_update(payload: dict) -> dict:
 
     # Protected user files/dirs that must NEVER be overwritten during update
     protected_rel_prefixes = (
-        "output/", "temp/", "scripts/accounts/", ".git/", "electron/node_modules/", "electron/dist/",
+        "output/", "temp/", "scripts/accounts/", ".git/", "electron/node_modules/", "electron/dist/", "python-embed/",
     )
     protected_filenames = {
         "github_update_config.json",
         ".gemini_cookie_config.json",
         "h3_library_records.json",
+        "h3_license.json",
         "ffmpeg.exe",
     }
 

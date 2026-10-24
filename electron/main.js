@@ -6,6 +6,7 @@ const { spawn } = require('child_process');
 
 let mainWindow = null;
 let pythonProcess = null;
+let isQuitting = false;
 const PORT = 8030;
 const SERVER_URL = `http://127.0.0.1:${PORT}`;
 
@@ -22,35 +23,22 @@ function checkServerAlive() {
   });
 }
 
-function findPythonExecutable() {
-  const candidates = [
-    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, 'Programs', 'Python', 'Python312', 'python.exe') : '',
-    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, 'Programs', 'Python', 'Python311', 'python.exe') : '',
-    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, 'Programs', 'Python', 'Python310', 'python.exe') : '',
-    'C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python310\\python.exe',
-    'python',
-    'py'
-  ].filter(Boolean);
-
-  for (const cand of candidates) {
-    if (cand.includes('\\') && fs.existsSync(cand)) {
-      return cand;
+function resolveBackendDir() {
+  // 1. Khi đã đóng gói bản cài đặt Setup (NSIS), ưu tiên dùng thư mục app-backend nằm ngay trong bộ cài của khách
+  if (app.isPackaged && process.resourcesPath) {
+    const bundledBackend = path.join(process.resourcesPath, 'app-backend');
+    if (fs.existsSync(path.join(bundledBackend, 'dashboard.py'))) {
+      return bundledBackend;
     }
   }
-  return 'python';
-}
 
-function resolveBackendDir() {
+  // 2. Khi chạy ở chế độ Portable hoặc Dev
   const portableDir = process.env.PORTABLE_EXECUTABLE_DIR || '';
   const exeDir = path.dirname(process.execPath || '');
   const searchDirs = [
     portableDir,
-    portableDir ? path.resolve(portableDir, '..') : '',
-    portableDir ? path.resolve(portableDir, '..', '..') : '',
     path.resolve(__dirname, '..'),
     exeDir,
-    path.resolve(exeDir, '..'),
-    path.resolve(exeDir, '..', '..'),
     process.resourcesPath ? path.join(process.resourcesPath, 'app-backend') : '',
     'D:\\H3 Studio Pro',
     'd:\\H3 video\\minimax-h3-colab-skill-main'
@@ -66,31 +54,72 @@ function resolveBackendDir() {
   return path.resolve(__dirname, '..');
 }
 
+function findPythonExecutable(rootDir) {
+  // Ưu tiên số 1: Bộ chạy Python Portable (python-embed) được đóng gói sẵn bên trong phần mềm (khách không cần cài Python)
+  const embeddedCandidates = [
+    rootDir ? path.join(rootDir, 'python-embed', 'python.exe') : '',
+    process.resourcesPath ? path.join(process.resourcesPath, 'app-backend', 'python-embed', 'python.exe') : '',
+    path.resolve(__dirname, '..', 'python-embed', 'python.exe')
+  ].filter(Boolean);
+
+  for (const emb of embeddedCandidates) {
+    if (fs.existsSync(emb)) {
+      return emb;
+    }
+  }
+
+  // Fallback: Tìm Python cài trên máy nếu đang chạy ở môi trường Dev chưa có python-embed
+  const sysCandidates = [
+    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, 'Programs', 'Python', 'Python312', 'python.exe') : '',
+    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, 'Programs', 'Python', 'Python311', 'python.exe') : '',
+    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, 'Programs', 'Python', 'Python310', 'python.exe') : '',
+    'python',
+    'py'
+  ].filter(Boolean);
+
+  for (const cand of sysCandidates) {
+    if (cand.includes('\\') && fs.existsSync(cand)) {
+      return cand;
+    }
+  }
+  return 'python';
+}
+
 function startPythonBackend() {
+  if (isQuitting) return;
   const rootDir = resolveBackendDir();
   const dashboardPy = path.join(rootDir, 'dashboard.py');
-  const pyExe = findPythonExecutable();
+  const pyExe = findPythonExecutable(rootDir);
+
+  // Đưa thư mục rootDir (chứa sẵn ffmpeg.exe và python-embed) lên đầu PATH để mọi lệnh gọi ffmpeg đều hoạt động ngay không cần cài
+  const env = Object.assign({}, process.env);
+  const extraPaths = [
+    rootDir,
+    path.join(rootDir, 'python-embed')
+  ].filter(p => fs.existsSync(p));
+  env.PATH = [...extraPaths, env.PATH || ''].join(path.delimiter);
+  env.PYTHONUTF8 = '1';
 
   try {
     pythonProcess = spawn(pyExe, ['-X', 'utf8', '-u', dashboardPy], {
       cwd: rootDir,
+      env,
       stdio: 'ignore',
       detached: false,
       shell: false,
       windowsHide: true
     });
+    pythonProcess.on('exit', () => {
+      pythonProcess = null;
+      // Tự động khởi động lại backend sau khi người dùng bấm "Cập Nhật Từ GitHub"
+      if (!isQuitting && mainWindow && !mainWindow.isDestroyed()) {
+        setTimeout(() => {
+          if (!isQuitting) startPythonBackend();
+        }, 700);
+      }
+    });
   } catch (err) {
-    try {
-      pythonProcess = spawn('python', ['-X', 'utf8', '-u', dashboardPy], {
-        cwd: rootDir,
-        stdio: 'ignore',
-        detached: false,
-        shell: true,
-        windowsHide: true
-      });
-    } catch (e) {
-      console.error('Failed to spawn Python backend:', e);
-    }
+    console.error('Failed to spawn Python backend:', err);
   }
 }
 
@@ -124,44 +153,43 @@ async function createWindow() {
   let alive = await checkServerAlive();
   if (!alive) {
     startPythonBackend();
+    for (let i = 0; i < 60; i++) {
+      await new Promise((r) => setTimeout(r, 350));
+      alive = await checkServerAlive();
+      if (alive) break;
+    }
   }
 
-  let retries = 0;
-  const maxRetries = 60;
-  const interval = setInterval(async () => {
-    retries++;
-    alive = await checkServerAlive();
-    if (alive) {
-      clearInterval(interval);
-      if (mainWindow) mainWindow.loadURL(SERVER_URL);
-    } else if (retries >= maxRetries) {
-      clearInterval(interval);
-      if (mainWindow) mainWindow.loadURL(SERVER_URL);
-    }
-  }, 500);
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.loadURL(SERVER_URL);
+  }
 }
 
-app.whenReady().then(createWindow);
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
 
-app.on('window-all-closed', () => {
-  if (pythonProcess && pythonProcess.pid) {
-    try {
-      spawn('taskkill', ['/pid', String(pythonProcess.pid), '/f', '/t']);
-    } catch (e) {}
-  }
-  if (process.platform !== 'darwin') {
+  app.whenReady().then(createWindow);
+
+  app.on('before-quit', () => {
+    isQuitting = true;
+  });
+
+  app.on('window-all-closed', () => {
+    isQuitting = true;
+    if (pythonProcess) {
+      try {
+        spawn('taskkill', ['/pid', String(pythonProcess.pid), '/f', '/t'], { windowsHide: true });
+      } catch (e) {}
+      pythonProcess = null;
+    }
     app.quit();
-  }
-});
-
-app.on('before-quit', () => {
-  if (pythonProcess && pythonProcess.pid) {
-    try {
-      spawn('taskkill', ['/pid', String(pythonProcess.pid), '/f', '/t']);
-    } catch (e) {}
-  }
-});
+  });
+}

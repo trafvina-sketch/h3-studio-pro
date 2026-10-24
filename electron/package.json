@@ -2,15 +2,16 @@
   "name": "h3-studio-pro",
   "productName": "H3 Studio Pro",
   "version": "3.5.0",
-  "description": "H3 Studio Pro - AI Video Generator Desktop App",
+  "description": "H3 Studio Pro - AI Video Generator Desktop App by Duong Tho",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --win",
+    "dist": "electron-builder --win nsis",
+    "build:setup": "electron-builder --win nsis",
     "build:portable": "electron-builder --win portable"
   },
-  "author": "H3 Studio Pro",
+  "author": "Duong Tho (Zalo: 0934415387 | genpixo.com | gencpu.com)",
   "license": "MIT",
   "devDependencies": {
     "electron": "^29.1.5",
@@ -35,13 +36,34 @@
       {
         "from": "../assets",
         "to": "app-backend/assets"
+      },
+      {
+        "from": "../ffmpeg.exe",
+        "to": "app-backend/ffmpeg.exe"
+      },
+      {
+        "from": "../python-embed",
+        "to": "app-backend/python-embed",
+        "filter": ["**/*", "!**/__pycache__/**", "!**/*.pyc"]
       }
     ],
     "win": {
       "target": [
-        "portable"
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
       ],
-      "artifactName": "H3 Studio Pro.exe"
+      "artifactName": "H3 Studio Pro Setup.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "H3 Studio Pro",
+      "runAfterFinish": true
     }
   }
 }

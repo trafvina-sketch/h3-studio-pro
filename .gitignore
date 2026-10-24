@@ -23,3 +23,6 @@ electron/dist/
 *.exe
 
 license_config.json
+
+python-embed/
+h3_license.json
