@@ -16304,8 +16304,13 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
           <div style="font-size:14.5px;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:6px">
             <span>🖼️ Kết Quả Ảnh</span>
           </div>
-          <div style="display:flex;gap:6px;align-items:center">
-            <button type="button" class="b b2" onclick="openImageLibraryLightbox(-1)" style="font-size:11px;padding:4px 10px;font-weight:700">🔍 Xem lớn</button>
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <div style="display:inline-flex;align-items:center;gap:3px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:2px 5px">
+              <button type="button" class="b b3" onclick="zoomInlinePreviewBy(-0.25)" style="font-size:11px;padding:2px 6px;font-weight:900" title="Thu nhỏ ảnh">➖</button>
+              <span id="ist-inline-zoom-lbl" onclick="resetInlinePreviewZoom()" style="font-size:10.5px;font-weight:800;color:var(--em-light);min-width:38px;text-align:center;cursor:pointer" title="Bấm để về 100%">100%</span>
+              <button type="button" class="b b3" onclick="zoomInlinePreviewBy(0.25)" style="font-size:11px;padding:2px 6px;font-weight:900" title="Phóng to ảnh">➕</button>
+            </div>
+            <button type="button" class="b b2" onclick="openImageLibraryLightbox(-1)" style="font-size:11px;padding:4px 10px;font-weight:700" title="Mở cửa sổ Phóng To Toàn Màn Hình & Kéo Xem Chi Tiết">🔍 Zoom lớn</button>
             <span id="ist-preview-badge" class="chip chip-g" style="font-size:11px;padding:3px 10px">✨ Sẵn sàng</span>
           </div>
         </div>
@@ -16322,8 +16327,8 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
           <div id="ist-batch-live-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;max-height:380px;overflow-y:auto;padding-right:2px"></div>
         </div>
 
-        <div class="ist-preview-canvas">
-          <img id="ist-result-img" src="" onclick="openImageLibraryLightbox(-1)" style="max-width:100%;max-height:470px;border-radius:10px;display:none;object-fit:contain;cursor:zoom-in;box-shadow:0 8px 28px rgba(0,0,0,0.65)">
+        <div class="ist-preview-canvas" id="ist-inline-canvas" onwheel="onInlinePreviewWheel(event)" onmousedown="onInlinePreviewMouseDown(event)" style="overflow:hidden;user-select:none">
+          <img id="ist-result-img" src="" draggable="false" ondblclick="openImageLibraryLightbox(-1)" onclick="if(!window._inlineWasDragged)openImageLibraryLightbox(-1)" style="max-width:100%;max-height:470px;border-radius:10px;display:none;object-fit:contain;cursor:zoom-in;box-shadow:0 8px 28px rgba(0,0,0,0.65);transition:transform 0.08s ease-out;transform-origin:center center">
           <div id="ist-result-placeholder" style="color:#cbd5e1;font-size:12.5px;padding:32px 22px;line-height:1.65;max-width:340px">
             <div style="font-size:38px;margin-bottom:8px">🖼️</div>
             <div style="font-weight:700;color:#f8fafc;font-size:13.5px;margin-bottom:4px">Chưa Có Ảnh Hiển Thị</div>
@@ -16412,32 +16417,44 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
     </div>
   </div>
 
-  <!-- MODAL LIGHTBOX XEM ẢNH PHÓNG TO TOÀN MÀN HÌNH -->
-  <div id="ist-lightbox-modal" class="ist-lightbox" onclick="if(event.target===this)closeImageLibraryLightbox()">
-    <div class="ist-lb-nav" style="left:22px" onclick="stepImageLibraryLightbox(-1)" title="Ảnh trước (Phím &larr;)">&larr;</div>
-    <div class="ist-lb-nav" style="right:22px" onclick="stepImageLibraryLightbox(1)" title="Ảnh tiếp theo (Phím &rarr;)">&rarr;</div>
-    <button type="button" onclick="closeImageLibraryLightbox()" style="position:absolute;top:18px;right:24px;background:rgba(239,68,68,0.85);color:#fff;border:none;border-radius:999px;padding:7px 15px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.4)">&times; Đóng (Esc)</button>
+</div>
+  </div>
+</div>
 
-    <div style="max-width:92vw;max-height:76vh;display:flex;align-items:center;justify-content:center;position:relative">
-      <img id="ist-lb-img" src="" style="max-width:90vw;max-height:75vh;object-fit:contain;border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,0.85);border:1px solid rgba(255,255,255,0.16);background:#05080f">
-    </div>
+<!-- MODAL LIGHTBOX XEM ẢNH PHÓNG TO TOÀN MÀN HÌNH & ZOOM KÉO CHI TIẾT (TOÀN CỤC CHO MỌI TAB) -->
+<div id="ist-lightbox-modal" class="ist-lightbox" onclick="if(event.target===this)closeImageLibraryLightbox()">
+  <div class="ist-lb-nav" style="left:22px;z-index:10" onclick="stepImageLibraryLightbox(-1)" title="Ảnh trước (Phím &larr;)">&larr;</div>
+  <div class="ist-lb-nav" style="right:22px;z-index:10" onclick="stepImageLibraryLightbox(1)" title="Ảnh tiếp theo (Phím &rarr;)">&rarr;</div>
 
-    <div style="margin-top:14px;max-width:860px;width:100%;background:rgba(15,23,42,0.92);border:1px solid rgba(255,255,255,0.16);border-radius:12px;padding:12px 16px;color:#f8fafc;display:flex;flex-direction:column;gap:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-        <div id="ist-lb-title" style="font-size:13px;font-weight:800;color:#34d399">--</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button type="button" class="b b1" onclick="useLightboxImageForAction('studio')" style="font-size:11.5px;padding:6px 11px;background:#059669;font-weight:800">📥 Đẩy Sang Studio (&lt;Picture 1..9&gt;)</button>
-          <button type="button" class="b b1" onclick="useLightboxImageForAction('batch')" style="font-size:11.5px;padding:6px 11px;background:#0284c7;font-weight:800">📦 Đẩy Sang Batch</button>
-          <button type="button" class="b b2" onclick="useLightboxImageForAction('reuse_prompt')" style="font-size:11.5px;padding:6px 11px;color:#f8fafc;border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)">🔄 Nạp Lại Prompt &amp; Seed</button>
-          <a id="ist-lb-dl" href="#" download class="b b2" style="font-size:11.5px;padding:6px 11px;color:#38bdf8;border-color:rgba(56,189,248,0.35);background:rgba(56,189,248,0.1);text-decoration:none;font-weight:800">⬇️ Tải File PNG</a>
-          <button type="button" class="b b3" onclick="useLightboxImageForAction('delete')" style="font-size:11.5px;padding:6px 10px;color:#f87171;border-color:rgba(248,113,113,0.3)">🗑️ Xóa</button>
-        </div>
-      </div>
-      <div id="ist-lb-prompt" style="font-size:11.5px;color:#cbd5e1;line-height:1.45;max-height:54px;overflow-y:auto"></div>
-    </div>
+  <!-- THANH CÔNG CỤ ZOOM TRÊN ĐỈNH -->
+  <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:12;display:flex;align-items:center;gap:6px;background:rgba(15,23,42,0.92);border:1px solid rgba(255,255,255,0.2);border-radius:999px;padding:6px 14px;box-shadow:0 8px 24px rgba(0,0,0,0.6)">
+    <button type="button" class="b b2" onclick="zoomLightboxBy(-0.3)" style="font-size:12px;padding:4px 10px;font-weight:900;border-radius:999px" title="Thu nhỏ (Phím -)">➖ Thu nhỏ</button>
+    <span id="ist-lb-zoom-lbl" onclick="resetLightboxZoom()" style="font-size:12.5px;font-weight:900;color:#34d399;min-width:52px;text-align:center;cursor:pointer" title="Bấm để đưa về 100%">100%</span>
+    <button type="button" class="b b2" onclick="zoomLightboxBy(0.3)" style="font-size:12px;padding:4px 10px;font-weight:900;border-radius:999px" title="Phóng to (Phím +)">➕ Phóng to</button>
+    <button type="button" class="b b2" onclick="setLightboxZoom(2.0)" style="font-size:11.5px;padding:4px 9px;font-weight:800;border-radius:999px">🔎 200%</button>
+    <button type="button" class="b b2" onclick="setLightboxZoom(3.5)" style="font-size:11.5px;padding:4px 9px;font-weight:800;border-radius:999px">🔎 350%</button>
+    <button type="button" class="b b2" onclick="resetLightboxZoom()" style="font-size:11.5px;padding:4px 10px;font-weight:800;border-radius:999px">🔄 Vừa khung</button>
+    <span style="font-size:10.5px;color:#94a3b8;margin-left:4px;white-space:nowrap">💡 Lăn chuột để Zoom • Giữ chuột kéo để xem chi tiết</span>
   </div>
 
-</div>
+  <button type="button" onclick="closeImageLibraryLightbox()" style="position:absolute;top:16px;right:24px;z-index:12;background:rgba(239,68,68,0.88);color:#fff;border:none;border-radius:999px;padding:7px 15px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.4)">&times; Đóng (Esc)</button>
+
+  <div id="ist-lb-stage" onwheel="onLightboxWheel(event)" onmousedown="onLightboxMouseDown(event)" style="width:92vw;height:73vh;margin-top:34px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;user-select:none;border-radius:12px">
+    <img id="ist-lb-img" src="" draggable="false" ondblclick="toggleLightboxDoubleZoom(event)" style="max-width:90vw;max-height:72vh;object-fit:contain;border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,0.85);border:1px solid rgba(255,255,255,0.16);background:#05080f;cursor:grab;transition:transform 0.08s ease-out;transform-origin:center center">
+  </div>
+
+  <div style="margin-top:10px;max-width:860px;width:100%;z-index:11;background:rgba(15,23,42,0.94);border:1px solid rgba(255,255,255,0.16);border-radius:12px;padding:11px 16px;color:#f8fafc;display:flex;flex-direction:column;gap:7px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div id="ist-lb-title" style="font-size:13px;font-weight:800;color:#34d399">--</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button type="button" class="b b1" onclick="useLightboxImageForAction('studio')" style="font-size:11.5px;padding:6px 11px;background:#059669;font-weight:800">📥 Dùng Tạo Video</button>
+        <button type="button" class="b b1" onclick="useLightboxImageForAction('batch')" style="font-size:11.5px;padding:6px 11px;background:#0284c7;font-weight:800">📦 Đưa Vào Hàng Loạt</button>
+        <button type="button" class="b b2" onclick="useLightboxImageForAction('reuse_prompt')" style="font-size:11.5px;padding:6px 11px;color:#f8fafc;border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.08)">🔄 Dùng Lại Prompt</button>
+        <a id="ist-lb-dl" href="#" download class="b b2" style="font-size:11.5px;padding:6px 11px;color:#38bdf8;border-color:rgba(56,189,248,0.35);background:rgba(56,189,248,0.1);text-decoration:none;font-weight:800">⬇️ Tải Ảnh</a>
+        <button type="button" class="b b3" onclick="useLightboxImageForAction('delete')" style="font-size:11.5px;padding:6px 10px;color:#f87171;border-color:rgba(248,113,113,0.3)">🗑️ Xóa</button>
+      </div>
+    </div>
+    <div id="ist-lb-prompt" style="font-size:11.5px;color:#cbd5e1;line-height:1.45;max-height:54px;overflow-y:auto"></div>
   </div>
 </div>
 
@@ -24672,6 +24689,132 @@ async function quickActionImageLibItem(idx, action){
   }, 180);
 }
 
+var _lbZoom = 1.0, _lbPanX = 0, _lbPanY = 0, _lbDragging = false, _lbDragStartX = 0, _lbDragStartY = 0;
+var _inlineZoom = 1.0, _inlinePanX = 0, _inlinePanY = 0, _inlineDragging = false, _inlineDragStartX = 0, _inlineDragStartY = 0;
+
+function _applyLightboxTransform(){
+  const imgEl = document.getElementById('ist-lb-img');
+  const lbl = document.getElementById('ist-lb-zoom-lbl');
+  if(imgEl){
+    imgEl.style.transform = `translate(${_lbPanX}px, ${_lbPanY}px) scale(${_lbZoom})`;
+    imgEl.style.cursor = _lbDragging ? 'grabbing' : (_lbZoom > 1.02 ? 'grab' : 'zoom-in');
+  }
+  if(lbl) lbl.textContent = `${Math.round(_lbZoom * 100)}%`;
+}
+
+function setLightboxZoom(val){
+  _lbZoom = Math.min(5.0, Math.max(0.5, Number(val) || 1.0));
+  if(_lbZoom <= 1.02){
+    _lbPanX = 0;
+    _lbPanY = 0;
+  }
+  _applyLightboxTransform();
+}
+
+function zoomLightboxBy(delta){
+  setLightboxZoom(Math.round((_lbZoom + delta) * 100) / 100);
+}
+
+function resetLightboxZoom(){
+  _lbZoom = 1.0;
+  _lbPanX = 0;
+  _lbPanY = 0;
+  _applyLightboxTransform();
+}
+
+function toggleLightboxDoubleZoom(ev){
+  if(ev) ev.stopPropagation();
+  if(_lbZoom > 1.2){
+    resetLightboxZoom();
+  } else {
+    setLightboxZoom(2.4);
+  }
+}
+
+function onLightboxWheel(ev){
+  ev.preventDefault();
+  const step = ev.deltaY < 0 ? 0.22 : -0.22;
+  zoomLightboxBy(step);
+}
+
+function onLightboxMouseDown(ev){
+  if(ev.button !== 0) return;
+  ev.preventDefault();
+  _lbDragging = true;
+  _lbDragStartX = ev.clientX - _lbPanX;
+  _lbDragStartY = ev.clientY - _lbPanY;
+  _applyLightboxTransform();
+}
+
+function _applyInlinePreviewTransform(){
+  const imgEl = document.getElementById('ist-result-img');
+  const lbl = document.getElementById('ist-inline-zoom-lbl');
+  if(imgEl){
+    imgEl.style.transform = `translate(${_inlinePanX}px, ${_inlinePanY}px) scale(${_inlineZoom})`;
+    imgEl.style.cursor = _inlineDragging ? 'grabbing' : (_inlineZoom > 1.02 ? 'grab' : 'zoom-in');
+  }
+  if(lbl) lbl.textContent = `${Math.round(_inlineZoom * 100)}%`;
+}
+
+function zoomInlinePreviewBy(delta){
+  _inlineZoom = Math.min(4.0, Math.max(0.5, Math.round((_inlineZoom + delta) * 100) / 100));
+  if(_inlineZoom <= 1.02){
+    _inlinePanX = 0;
+    _inlinePanY = 0;
+  }
+  _applyInlinePreviewTransform();
+}
+
+function resetInlinePreviewZoom(){
+  _inlineZoom = 1.0;
+  _inlinePanX = 0;
+  _inlinePanY = 0;
+  _applyInlinePreviewTransform();
+}
+
+function onInlinePreviewWheel(ev){
+  const imgEl = document.getElementById('ist-result-img');
+  if(!imgEl || imgEl.style.display === 'none') return;
+  ev.preventDefault();
+  zoomInlinePreviewBy(ev.deltaY < 0 ? 0.2 : -0.2);
+}
+
+function onInlinePreviewMouseDown(ev){
+  if(ev.button !== 0 || _inlineZoom <= 1.02) return;
+  ev.preventDefault();
+  _inlineDragging = true;
+  window._inlineWasDragged = false;
+  _inlineDragStartX = ev.clientX - _inlinePanX;
+  _inlineDragStartY = ev.clientY - _inlinePanY;
+  _applyInlinePreviewTransform();
+}
+
+window.addEventListener('mousemove', (ev) => {
+  if(_lbDragging){
+    _lbPanX = ev.clientX - _lbDragStartX;
+    _lbPanY = ev.clientY - _lbDragStartY;
+    _applyLightboxTransform();
+  }
+  if(_inlineDragging){
+    window._inlineWasDragged = true;
+    _inlinePanX = ev.clientX - _inlineDragStartX;
+    _inlinePanY = ev.clientY - _inlineDragStartY;
+    _applyInlinePreviewTransform();
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  if(_lbDragging){
+    _lbDragging = false;
+    _applyLightboxTransform();
+  }
+  if(_inlineDragging){
+    _inlineDragging = false;
+    _applyInlinePreviewTransform();
+    setTimeout(() => { window._inlineWasDragged = false; }, 80);
+  }
+});
+
 function openImageLibraryLightbox(idx){
   const items = krea2CatalogCache.recent_images || [];
   let targetIdx = idx;
@@ -24686,6 +24829,7 @@ function openImageLibraryLightbox(idx){
     return toast('⚠️ Chưa có ảnh nào để phóng to!');
   }
   imageLibActiveLightboxIdx = targetIdx;
+  resetLightboxZoom();
   const modal = document.getElementById('ist-lightbox-modal');
   const imgEl = document.getElementById('ist-lb-img');
   const titleEl = document.getElementById('ist-lb-title');
@@ -24696,7 +24840,7 @@ function openImageLibraryLightbox(idx){
   if(imgEl) imgEl.src = imgSrc;
   if(dlEl){
     dlEl.href = imgSrc;
-    dlEl.download = activeObj.filename || 'Krea2_8K.png';
+    dlEl.download = activeObj.filename || 'MOSS_8K.png';
   }
   const cleanModel = _getCleanImageModelName(activeObj);
   const cleanPrompt = _getCleanImagePrompt(activeObj);
@@ -24712,6 +24856,7 @@ function openImageLibraryLightbox(idx){
 function openCustomUrlLightbox(url, title, promptTxt){
   if(!url) return;
   imageLibActiveLightboxIdx = -1;
+  resetLightboxZoom();
   const modal = document.getElementById('ist-lightbox-modal');
   const imgEl = document.getElementById('ist-lb-img');
   const titleEl = document.getElementById('ist-lb-title');
@@ -24720,7 +24865,7 @@ function openCustomUrlLightbox(url, title, promptTxt){
   if(imgEl) imgEl.src = url;
   if(dlEl){
     dlEl.href = url;
-    dlEl.download = 'Civitai_Preview.png';
+    dlEl.download = 'MOSS_Preview.png';
   }
   if(titleEl) titleEl.textContent = title || 'Xem Ảnh Phóng To';
   if(promptEl) promptEl.textContent = promptTxt || '';
@@ -24769,6 +24914,9 @@ document.addEventListener('keydown', (ev) => {
   if(ev.key === 'Escape') closeImageLibraryLightbox();
   else if(ev.key === 'ArrowLeft') stepImageLibraryLightbox(-1);
   else if(ev.key === 'ArrowRight') stepImageLibraryLightbox(1);
+  else if(ev.key === '+' || ev.key === '=') zoomLightboxBy(0.3);
+  else if(ev.key === '-' || ev.key === '_') zoomLightboxBy(-0.3);
+  else if(ev.key === '0') resetLightboxZoom();
 });
 
 function onKrea2StylePresetChange(){
