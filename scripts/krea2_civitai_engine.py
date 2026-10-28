@@ -989,55 +989,79 @@ def _generate_via_colab_gpu(
             except Exception:
                 pass
 
-    # 2. Chọn tài khoản RẢNH thông minh:
-    # - Tier 0: TK Rảnh VÀ Đang Ấm (ComfyUI + Model 18GB đã nằm sẵn trong VRAM trong 14 phút qua) -> Vẽ ảnh tiếp theo chỉ ~12 giây!
-    # - Tier 1: TK Rảnh khác (Dùng khi Tier 0 đang bận vẽ ảnh 1 hoặc đang tạo Video -> Chạy song song đa TK!)
-    now_ts = time.time()
+    # 2. Chọn tài khoản RẢNH thông minh & Chống đụng độ phiên (Zero-Collision):
+    # - Nếu đã có ít nhất 1 TK ĐANG ẤM (vẽ 1 ảnh chỉ ~8 giây), chờ tối đa 18s để bắt lấy TK ấm vừa rảnh (nhanh gấp 25 lần so với bật TK lạnh mới tốn 6 phút tải 18GB!).
+    # - Tuyệt đối không bao giờ cho 2 luồng chạy chung `colab exec` trên cùng 1 tài khoản cùng lúc.
     busy_vid_set = set(busy_video_accounts or [])
-    with _IMAGE_ACC_LOCK:
-        busy_img_set = set(_ACTIVE_IMAGE_ACCOUNTS.keys())
-        tier0_warm_idle = [
-            em for em in funded_emails
-            if em not in busy_vid_set
-            and em not in busy_img_set
-            and (now_ts - float(_WARM_IMAGE_ACCOUNTS.get(em) or 0.0)) < 840
-        ]
-        tier0_warm_idle.sort(key=lambda em: float(_WARM_IMAGE_ACCOUNTS.get(em) or 0.0), reverse=True)
+    acc_email = ""
+    is_already_warm = False
+    ordered_candidates: List[str] = []
 
-        tier1_cold_idle = [
-            em for em in funded_emails
-            if em not in busy_vid_set
-            and em not in busy_img_set
-            and em not in tier0_warm_idle
-        ]
-        if len(tier1_cold_idle) > 1:
-            rot = _IMAGE_RR_COUNTER % len(tier1_cold_idle)
-            tier1_cold_idle = tier1_cold_idle[rot:] + tier1_cold_idle[:rot]
-        _IMAGE_RR_COUNTER += 1
+    for wait_step in range(90):
+        now_ts = time.time()
+        with _IMAGE_ACC_LOCK:
+            busy_img_set = set(_ACTIVE_IMAGE_ACCOUNTS.keys())
+            warm_all = [
+                em for em in funded_emails
+                if em not in busy_vid_set
+                and (now_ts - float(_WARM_IMAGE_ACCOUNTS.get(em) or 0.0)) < 840
+            ]
+            tier0_warm_idle = [em for em in warm_all if em not in busy_img_set]
+            tier0_warm_idle.sort(key=lambda em: float(_WARM_IMAGE_ACCOUNTS.get(em) or 0.0), reverse=True)
 
-        tier2_no_vid = [em for em in funded_emails if em not in busy_vid_set and em in busy_img_set]
-        tier3_busy_vid = [em for em in funded_emails if em in busy_vid_set]
+            # Nếu có TK ấm đang chạy dở (chỉ mất ~8s là xong), ưu tiên đợi tối đa 16 giây để tái sử dụng ngay TK ấm đó!
+            if not tier0_warm_idle and warm_all and wait_step < 32:
+                pass
+            else:
+                tier1_cold_idle = [
+                    em for em in funded_emails
+                    if em not in busy_vid_set
+                    and em not in busy_img_set
+                    and em not in tier0_warm_idle
+                ]
+                if len(tier1_cold_idle) > 1:
+                    rot = _IMAGE_RR_COUNTER % len(tier1_cold_idle)
+                    tier1_cold_idle = tier1_cold_idle[rot:] + tier1_cold_idle[:rot]
 
-        ordered_candidates: List[str] = []
-        if preferred_account and preferred_account in funded_emails:
-            ordered_candidates.append(preferred_account)
-        for em in (tier0_warm_idle + tier1_cold_idle + tier2_no_vid + tier3_busy_vid):
-            if em and em not in ordered_candidates:
-                ordered_candidates.append(em)
-        if not ordered_candidates:
-            ordered_candidates = [""]
+                idle_pool = tier0_warm_idle + tier1_cold_idle
+                if preferred_account and preferred_account in idle_pool:
+                    idle_pool = [preferred_account] + [x for x in idle_pool if x != preferred_account]
 
-        acc_email = ordered_candidates[0]
-        is_already_warm = bool(acc_email and (now_ts - float(_WARM_IMAGE_ACCOUNTS.get(acc_email) or 0.0)) < 720)
-        if acc_email:
-            _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
-                "email": acc_email,
-                "mode": mode,
-                "checkpoint": base_checkpoint,
-                "warm": is_already_warm,
-                "started_at": time.strftime("%H:%M:%S"),
-                "ts": now_ts,
-            }
+                if idle_pool:
+                    _IMAGE_RR_COUNTER += 1
+                    ordered_candidates = list(idle_pool)
+                    acc_email = ordered_candidates[0]
+                    is_already_warm = bool(acc_email and (now_ts - float(_WARM_IMAGE_ACCOUNTS.get(acc_email) or 0.0)) < 720)
+                    _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
+                        "email": acc_email,
+                        "mode": mode,
+                        "checkpoint": base_checkpoint,
+                        "warm": is_already_warm,
+                        "started_at": time.strftime("%H:%M:%S"),
+                        "ts": now_ts,
+                    }
+                    break
+                elif not funded_emails:
+                    ordered_candidates = [""]
+                    acc_email = ""
+                    break
+        time.sleep(0.5)
+
+    if not ordered_candidates:
+        with _IMAGE_ACC_LOCK:
+            fallback_pool = [em for em in funded_emails if em not in _ACTIVE_IMAGE_ACCOUNTS] or funded_emails or [""]
+            ordered_candidates = list(fallback_pool)
+            acc_email = ordered_candidates[0]
+            is_already_warm = bool(acc_email and (time.time() - float(_WARM_IMAGE_ACCOUNTS.get(acc_email) or 0.0)) < 720)
+            if acc_email:
+                _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
+                    "email": acc_email,
+                    "mode": mode,
+                    "checkpoint": base_checkpoint,
+                    "warm": is_already_warm,
+                    "started_at": time.strftime("%H:%M:%S"),
+                    "ts": time.time(),
+                }
 
     gpu_choice = (colab_gpu or "A100").strip().upper()
     if gpu_choice not in ("L4", "A100", "T4", "V100"):
@@ -1160,9 +1184,10 @@ def _generate_via_colab_gpu(
             f"--env 'KREA2_REF2={rem_ref2}'",
         ])
 
+        exec_tm = 150 if is_already_warm else 600
         c_ex, o_ex = _run_wsl_cmd(
-            f"{tok_env}colab --auth=oauth2 {cfg_arg} exec --session '{session}' --timeout 600 {env_flags} --file '{_wsl_path(nb_path)}'",
-            timeout=620,
+            f"{tok_env}colab --auth=oauth2 {cfg_arg} exec --session '{session}' --timeout {exec_tm} {env_flags} --file '{_wsl_path(nb_path)}'",
+            timeout=exec_tm + 20,
         )
         if c_ex != 0 and is_already_warm:
             # Nếu phiên ấm đã bị đóng trên Colab, khởi động lại phiên và chạy lại ngay

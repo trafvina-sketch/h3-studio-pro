@@ -16313,6 +16313,15 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
         <!-- DÒNG CHỜ TIẾN TRÌNH TẠO ẢNH TRỰC TIẾP (HIỆN NGAY KHI BẤM TẠO ẢNH / EDIT ẢNH) -->
         <div id="ist-live-queue-box" style="display:none;flex-direction:column;gap:8px;background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.45);border-radius:10px;padding:10px 12px"></div>
 
+        <!-- KẾT QUẢ TẠO ẢNH HÀNG LOẠT TRỰC TIẾP (HIỆN NGAY TỪNG ẢNH KHI VỪA VẼ XONG) -->
+        <div id="ist-batch-live-wrap" style="display:none;flex-direction:column;gap:8px;background:rgba(15,23,42,0.75);border:1.5px solid rgba(52,211,153,0.4);border-radius:10px;padding:10px 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:12.5px;font-weight:800;color:#34d399">📦 Ảnh Đã Tạo Trong Lô Hàng Loạt (<span id="ist-batch-live-cnt">0/0</span>)</span>
+            <button type="button" class="b b3" onclick="document.getElementById('ist-batch-live-wrap').style.display='none'" style="font-size:10.5px;padding:2px 8px;color:#94a3b8">Thu gọn</button>
+          </div>
+          <div id="ist-batch-live-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;max-height:380px;overflow-y:auto;padding-right:2px"></div>
+        </div>
+
         <div class="ist-preview-canvas">
           <img id="ist-result-img" src="" onclick="openImageLibraryLightbox(-1)" style="max-width:100%;max-height:470px;border-radius:10px;display:none;object-fit:contain;cursor:zoom-in;box-shadow:0 8px 28px rgba(0,0,0,0.65)">
           <div id="ist-result-placeholder" style="color:#cbd5e1;font-size:12.5px;padding:32px 22px;line-height:1.65;max-width:340px">
@@ -25073,16 +25082,56 @@ async function runImageStudioGenerate(){
   const idleAccsNow = readyAccsNow.filter(a => !a.busy_video && !a.busy_image);
   const workerPoolSize = Math.max(1, idleAccsNow.length || readyAccsNow.length || 1);
 
-  // Chế độ Tạo Hàng Loạt (Batch Images — Chạy SONG SONG trên nhiều tài khoản cùng lúc!)
+  // Chế độ Tạo Hàng Loạt (Batch Images — Hiển thị NGAY từng ảnh vừa xong + Cập nhật Thư Viện tức thì!)
   if(imageStudioActiveMode === 'batch'){
     const lines = rawInput.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
     if(!lines.length) return toast('⚠️ Vui lòng nhập ít nhất 1 dòng mô tả ảnh!');
     const parallelCnt = Math.min(lines.length, workerPoolSize);
     if(btn) btn.disabled = true;
-    toast(`🚀 Bắt đầu tạo hàng loạt ${lines.length} ảnh (Chạy song song ${parallelCnt} tài khoản cùng lúc)...`);
+    toast(`🚀 Bắt đầu tạo hàng loạt ${lines.length} ảnh (Tự động hiện ngay từng ảnh khi xong)...`);
     let successCnt = 0;
     let doneCnt = 0;
     let nextIdx = 0;
+    window._istBatchResults = [];
+    const batchWrap = document.getElementById('ist-batch-live-wrap');
+    const batchGrid = document.getElementById('ist-batch-live-grid');
+    const batchCntEl = document.getElementById('ist-batch-live-cnt');
+    if(batchWrap) batchWrap.style.display = 'flex';
+    if(batchCntEl) batchCntEl.textContent = `0/${lines.length}`;
+    if(batchGrid){
+      batchGrid.innerHTML = `<div style="grid-column:1/-1;font-size:12px;color:#94a3b8;padding:12px;text-align:center">⏳ Đang vẽ ${lines.length} ảnh... Ảnh nào xong trước sẽ hiện ngay tại đây!</div>`;
+    }
+    const _renderBatchLiveCards = () => {
+      if(!batchGrid) return;
+      if(batchCntEl) batchCntEl.textContent = `${window._istBatchResults.length}/${lines.length}`;
+      if(!window._istBatchResults.length) return;
+      batchGrid.innerHTML = window._istBatchResults.map((item, bIdx) => {
+        const imgSrc = item.url || item.data_uri || item.data || '';
+        const fn = item.filename || item.name || `Image_${bIdx+1}.png`;
+        const mName = _getCleanImageModelName(item);
+        const pTxt = _getCleanImagePrompt(item);
+        return `
+          <div style="background:#0b131e;border:1.5px solid rgba(52,211,153,0.35);border-radius:9px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between">
+            <div onclick='openCustomUrlLightbox(${JSON.stringify(imgSrc)}, ${JSON.stringify("📄 " + fn + " • 🌿 " + mName)}, ${JSON.stringify("💬 Prompt: " + pTxt)})' style="width:100%;height:135px;background:#05080f;cursor:zoom-in;position:relative;display:flex;align-items:center;justify-content:center" title="Bấm để phóng to ảnh">
+              <img src="${imgSrc}" style="width:100%;height:100%;object-fit:contain;display:block">
+              <span style="position:absolute;top:5px;left:5px;background:rgba(5,150,105,0.9);color:#fff;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:5px">#${item._batchOrder || (bIdx+1)}</span>
+            </div>
+            <div style="padding:7px 8px;display:flex;flex-direction:column;gap:3px">
+              <div style="font-size:10.5px;font-weight:800;color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escapeHtml(fn)}">📄 ${escapeHtml(fn)}</div>
+              <div style="font-size:10px;font-weight:700;color:#34d399;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">🌿 ${escapeHtml(mName)}</div>
+              <div style="font-size:10px;color:#cbd5e1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35" title="${escapeHtml(pTxt)}">💬 ${escapeHtml(pTxt || '—')}</div>
+              <div style="display:flex;gap:4px;margin-top:4px">
+                <button type="button" class="b b2" onclick='openCustomUrlLightbox(${JSON.stringify(imgSrc)}, ${JSON.stringify("📄 " + fn + " • 🌿 " + mName)}, ${JSON.stringify("💬 Prompt: " + pTxt)})' style="flex:1;font-size:10px;padding:3px 5px;justify-content:center">🔍 Xem</button>
+                <a href="${imgSrc}" download="${escapeHtml(fn)}" class="b b2" style="flex:1;font-size:10px;padding:3px 5px;justify-content:center;text-decoration:none;text-align:center">⬇️ Tải</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+    const liveHistTimer = setInterval(() => {
+      try { loadKrea2CatalogAndHistory(); } catch(e){}
+    }, 4500);
     try {
       const workerFn = async (workerIdx) => {
         while(nextIdx < lines.length){
@@ -25099,7 +25148,7 @@ async function runImageStudioGenerate(){
           }
           const modelLbl = _getCleanImageModelName({base_checkpoint: ckpt});
           const qTaskId = _addImageStudioWaitTask(`Đang tạo ảnh ${curIdx + 1}/${lines.length}`, modelLbl, linePrompt);
-          if(btn) btn.textContent = `⏳ Đang tạo song song (${doneCnt}/${lines.length} xong — ${parallelCnt} TK chạy cùng lúc)...`;
+          if(btn) btn.textContent = `⏳ Đang tạo hàng loạt (${doneCnt}/${lines.length} xong)...`;
           setTimeout(() => { try { doRefresh(true); } catch(e){} }, 400);
           let res = null;
           try {
@@ -25129,14 +25178,20 @@ async function runImageStudioGenerate(){
           doneCnt++;
           if(res && res.ok){
             successCnt++;
+            res.raw_prompt = res.raw_prompt || linePrompt;
+            res._batchOrder = curIdx + 1;
+            window._istBatchResults.push(res);
             krea2LastGeneratedResult = res;
             renderKrea2ResultPreview(res);
+            _renderBatchLiveCards();
+            loadKrea2CatalogAndHistory();
             if(res.storyboard) applyStoryboardDataToUI(res.storyboard);
-            const accLbl = res.colab_account ? ` [TK: ${res.colab_account.split('@')[0]}]` : '';
-            toast(`✅ Đã xong ảnh ${doneCnt}/${lines.length}${accLbl}`);
+            toast(`✅ Đã xong ảnh #${curIdx + 1} (${successCnt}/${lines.length}): ${res.filename || ''}`);
+          } else {
+            toast(`⚠️ Ảnh #${curIdx + 1} lỗi: ${res?.error || 'Không thể tạo ảnh'}`);
           }
-          if(btn) btn.textContent = `⏳ Đang tạo song song (${doneCnt}/${lines.length} xong — ${parallelCnt} TK)...`;
-          if(badge) badge.textContent = `Đang tạo ${doneCnt}/${lines.length}...`;
+          if(btn) btn.textContent = `⏳ Đang tạo hàng loạt (${doneCnt}/${lines.length} xong)...`;
+          if(badge) badge.textContent = `Đã xong ${successCnt}/${lines.length} ảnh`;
           try { doRefresh(true); } catch(e){}
         }
       };
@@ -25147,10 +25202,11 @@ async function runImageStudioGenerate(){
       await Promise.all(workers);
       await loadKrea2CatalogAndHistory();
       if(badge) badge.textContent = `✅ Hoàn tất ${successCnt}/${lines.length} ảnh`;
-      toast(`🎉 Đã tạo xong ${successCnt}/${lines.length} ảnh (Đa tài khoản song song)!`);
+      toast(`🎉 Đã tạo xong ${successCnt}/${lines.length} ảnh hàng loạt!`);
     } catch(e){
       toast('⚠️ Lỗi khi tạo hàng loạt: ' + e.message);
     } finally {
+      clearInterval(liveHistTimer);
       if(btn){
         btn.disabled = false;
         selectImageStudioMode(imageStudioActiveMode);
