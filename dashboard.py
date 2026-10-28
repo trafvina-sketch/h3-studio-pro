@@ -16309,6 +16309,9 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
           </div>
         </div>
 
+        <!-- DÒNG CHỜ TIẾN TRÌNH TẠO ẢNH TRỰC TIẾP (HIỆN NGAY KHI BẤM TẠO ẢNH / EDIT ẢNH) -->
+        <div id="ist-live-queue-box" style="display:none;flex-direction:column;gap:8px;background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.45);border-radius:10px;padding:10px 12px"></div>
+
         <div class="ist-preview-canvas">
           <img id="ist-result-img" src="" onclick="openImageLibraryLightbox(-1)" style="max-width:100%;max-height:470px;border-radius:10px;display:none;object-fit:contain;cursor:zoom-in;box-shadow:0 8px 28px rgba(0,0,0,0.65)">
           <div id="ist-result-placeholder" style="color:#cbd5e1;font-size:12.5px;padding:32px 22px;line-height:1.65;max-width:340px">
@@ -24389,43 +24392,36 @@ function renderImageLibraryGrids(){
 
   const cardsHtml = !filtered.length
     ? `<div style="grid-column:1/-1;font-size:13px;color:var(--text-muted);text-align:center;padding:38px 20px;background:var(--surface-2);border-radius:12px;border:1px dashed var(--border)">Không tìm thấy ảnh nào khớp bộ lọc hiện tại.</div>`
-    : filtered.map(({ item, origIdx, asp }) => {
-        const displayPrompt = item.raw_prompt || item.prompt || item.filename;
-        const srcBadge = item.source === 'storyboard' ? '🎬 Ref_*.png' : '🎨 Krea 2';
+    : filtered.map(({ item, origIdx }) => {
+        const cleanModel = _getCleanImageModelName(item);
+        const displayPrompt = _getCleanImagePrompt(item);
         const activeFn = krea2LastGeneratedResult ? krea2LastGeneratedResult.filename : '';
         const isSel = (activeFn && item.filename === activeFn);
         return `
           <div class="ist-lib-card ${isSel ? 'active-sel' : ''}">
             <div>
-              <div class="ist-lib-img-box" onclick="openImageLibraryLightbox(${origIdx})" title="Bấm để mở ảnh phóng to toàn màn hình (Lightbox)">
+              <div class="ist-lib-img-box" onclick="openImageLibraryLightbox(${origIdx})" title="Bấm để xem ảnh phóng to">
                 <div class="ist-lib-img-bg" style="background-image:url('${item.url}')"></div>
                 <img class="ist-lib-img" src="${item.url}" loading="lazy" alt="${escapeHtml(item.filename)}">
-                <div class="ist-lib-top-badges">
-                  <span class="ist-lib-badge">${escapeHtml(asp.label)}</span>
+                <div class="ist-lib-top-badges" style="justify-content:flex-end">
                   <div class="ist-lib-float-btns">
-                    <button type="button" class="ist-lib-icon-btn" onclick="event.stopPropagation();previewRecentKrea2Item(${origIdx});window.scrollTo({top:0,behavior:'smooth'})" title="Đưa ảnh này lên Khung Kiểm Duyệt 8K">👁️</button>
-                    <button type="button" class="ist-lib-icon-btn" onclick="event.stopPropagation();openImageLibraryLightbox(${origIdx})" title="Xem phóng to toàn màn hình (Lightbox)">🔍</button>
-                    <button type="button" class="ist-lib-icon-btn del" onclick="event.stopPropagation();quickActionImageLibItem(${origIdx},'delete')" title="Xóa ảnh này khỏi thư viện">🗑️</button>
+                    <button type="button" class="ist-lib-icon-btn" onclick="event.stopPropagation();previewRecentKrea2Item(${origIdx});window.scrollTo({top:0,behavior:'smooth'})" title="Đưa ảnh lên khung kết quả">👁️</button>
+                    <button type="button" class="ist-lib-icon-btn" onclick="event.stopPropagation();openImageLibraryLightbox(${origIdx})" title="Xem lớn">🔍</button>
+                    <button type="button" class="ist-lib-icon-btn del" onclick="event.stopPropagation();quickActionImageLibItem(${origIdx},'delete')" title="Xóa ảnh">🗑️</button>
                   </div>
                 </div>
               </div>
               <div class="ist-lib-body">
-                <div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-                    <div style="font-size:11.5px;font-weight:800;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escapeHtml(item.filename)}">${escapeHtml(item.filename)}</div>
-                    <span style="font-size:9.5px;font-weight:700;color:var(--em);white-space:nowrap">${srcBadge}</span>
-                  </div>
-                  <div style="font-size:10px;color:var(--text-muted);margin-top:2px;display:flex;justify-content:space-between">
-                    <span>${escapeHtml(item.engine || 'Krea 2 Turbo')}</span>
-                    <span>${escapeHtml(item.mtime_str || '')}${item.size_kb ? ' • ' + item.size_kb + ' KB' : ''}</span>
-                  </div>
-                  <div class="ist-lib-prompt" style="margin-top:5px" title="${escapeHtml(displayPrompt)}">${escapeHtml(displayPrompt)}</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div style="font-size:11.5px;font-weight:800;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escapeHtml(item.filename)}">📄 ${escapeHtml(item.filename)}</div>
+                  <div style="font-size:11px;font-weight:700;color:#34d399">🌿 Model: ${escapeHtml(cleanModel)}</div>
+                  <div class="ist-lib-prompt" style="margin-top:2px" title="${escapeHtml(displayPrompt)}">💬 ${escapeHtml(displayPrompt || '—')}</div>
                 </div>
                 <div class="ist-lib-actions">
-                  <button type="button" class="ist-lib-act-btn" onclick="openImageLibraryLightbox(${origIdx})" title="Phóng to toàn màn hình">🔍 Xem</button>
-                  <button type="button" class="ist-lib-act-btn" onclick="quickActionImageLibItem(${origIdx},'studio')" title="Đẩy ảnh này sang Xưởng Video Studio (<Picture 1..9>)">📥 Studio</button>
-                  <button type="button" class="ist-lib-act-btn" onclick="quickActionImageLibItem(${origIdx},'batch')" title="Đẩy ảnh này sang Xưởng Video Hàng Loạt (Batch)">📦 Batch</button>
-                  <a href="${item.url}" download="${escapeHtml(item.filename)}" class="ist-lib-act-btn" title="Tải file ảnh PNG gốc về máy">⬇️ Tải</a>
+                  <button type="button" class="ist-lib-act-btn" onclick="openImageLibraryLightbox(${origIdx})" title="Phóng to">🔍 Xem</button>
+                  <button type="button" class="ist-lib-act-btn" onclick="quickActionImageLibItem(${origIdx},'studio')" title="Đưa vào Tạo Video">📥 Tạo Video</button>
+                  <button type="button" class="ist-lib-act-btn" onclick="quickActionImageLibItem(${origIdx},'batch')" title="Đưa vào Hàng Loạt">📦 Hàng Loạt</button>
+                  <a href="${item.url}" download="${escapeHtml(item.filename)}" class="ist-lib-act-btn" title="Tải ảnh về máy">⬇️ Tải</a>
                 </div>
               </div>
             </div>
@@ -24506,7 +24502,8 @@ async function previewRecentKrea2Item(idx){
         data_uri: dataUri,
         raw_prompt: item.raw_prompt || '',
         prompt: item.prompt || '',
-        engine: item.engine || 'Krea 2 Turbo',
+        checkpoint: item.checkpoint || '',
+        engine: item.engine || 'Moss Kromoss',
         seed: item.seed || -1,
         width: item.width || 1024,
         height: item.height || 1024
@@ -24514,7 +24511,7 @@ async function previewRecentKrea2Item(idx){
       renderKrea2ResultPreview(krea2LastGeneratedResult);
       renderImageLibraryGrids();
       const badge = document.getElementById('ist-preview-badge');
-      if(badge) badge.textContent = `✅ ${item.width || 1024}×${item.height || 1024}`;
+      if(badge && !(window._istQueueTasks && window._istQueueTasks.length)) badge.textContent = '✅ Sẵn sàng';
       const bestPrompt = item.raw_prompt || item.prompt || '';
       if(bestPrompt){
         const istP = document.getElementById('ist-prompt-inp');
@@ -24596,14 +24593,13 @@ function openImageLibraryLightbox(idx){
     dlEl.href = imgSrc;
     dlEl.download = activeObj.filename || 'Krea2_8K.png';
   }
-  const asp = _getAspectInfo(activeObj.width, activeObj.height);
+  const cleanModel = _getCleanImageModelName(activeObj);
+  const cleanPrompt = _getCleanImagePrompt(activeObj);
   if(titleEl){
-    titleEl.innerHTML = `📸 ${escapeHtml(activeObj.filename || 'Krea2.png')} &bull; <span style="color:#38bdf8">${escapeHtml(asp.label)}</span> &bull; Engine: ${escapeHtml(activeObj.engine || 'Krea 2 Turbo')} &bull; Seed: <code>${activeObj.seed ?? -1}</code>`;
+    titleEl.innerHTML = `📄 <b>${escapeHtml(activeObj.filename || 'Image.png')}</b> &bull; 🌿 Model: <span style="color:#34d399">${escapeHtml(cleanModel)}</span>`;
   }
   if(promptEl){
-    const rawP = activeObj.raw_prompt ? `<b>Prompt gốc:</b> ${escapeHtml(activeObj.raw_prompt)}<br>` : '';
-    const enP = activeObj.prompt ? `<b>Prompt 8K:</b> ${escapeHtml(activeObj.prompt)}` : '';
-    promptEl.innerHTML = rawP + enP || 'Không có dữ liệu Prompt.';
+    promptEl.innerHTML = cleanPrompt ? `💬 <b>Prompt:</b> ${escapeHtml(cleanPrompt)}` : '';
   }
   if(modal) modal.classList.add('open');
 }
@@ -24797,6 +24793,115 @@ async function searchImageStudioCivitai(){
   }
 }
 
+// BẢNG RÚT GỌN TÊN MODEL & PROMPT SẠCH GỌN CHO KẾT QUẢ ẢNH
+function _getCleanImageModelName(obj){
+  if(!obj) return 'Moss Kromoss';
+  const rawCkpt = String(obj.checkpoint || obj.base_checkpoint || '').trim();
+  const rawEng = String(obj.engine || '').trim();
+  const combined = `${rawCkpt} ${rawEng}`.toLowerCase();
+  if(combined.includes('moss-image-edit') || combined.includes('moss_image_edit')) return 'Moss Edit Ảnh';
+  if(combined.includes('kromoss')) return 'Moss Kromoss';
+  if(combined.includes('serenity')) return 'Moss Serenity';
+  if(combined.includes('moss_imagine') || combined.includes('moss-imagine') || combined.includes('moss imagine')) return 'Moss Imagine';
+  if(combined.includes('pastel_bloom') || combined.includes('pastel bloom')) return 'Moss Pastel Bloom';
+  if(combined.includes('animossity')) return 'AniMOSSity';
+  if(combined.includes('style_ft') || combined.includes('style ft')) return 'Moss Style FT';
+  if(combined.includes('mosskr2')) return 'MOSSkr2';
+  if(combined.includes('gonzalomo')) return 'Krea 2 Photoreal V4';
+  if(combined.includes('pornmaster')) return 'Krea 2 Uncensored V2';
+  if(combined.includes('krea')) return 'Krea 2 Turbo';
+  if(rawCkpt){
+    return rawCkpt.replace(/^[^A-Za-z0-9À-ỹ]+/, '').split('—')[0].split('(')[0].trim();
+  }
+  return 'Moss Kromoss';
+}
+
+function _getCleanImagePrompt(obj){
+  if(!obj) return '';
+  const rawP = String(obj.raw_prompt || '').trim();
+  if(rawP) return rawP;
+  let p = String(obj.prompt || '').trim();
+  // Nếu không có raw_prompt (ảnh cũ), lược bỏ tiền tố boilerplate 8k nếu có
+  p = p.replace(/^raw photo,\s*masterpiece,\s*best quality,\s*ultra-photorealistic 8k\s*(?:full-body standing shot of|cinematic shot of)?\s*/i, '');
+  p = p.replace(/,\s*natural skin texture,\s*detailed lighting,\s*85mm lens,\s*sharp focus,\s*high dynamic range$/i, '');
+  return p.trim();
+}
+
+// HỆ THỐNG DÒNG CHỜ TIẾN TRÌNH TẠO ẢNH TRỰC TIẾP (#ist-live-queue-box)
+window._istQueueTasks = window._istQueueTasks || [];
+window._istQueueTimer = window._istQueueTimer || null;
+
+function _addImageStudioWaitTask(label, modelName, promptText){
+  const id = 'ist_q_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  window._istQueueTasks.push({
+    id: id,
+    label: label || 'Đang tạo ảnh',
+    model: modelName || 'Moss Kromoss',
+    prompt: String(promptText || '').trim(),
+    startTs: Date.now()
+  });
+  _renderImageStudioWaitQueue();
+  if(!window._istQueueTimer){
+    window._istQueueTimer = setInterval(_renderImageStudioWaitQueue, 1000);
+  }
+  return id;
+}
+
+function _removeImageStudioWaitTask(id){
+  window._istQueueTasks = (window._istQueueTasks || []).filter(t => t.id !== id);
+  _renderImageStudioWaitQueue();
+  if(!window._istQueueTasks.length && window._istQueueTimer){
+    clearInterval(window._istQueueTimer);
+    window._istQueueTimer = null;
+  }
+}
+
+function _renderImageStudioWaitQueue(){
+  const box = document.getElementById('ist-live-queue-box');
+  const badge = document.getElementById('ist-preview-badge');
+  const tasks = window._istQueueTasks || [];
+  if(!box) return;
+  if(!tasks.length){
+    box.style.display = 'none';
+    box.innerHTML = '';
+    if(badge && badge.textContent.includes('Đang')) badge.textContent = '✅ Hoàn tất';
+    return;
+  }
+  box.style.display = 'flex';
+  const now = Date.now();
+  if(badge){
+    const firstSec = Math.max(1, Math.floor((now - tasks[0].startTs) / 1000));
+    badge.textContent = tasks.length > 1
+      ? `⏳ Đang xử lý ${tasks.length} ảnh (${firstSec}s)...`
+      : `⏳ Đang xử lý (${firstSec}s)...`;
+  }
+  box.innerHTML = tasks.map((t, idx) => {
+    const sec = Math.max(1, Math.floor((now - t.startTs) / 1000));
+    const mm = String(Math.floor(sec / 60)).padStart(2, '0');
+    const ss = String(sec % 60).padStart(2, '0');
+    const pct = Math.min(94, Math.max(12, Math.round((1 - Math.exp(-sec / 28)) * 95)));
+    const shortP = t.prompt.length > 90 ? (t.prompt.slice(0, 90) + '...') : t.prompt;
+    return `
+      <div style="display:flex;flex-direction:column;gap:5px;padding:${tasks.length > 1 ? '7px 9px' : '2px 0'};background:${tasks.length > 1 ? 'rgba(0,0,0,0.22)' : 'transparent'};border-radius:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:#34d399">
+            <span class="spin" style="display:inline-block">⏳</span>
+            <span>${escapeHtml(t.label)}</span>
+            <span style="font-size:11px;font-weight:700;color:#f8fafc;background:rgba(255,255,255,0.08);padding:1px 7px;border-radius:6px">${escapeHtml(t.model)}</span>
+          </div>
+          <span style="font-family:monospace;font-size:11.5px;font-weight:800;color:#fbbf24">${mm}:${ss}s (${pct}%)</span>
+        </div>
+        <div style="font-size:11.5px;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+          💬 Prompt: ${escapeHtml(shortP || '—')}
+        </div>
+        <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#10b981,#38bdf8);transition:width 0.8s ease"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function renderKrea2ResultPreview(res){
   [
     {img: 'krea2-result-img', ph: 'krea2-result-placeholder', meta: 'krea2-result-meta', acts: 'krea2-result-actions'},
@@ -24813,10 +24918,15 @@ function renderKrea2ResultPreview(res){
     if(ph) ph.style.display = 'none';
     if(meta){
       meta.style.display = 'block';
-      const fn = res.filename || res.name || 'Krea2.png';
-      const eng = res.engine || 'Krea 2 Turbo';
-      const pHint = res.prompt ? `<div style="margin-top:4px;font-size:10px;color:var(--text-muted);line-height:1.35">🌐 <b>Prompt 8K:</b> ${escapeHtml(res.prompt)}</div>` : '';
-      meta.innerHTML = `✅ <b>${escapeHtml(fn)}</b> (${res.width || 1024}&times;${res.height || 1024}) &bull; Engine: <b style="color:var(--em)">${escapeHtml(eng)}</b> &bull; Seed: <code>${res.seed}</code>${pHint}`;
+      const fn = res.filename || res.name || 'Image.png';
+      const modelName = _getCleanImageModelName(res);
+      const userPrompt = _getCleanImagePrompt(res);
+      meta.innerHTML =
+        `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">` +
+          `<span style="font-size:12px;font-weight:800;color:#f8fafc">📄 Tên ảnh: <b style="color:#34d399">${escapeHtml(fn)}</b></span>` +
+          `<span style="font-size:11.5px;font-weight:800;color:#fbbf24;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.35);padding:2px 9px;border-radius:999px">🌿 Model: ${escapeHtml(modelName)}</span>` +
+        `</div>` +
+        (userPrompt ? `<div style="margin-top:6px;font-size:12px;color:#e2e8f0;line-height:1.45;font-weight:500">💬 <b>Prompt:</b> ${escapeHtml(userPrompt)}</div>` : '');
     }
     if(acts) acts.style.display = 'grid';
   });
@@ -24887,29 +24997,35 @@ async function runImageStudioGenerate(){
               linePrompt = parts.slice(1).join('|').trim();
             }
           }
+          const modelLbl = _getCleanImageModelName({base_checkpoint: ckpt});
+          const qTaskId = _addImageStudioWaitTask(`Đang tạo ảnh ${curIdx + 1}/${lines.length}`, modelLbl, linePrompt);
           if(btn) btn.textContent = `⏳ Đang tạo song song (${doneCnt}/${lines.length} xong — ${parallelCnt} TK chạy cùng lúc)...`;
-          if(badge) badge.textContent = `⚡ Đang chạy ${parallelCnt} TK (${doneCnt}/${lines.length})...`;
           setTimeout(() => { try { doRefresh(true); } catch(e){} }, 400);
-          const res = await fetch('/api/krea2/generate', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              prompt: linePrompt,
-              mode: 'text2image',
-              width: width,
-              height: height,
-              steps: steps,
-              cfg: cfg,
-              seed: seed,
-              base_checkpoint: ckpt,
-              style_lora_id: styleId,
-              lora_strength: loraStr,
-              trigger_words: krea2ActiveTriggers,
-              compute_mode: computeMode,
-              colab_gpu: colabGpu,
-              target_sb_ref: lineTargetRef || (lines.length === 1 ? targetSbRef : '')
-            })
-          }).then(r => r.json()).catch(err => ({ok: false, error: err.message}));
+          let res = null;
+          try {
+            res = await fetch('/api/krea2/generate', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                prompt: linePrompt,
+                mode: 'text2image',
+                width: width,
+                height: height,
+                steps: steps,
+                cfg: cfg,
+                seed: seed,
+                base_checkpoint: ckpt,
+                style_lora_id: styleId,
+                lora_strength: loraStr,
+                trigger_words: krea2ActiveTriggers,
+                compute_mode: computeMode,
+                colab_gpu: colabGpu,
+                target_sb_ref: lineTargetRef || (lines.length === 1 ? targetSbRef : '')
+              })
+            }).then(r => r.json()).catch(err => ({ok: false, error: err.message}));
+          } finally {
+            _removeImageStudioWaitTask(qTaskId);
+          }
           doneCnt++;
           if(res && res.ok){
             successCnt++;
@@ -24954,20 +25070,22 @@ async function runImageStudioGenerate(){
 
   window._activeImageStudioReqs = (window._activeImageStudioReqs || 0) + 1;
   const canFireMoreParallel = readyAccsNow.length > window._activeImageStudioReqs;
+  const modelCleanLbl = imageStudioActiveMode === 'edit' ? 'Moss Edit Ảnh' : _getCleanImageModelName({base_checkpoint: ckpt});
+  const waitActionLbl = imageStudioActiveMode === 'edit' ? '🪄 Đang Edit ảnh...' : '⏳ Đang tạo ảnh...';
+  const qTaskId = _addImageStudioWaitTask(waitActionLbl, modelCleanLbl, rawInput);
 
   if(btn){
     if(!canFireMoreParallel){
       btn.disabled = true;
-      btn.textContent = `⏳ Đang tạo trên Google Colab ${colabGpu}...`;
+      btn.textContent = `${waitActionLbl} (${modelCleanLbl})`;
     } else {
       btn.disabled = false;
-      btn.textContent = `⚡ Đang tạo (${window._activeImageStudioReqs} lệnh) — Bấm tiếp để chạy song song ở TK khác!`;
+      btn.textContent = `⚡ Đang xử lý (${window._activeImageStudioReqs} ảnh) — Bấm tiếp để chạy ở TK khác!`;
     }
   }
-  if(badge) badge.textContent = `⏳ Đang chạy (${window._activeImageStudioReqs} lệnh song song)...`;
   toast(readyAccsNow.length >= 2
-    ? `🚀 Đang gửi lệnh sang Tài Khoản Rảnh (${colabGpu}) — Bạn vẫn có thể tạo tiếp Ảnh hoặc Video ở TK khác!`
-    : `🚀 Đang gửi lệnh tạo ảnh lên Google Colab GPU ${colabGpu}...`);
+    ? `🚀 Đã đưa vào dòng chờ (${modelCleanLbl}) — Tự động chạy trên Tài Khoản Rảnh!`
+    : `🚀 Đã đưa vào dòng chờ (${modelCleanLbl})...`);
   setTimeout(() => { try { doRefresh(true); } catch(e){} }, 500);
   try {
     const res = await fetch('/api/krea2/generate', {
@@ -24994,16 +25112,16 @@ async function runImageStudioGenerate(){
       })
     }).then(r => r.json());
     if(res && res.ok){
+      res.raw_prompt = res.raw_prompt || rawInput;
       krea2LastGeneratedResult = res;
       renderKrea2ResultPreview(res);
       await loadKrea2CatalogAndHistory();
-      const accInfo = res.colab_account ? ` [TK: ${res.colab_account.split('@')[0]}]` : '';
-      if(badge) badge.textContent = `✅ Hoàn tất (${res.width}×${res.height})${accInfo}`;
+      if(badge) badge.textContent = '✅ Hoàn tất';
       if(res.storyboard){
         applyStoryboardDataToUI(res.storyboard);
-        toast(`🎉 Đã tạo ảnh và gắn trực tiếp vào ${res.saved_sb_ref}${accInfo}!`);
+        toast(`🎉 Đã tạo xong ảnh ${res.filename}!`);
       } else {
-        toast(`🎉 Đã tạo xong ảnh (${res.filename})${accInfo}!`);
+        toast(`🎉 Đã tạo xong ảnh ${res.filename}!`);
       }
     } else {
       if(badge) badge.textContent = '⚠️ Lỗi';
@@ -25013,6 +25131,7 @@ async function runImageStudioGenerate(){
     if(badge) badge.textContent = '⚠️ Lỗi kết nối';
     toast('⚠️ Lỗi kết nối: ' + e.message);
   } finally {
+    _removeImageStudioWaitTask(qTaskId);
     window._activeImageStudioReqs = Math.max(0, (window._activeImageStudioReqs || 1) - 1);
     if(btn){
       btn.disabled = false;
