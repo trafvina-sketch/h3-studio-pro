@@ -80,47 +80,174 @@ def save_krea2_config(hf_token: str = "", horde_api_key: str = "") -> Dict[str, 
     return cfg
 
 
-# Danh sách Base Checkpoints Krea 2
+# Danh sách 7 Base Checkpoints MOSS Image (Hệ sinh thái MOSS-Image & Moss-Image-Edit)
+MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
+    {
+        "id": "moss_kromoss",
+        "name": "🌿 Kromoss — Cải thiện sương mù trong Base & Tương phản sâu (Khuyên dùng)",
+        "short_name": "Kromoss",
+        "engine_family": "moss",
+        "hf_repo": "lodestones/Kromoss",
+        "hf_file": "diffusion_models/kromoss_int8_convrot.safetensors",
+        "hf_file_bf16": "diffusion_models/kromoss_bf16.safetensors",
+        "source_url": "https://huggingface.co/lodestones/Kromoss",
+        "style_prompt_boost": "",
+        "desc_vi": "Cải thiện sương mù trong Base (De-haze), tăng độ trong trẻo, chi tiết sắc nét và tương phản điện ảnh sâu.",
+    },
+    {
+        "id": "moss_serenity",
+        "name": "🌿 MOSS Serenity v6 — Tăng cường tính thực tế của nhân vật thực tế",
+        "short_name": "MOSS Serenity",
+        "engine_family": "moss",
+        "hf_repo": "malcolmrey/moss-serenity",
+        "hf_file": "serenity_base_v6_210000_int8_convrot.safetensors",
+        "hf_file_bf16": "serenity_base_v5_170000_bf16.safetensors",
+        "source_url": "https://huggingface.co/malcolmrey/moss-serenity",
+        "style_prompt_boost": "ultra-realistic human portrait, natural skin texture with subtle pores, lifelike eyes",
+        "desc_vi": "Tăng cường tính thực tế của nhân vật người thật: kết cấu làn da tự nhiên, ánh mắt sống động và giải phẫu chuẩn.",
+    },
+    {
+        "id": "moss_imagine",
+        "name": "🌿 MOSS-Imagine — Biểu hiện điện ảnh theo phong cách Grok Imagine",
+        "short_name": "MOSS-Imagine",
+        "engine_family": "moss",
+        "hf_repo": "realrebelai/MOSS-Imagine_ComfyUI",
+        "hf_file": "MOSS-Imagine-INT8-ConvRot.safetensors",
+        "hf_file_bf16": "MOSS-Imagine-BF16.safetensors",
+        "source_url": "https://huggingface.co/realrebelai/MOSS-Imagine_ComfyUI",
+        "style_prompt_boost": "cinematic dramatic lighting, rich atmospheric depth, Grok Imagine aesthetic",
+        "desc_vi": "Biểu hiện điện ảnh theo phong cách Grok Imagine: ánh sáng kịch tính, chiều sâu không gian và cảm xúc điện ảnh.",
+    },
+    {
+        "id": "moss_pastel_bloom",
+        "name": "🌿 MOSS Pastel Bloom — Màu sắc mềm và đường viền nhẹ nhàng",
+        "short_name": "MOSS Pastel Bloom",
+        "engine_family": "moss",
+        "hf_repo": "lodestones/Kromoss",
+        "hf_file": "diffusion_models/kromoss_int8_convrot.safetensors",
+        "hf_file_bf16": "diffusion_models/kromoss_bf16.safetensors",
+        "civitai_model_id": "3006255",
+        "source_url": "https://civitai.com/models/3006255/moss-pastel-bloom",
+        "style_prompt_boost": "soft pastel bloom color palette, gentle delicate outlines, dreamy luminous atmosphere, smooth tonal transitions",
+        "desc_vi": "Màu sắc mềm và đường viền nhẹ nhàng, hiệu ứng ánh sáng bloom thơ mộng.",
+    },
+    {
+        "id": "moss_animossity",
+        "name": "🌿 AniMOSSity — Hoạt hình × Thực tế, màu sắc sống động",
+        "short_name": "AniMOSSity",
+        "engine_family": "moss",
+        "hf_repo": "lodestones/Kromoss",
+        "hf_file": "diffusion_models/kromoss_int8_convrot.safetensors",
+        "hf_file_bf16": "diffusion_models/kromoss_bf16.safetensors",
+        "civitai_model_id": "3010746",
+        "source_url": "https://civitai.com/models/3010746/animossity",
+        "style_prompt_boost": "semi-realistic 2.5D anime x realistic hybrid style, vibrant vivid colors, expressive detailed eyes, dynamic cinematic lighting",
+        "desc_vi": "Hoạt hình × thực tế, màu sắc sống động và chi tiết mắt biểu cảm.",
+    },
+    {
+        "id": "moss_style_ft",
+        "name": "🌿 MOSS Image Style FT — Ảnh chụp nhanh tự nhiên",
+        "short_name": "MOSS Style FT",
+        "engine_family": "moss",
+        "hf_repo": "lamshiu/moss-image-style-ft",
+        "hf_file": "int8_convrot/step-5632_int8_convrot.safetensors",
+        "hf_file_bf16": "checkpoints/step-5632.safetensors",
+        "source_url": "https://huggingface.co/lamshiu/moss-image-style-ft",
+        "style_prompt_boost": "natural candid snapshot photography, authentic daylight, realistic grain",
+        "desc_vi": "Ảnh chụp nhanh tự nhiên (Natural Snapshot), góc máy đời thường chân thực.",
+    },
+    {
+        "id": "moss_kr2",
+        "name": "🌿 MOSSkr2 — Krea 2 modul trọng lượng lai MOSS Image",
+        "short_name": "MOSSkr2",
+        "engine_family": "moss",
+        "hf_repo": "TenStrip/MOSSkr2",
+        "hf_file": "mosskr2_image_sft_bf16_v1.safetensors",
+        "hf_file_bf16": "mosskr2_image_sft_bf16_v1.safetensors",
+        "source_url": "https://huggingface.co/TenStrip/MOSSkr2",
+        "style_prompt_boost": "",
+        "desc_vi": "Krea 2 modul trọng lượng kết hợp nền tảng MOSS Image SFT BF16 v1.",
+    },
+]
+
+# Danh sách Base Checkpoints MOSS Image + Krea 2
 KREA2_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
+    *MOSS_BASE_CHECKPOINTS,
     {
         "id": "gonzalomoKrea2_v40.safetensors",
-        "name": "Gonzalomo Krea 2 v4.0 (Siêu thực & Điện ảnh / Khuyên dùng)",
+        "name": "🎨 Gonzalomo Krea 2 v4.0 (Siêu thực & Điện ảnh / Krea 2)",
+        "short_name": "Gonzalomo Krea 2 v4.0",
+        "engine_family": "krea2",
         "hf_repo": "",
         "hf_file": "",
         "desc_vi": "Bản tinh chỉnh Krea 2 chuyên ảnh chụp điện ảnh, da người thật, bối cảnh phim và nhân vật tham chiếu 8K.",
     },
     {
         "id": "pornmasterKrea2_v2TurboInt8.safetensors",
-        "name": "Krea 2 Realism v2 Turbo Int8 (Chi tiết cơ thể & Uncensored 18+)",
+        "name": "🎨 Krea 2 Realism v2 Turbo Int8 (Chi tiết cơ thể & Uncensored 18+)",
+        "short_name": "Krea 2 Realism v2",
+        "engine_family": "krea2",
         "hf_repo": "",
         "hf_file": "",
         "desc_vi": "Tốc độ cao Int8, hỗ trợ đầy đủ cả chế độ thường và Uncensored 18+ không kiểm duyệt.",
     },
     {
         "id": "museByStableYogi_v25EXTENDEDTURBO.safetensors",
-        "name": "Muse Extended Turbo v2.5 (Chân dung & Ánh sáng nghệ thuật)",
+        "name": "🎨 Muse Extended Turbo v2.5 (Chân dung & Ánh sáng nghệ thuật)",
+        "short_name": "Muse Turbo v2.5",
+        "engine_family": "krea2",
         "hf_repo": "",
         "hf_file": "",
         "desc_vi": "Tối ưu độ chi tiết khuôn mặt, ánh sáng studio và bố cục thẩm mỹ cao.",
     },
     {
         "id": "comfy_org_krea2_turbo_fp8",
-        "name": "Krea 2 Turbo Official FP8 (Comfy-Org Chính thức)",
+        "name": "🎨 Krea 2 Turbo Official FP8 (Comfy-Org Chính thức)",
+        "short_name": "Krea 2 Official FP8",
+        "engine_family": "krea2",
         "hf_repo": "Comfy-Org/Krea-2",
         "hf_file": "diffusion_models/krea2_turbo_fp8_scaled.safetensors",
         "desc_vi": "Bản gốc Krea 2 Turbo FP8 chính thức từ Comfy-Org & Krea AI.",
     },
 ]
 
-# Danh sách Style LoRAs chính thức từ Comfy-Org/Krea-2 kèm Trigger Words
+# Danh sách Style LoRAs chính thức từ MOSS-Image & Comfy-Org/Krea-2 kèm Trigger Words
 KREA2_OFFICIAL_STYLE_LORAS: List[Dict[str, Any]] = [
     {
         "id": "none",
-        "name": "Không dùng Style LoRA (Giữ nét siêu thực gốc)",
+        "name": "Không dùng Style LoRA (Giữ nét gốc của Checkpoint)",
         "filename": "",
         "repo_id": "",
         "trigger_word": "",
         "strength": 0.0,
+        "engine_family": "all",
+    },
+    {
+        "id": "moss_dmd2_8step",
+        "name": "⚡ MOSS 8-Steps DMD2 Turbo LoRA (Tăng tốc 8 bước chuẩn Kromoss)",
+        "filename": "8-steps-dmd2-lora.safetensors",
+        "repo_id": "lodestones/Kromoss",
+        "trigger_word": "",
+        "strength": 1.0,
+        "engine_family": "moss",
+    },
+    {
+        "id": "moss_serenity_v6_lora",
+        "name": "👩 MOSS Serenity v6 LoRA r128 (Tăng chi tiết da & nhân vật thực tế)",
+        "filename": "lora-extract/serenity_v6_lora_r128.safetensors",
+        "repo_id": "malcolmrey/moss-serenity",
+        "trigger_word": "",
+        "strength": 0.85,
+        "engine_family": "moss",
+    },
+    {
+        "id": "moss_image_edit_lora",
+        "name": "🪄 Moss-Image-Edit LoRA (Sửa trang phục, màu sắc, ánh sáng, mùa, style)",
+        "filename": "adapter_model.safetensors",
+        "repo_id": "chinoll/Moss-Image-Edit",
+        "trigger_word": "",
+        "strength": 1.0,
+        "engine_family": "moss",
     },
     {
         "id": "krea2_darkbrush",
@@ -937,9 +1064,13 @@ def _generate_via_colab_gpu(
             raw_out = loc_out.read_bytes()
             png_bytes = _format_and_upscale_image_bytes(raw_out, width, height, crop_watermark_px=0)
             short_ckpt = base_checkpoint.replace(".safetensors", "")
+            is_moss_ckpt = str(base_checkpoint).startswith("moss_")
+            eng_tag = (
+                f"Colab GPU {gpu_choice} • {'MOSS-Image-Edit LoRA' if (is_moss_ckpt and mode == 'edit') else ('MOSS Image' if is_moss_ckpt else 'Krea 2 Gốc')} ({short_ckpt})"
+            )
             return (
                 png_bytes,
-                f"Colab GPU {gpu_choice} • Krea 2 Gốc ({short_ckpt})",
+                eng_tag,
                 f"colab://{acc_email or 'default'}/{session}",
                 "",
             )
@@ -998,6 +1129,9 @@ def generate_image_with_krea2(
     cfg_val = max(1.0, min(7.0, float(cfg or 1.0)))
 
     ckpt_info = next((c for c in KREA2_BASE_CHECKPOINTS if c["id"] == base_checkpoint), KREA2_BASE_CHECKPOINTS[0])
+    style_boost = str(ckpt_info.get("style_prompt_boost") or "").strip()
+    if style_boost and style_boost.lower() not in clean_prompt.lower() and mode != "edit":
+        clean_prompt = f"{clean_prompt}, {style_boost}"
     krea_cfg = load_krea2_config()
     hf_token = krea_cfg.get("hf_token", "")
     horde_key = krea_cfg.get("horde_api_key", "0000000000")
@@ -1219,8 +1353,10 @@ def generate_image_with_krea2(
             "error": f"Tất cả cụm GPU tạo ảnh đang bận ({last_err}). Bạn có thể dán thêm HF_TOKEN hoặc thử lại sau vài giây!",
         }
 
+    is_moss_model = str(base_checkpoint).startswith("moss_")
     if output_path is None:
-        fname = f"Krea2_{int(time.time())}_{uuid.uuid4().hex[:5]}.png"
+        prefix_fn = "MOSS" if is_moss_model else "Krea2"
+        fname = f"{prefix_fn}_{int(time.time())}_{uuid.uuid4().hex[:5]}.png"
         out_file = KREA2_OUTPUT_DIR / fname
     else:
         out_file = Path(output_path)
@@ -1230,7 +1366,7 @@ def generate_image_with_krea2(
     # Lưu kèm file .civitai.info chuẩn Civitai Helper
     civitai_info = {
         "model": used_engine_label,
-        "baseModel": "Krea 2 Turbo",
+        "baseModel": "MOSS-Image" if is_moss_model else "Krea 2 Turbo",
         "checkpoint": ckpt_info["name"],
         "checkpointId": ckpt_info["id"],
         "styleLora": lora_obj["name"] if lora_obj else "None",
@@ -1290,7 +1426,92 @@ def build_comfyui_krea2_workflow_json(
     vae_name: str = "qwen_image_vae.safetensors",
     lora_name: str = "",
     lora_strength: float = 1.0,
+    base_checkpoint: str = "",
+    mode: str = "text2image",
 ) -> Dict[str, Any]:
+    eff_seed = int(seed) if (seed is not None and int(seed) >= 0) else random.randint(1, 2**31 - 1)
+    is_moss = str(base_checkpoint).startswith("moss_") or "kromoss" in str(unet_name).lower() or "moss" in str(unet_name).lower()
+    if is_moss:
+        ckpt_obj = next((c for c in MOSS_BASE_CHECKPOINTS if c["id"] == base_checkpoint), MOSS_BASE_CHECKPOINTS[0])
+        moss_unet = Path(ckpt_obj.get("hf_file") or "kromoss_int8_convrot.safetensors").name
+        if mode == "edit":
+            return {
+                "1": {"class_type": "UNETLoader", "inputs": {"unet_name": moss_unet, "weight_dtype": "default"}},
+                "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen3.5_9b_bf16.safetensors", "type": "moss_image", "device": "default"}},
+                "3": {"class_type": "VAELoader", "inputs": {"vae_name": "flux2-vae_small.safetensors"}},
+                "4": {"class_type": "ModelPatchLoader", "inputs": {"name": "moss_image_edit.safetensors"}},
+                "5": {"class_type": "LoadImage", "inputs": {"image": "reference_input.png"}},
+                "6": {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": ["2", 0]}},
+                "7": {"class_type": "CLIPTextEncode", "inputs": {"text": "", "clip": ["2", 0]}},
+                "8": {
+                    "class_type": "ApplyMossImageEdit",
+                    "inputs": {
+                        "model": ["1", 0],
+                        "model_patch": ["4", 0],
+                        "vae": ["3", 0],
+                        "positive": ["6", 0],
+                        "negative": ["7", 0],
+                        "image": ["5", 0],
+                        "reference_max_edge": 512,
+                        "strength": 1.0,
+                    },
+                },
+                "9": {
+                    "class_type": "SkipLayerGuidanceDiTSimple",
+                    "inputs": {
+                        "model": ["8", 0],
+                        "double_layers": "",
+                        "single_layers": "22",
+                        "scale": 3.0,
+                        "start_percent": 0.0,
+                        "end_percent": 1.0,
+                    },
+                },
+                "10": {"class_type": "EmptyFlux2LatentImage", "inputs": {"width": int(width or 1024), "height": int(height or 1024), "batch_size": 1}},
+                "11": {
+                    "class_type": "KSampler",
+                    "inputs": {
+                        "seed": eff_seed,
+                        "steps": max(16, int(steps or 20)),
+                        "cfg": max(3.5, float(cfg or 4.0)),
+                        "sampler_name": "euler",
+                        "scheduler": "normal",
+                        "denoise": 1.0,
+                        "model": ["9", 0],
+                        "positive": ["8", 1],
+                        "negative": ["8", 2],
+                        "latent_image": ["10", 0],
+                    },
+                },
+                "12": {"class_type": "VAEDecode", "inputs": {"samples": ["11", 0], "vae": ["3", 0]}},
+                "13": {"class_type": "SaveImage", "inputs": {"filename_prefix": "MOSS_Edit", "images": ["12", 0]}},
+            }
+        return {
+            "1": {"class_type": "UNETLoader", "inputs": {"unet_name": moss_unet, "weight_dtype": "default"}},
+            "2": {"class_type": "LoraLoaderModelOnly", "inputs": {"model": ["1", 0], "lora_name": "8-steps-dmd2-lora.safetensors", "strength_model": 1.0}},
+            "3": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen3.5_9b_bf16.safetensors", "type": "moss_image", "device": "default"}},
+            "4": {"class_type": "VAELoader", "inputs": {"vae_name": "flux2-vae_small.safetensors"}},
+            "5": {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": ["3", 0]}},
+            "6": {"class_type": "ConditioningZeroOut", "inputs": {"conditioning": ["5", 0]}},
+            "7": {"class_type": "EmptyFlux2LatentImage", "inputs": {"width": int(width or 1024), "height": int(height or 1024), "batch_size": 1}},
+            "8": {
+                "class_type": "KSampler",
+                "inputs": {
+                    "seed": eff_seed,
+                    "steps": int(steps or 8),
+                    "cfg": float(cfg or 1.0),
+                    "sampler_name": "euler",
+                    "scheduler": "simple",
+                    "denoise": 1.0,
+                    "model": ["2", 0],
+                    "positive": ["5", 0],
+                    "negative": ["6", 0],
+                    "latent_image": ["7", 0],
+                },
+            },
+            "9": {"class_type": "VAEDecode", "inputs": {"samples": ["8", 0], "vae": ["4", 0]}},
+            "10": {"class_type": "SaveImage", "inputs": {"filename_prefix": "MOSS_Image", "images": ["9", 0]}},
+        }
     """
     Xuất cấu trúc ComfyUI API Prompt JSON chuẩn chính thức Comfy-Org/Krea-2:
     - UNETLoader (krea2_turbo_fp8_scaled.safetensors)

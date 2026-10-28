@@ -12769,8 +12769,12 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
         <span class="sb-ico">🎬</span> <span>Phim Dài Nhiều Cảnh</span>
         <span class="gcpu-sb-badge" style="background:rgba(201,173,125,0.2);color:#e5d1b0;border-color:rgba(201,173,125,0.4)">TOP 1</span>
       </button>
-      <button type="button" class="gcpu-sb-link" data-sb-id="imagestudio" onclick="gcpuNav('imagestudio')">
-        <span class="sb-ico">🎨</span> <span>Tạo Ảnh AI 8K</span>
+      <button type="button" class="gcpu-sb-link" data-sb-id="moss" onclick="openMossImageStudioTab('moss')" style="border:1px solid rgba(16,185,129,0.34);background:rgba(16,185,129,0.08);margin-bottom:3px" title="Tạo ảnh bằng 7 Base Checkpoints MOSS Image (Kromoss, Serenity, MOSS-Imagine, Pastel Bloom, AniMOSSity, Style FT, MOSSkr2) + Sửa ảnh bằng Moss-Image-Edit LoRA">
+        <span class="sb-ico">🌿</span> <span>Tạo Ảnh Moss</span>
+        <span class="gcpu-sb-badge" style="background:rgba(16,185,129,0.22);color:#34d399;border-color:rgba(16,185,129,0.45)">MOSS</span>
+      </button>
+      <button type="button" class="gcpu-sb-link" data-sb-id="imagestudio" onclick="openMossImageStudioTab('krea2')">
+        <span class="sb-ico">🎨</span> <span>Tạo Ảnh Krea 2 (8K)</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="batch" onclick="gcpuNav('batch')">
         <span class="sb-ico">⚡</span> <span>Chạy Hàng Loạt</span>
@@ -13281,6 +13285,10 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
                 <span>👤</span>
                 <span>Chọn từ Library (@nhanvat)</span>
               </div>
+              <div class="gcpu-upload-card" onclick="openMossImageStudioTab('moss')" style="border-color:rgba(16,185,129,0.42);background:rgba(16,185,129,0.07)" title="Mở mục Tạo Ảnh Moss (7 Checkpoints MOSS Image + Sửa ảnh bằng Moss-Image-Edit LoRA)">
+                <span>🌿</span>
+                <span style="color:#34d399;font-weight:800">Tạo Ảnh Moss</span>
+              </div>
             </div>
             <div id="char-preset-bar" style="display:none;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:9px;flex-wrap:wrap">
               <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:180px">
@@ -13293,8 +13301,11 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
                 <button type="button" class="b b2" onclick="saveCurrentCharPreset('studio')" style="padding:5px 10px;font-size:11px;font-weight:700">
                   💾 Lưu Nhân Vật
                 </button>
+                <button type="button" class="b b1" onclick="openMossImageStudioTab('moss')" style="padding:5px 10px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#059669,#0d9488);border:none" title="Mở mục Tạo Ảnh Moss (7 Checkpoints + Moss-Image-Edit LoRA)">
+                  🌿 Tạo Ảnh Moss
+                </button>
                 <button type="button" class="b b2" onclick="openKrea2StudioModal('studio')" style="padding:5px 10px;font-size:11px;font-weight:700">
-                  🎨 Tạo Ảnh AI
+                  🎨 Tạo Nhanh (Popup)
                 </button>
               </div>
             </div>
@@ -13911,8 +13922,11 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
                 <button type="button" class="b b3" id="b-btn-del-char-preset" onclick="deleteSelectedCharPreset('b-char-preset-sel')" style="display:none;padding:4px 7px;font-size:11px;color:#ef4444" title="Xóa nhân vật đã lưu này">🗑️</button>
               </div>
               <div style="display:flex;gap:5px;align-items:center">
-                <button type="button" class="b b1" onclick="openKrea2StudioModal('batch')" style="padding:5px 10px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none" data-tip="Tạo ảnh tham chiếu siêu thực bằng model Krea 2 Turbo (14B) + tìm Trigger Words & LoRA từ Civitai Helper">
-                  🎨 Tạo Ảnh Krea 2 (Civitai)
+                <button type="button" class="b b1" onclick="openMossImageStudioTab('moss')" style="padding:5px 10px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#059669,#0d9488);border:none" data-tip="Mở mục Tạo Ảnh Moss (7 Checkpoints MOSS + Sửa ảnh bằng Moss-Image-Edit LoRA)">
+                  🌿 Tạo Ảnh Moss
+                </button>
+                <button type="button" class="b b1" onclick="openKrea2StudioModal('batch')" style="padding:5px 10px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none" data-tip="Tạo nhanh ảnh tham chiếu bằng MOSS / Krea 2 Turbo + Civitai Helper">
+                  🎨 Tạo Ảnh Nhanh
                 </button>
                 <button type="button" class="b b2" onclick="saveCurrentCharPreset('batch')" style="padding:5px 10px;font-size:11px;font-weight:700" data-tip="Lưu bộ ảnh nhân vật đang chọn vào Kho Nhân Vật dùng chung">
                   💾 Lưu Nhân Vật
@@ -14331,8 +14345,8 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
         <div style="background:#111d21;color:#e9f3ef;border:2px solid #0d9488;border-radius:16px;max-width:1080px;width:100%;max-height:92vh;overflow-y:auto;padding:18px 20px;box-shadow:0 24px 64px rgba(0,0,0,0.75)">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #2b4c50;padding-bottom:10px;margin-bottom:14px;flex-wrap:wrap">
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-              <span style="background:linear-gradient(135deg,#0d9488,#7c3aed);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px">KREA 2 TURBO 14B &bull; CIVITAI HELPER</span>
-              <h3 style="margin:0;font-size:17px;font-weight:800;color:#f3d488">🎨 Xưởng Tạo Ảnh Krea 2 &amp; Civitai Trigger / LoRA Helper</h3>
+              <span style="background:linear-gradient(135deg,#059669,#7c3aed);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px">MOSS IMAGE &bull; MOSS-IMAGE-EDIT &bull; KREA 2</span>
+              <h3 style="margin:0;font-size:17px;font-weight:800;color:#f3d488">🌿 Xưởng Tạo Ảnh MOSS (7 Checkpoints + Edit LoRA) &amp; Krea 2</h3>
             </div>
             <div style="display:flex;gap:6px;align-items:center">
               <button type="button" class="b b2" onclick="exportKrea2ComfyWorkflow()" style="background:#1c3238;color:#6ee7b7;border-color:#059669;padding:5px 10px;font-size:11px;font-weight:700" title="Xuất file JSON Workflow chuẩn ComfyUI Krea 2 (Subgraph Qwen3_4B + Flux2VAE + Krea2 14B)">
@@ -14345,9 +14359,22 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
           <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start">
             <!-- CỘT TRÁI: CẤU HÌNH TẠO ẢNH KREA 2 + CIVITAI EXPLORER -->
             <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="margin-bottom:2px">
+                <label style="font-size:11px;font-weight:800;color:#6ee7b7;display:block;margin-bottom:3px">🌿 Chọn Mô Hình Gốc (7 Checkpoints MOSS Image &amp; Krea 2):</label>
+                <select id="krea2-checkpoint-sel" style="width:100%;padding:6px 8px;font-size:11.5px;border-radius:7px;background:#182a2f;color:#6ee7b7;border:1px solid #059669;font-weight:800">
+                  <option value="moss_kromoss" selected>🌿 Kromoss — Cải thiện sương mù trong Base &amp; Tương phản sâu (Khuyên dùng)</option>
+                  <option value="moss_serenity">🌿 MOSS Serenity v6 — Tăng cường tính thực tế của nhân vật thực tế</option>
+                  <option value="moss_imagine">🌿 MOSS-Imagine — Biểu hiện điện ảnh theo phong cách Grok Imagine</option>
+                  <option value="moss_pastel_bloom">🌿 MOSS Pastel Bloom — Màu sắc mềm và đường viền nhẹ nhàng</option>
+                  <option value="moss_animossity">🌿 AniMOSSity — Hoạt hình × Thực tế, màu sắc sống động</option>
+                  <option value="moss_style_ft">🌿 MOSS Image Style FT — Ảnh chụp nhanh tự nhiên</option>
+                  <option value="moss_kr2">🌿 MOSSkr2 — Krea 2 modul trọng lượng lai MOSS Image</option>
+                  <option value="gonzalomoKrea2_v40.safetensors">🎨 Gonzalomo Krea 2 v4.0 (Siêu thực &amp; Điện ảnh)</option>
+                </select>
+              </div>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
                 <div>
-                  <label style="font-size:11px;font-weight:700;color:#a5dfca;display:block;margin-bottom:3px">⚡ Chế độ Krea 2</label>
+                  <label style="font-size:11px;font-weight:700;color:#a5dfca;display:block;margin-bottom:3px">⚡ Chế độ Tạo / Sửa Ảnh</label>
                   <select id="krea2-mode-sel" onchange="onKrea2ModeChange()" style="width:100%;padding:6px 8px;font-size:11.5px;border-radius:7px;background:#182a2f;color:#e9f3ef;border:1px solid #3c6562;font-weight:700">
                     <option value="text2image" selected>🖼️ Text-to-Image (Tạo ảnh mới)</option>
                     <option value="edit">🪄 Image Edit (Sửa / Đồng nhất từ 1–2 ảnh gốc)</option>
@@ -16021,14 +16048,18 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
     </div>
   </div>
 
-  <!-- TAB: XƯỞNG TẠO ẢNH PRO (KREA 2 14B TURBO + CIVITAI HELPER + BATCH IMAGES) -->
+  <!-- TAB: XƯỞNG TẠO ẢNH MOSS (7 CHECKPOINTS + MOSS-IMAGE-EDIT LORA) & KREA 2 PRO -->
   <div id="p-imagestudio" style="display:none">
-    <!-- HEADER XƯỞNG TẠO ẢNH PRO (GỌN GÀNG, TÍCH HỢP MẪU PROMPT 1-CHẠM) -->
-    <div class="c" style="padding:12px 18px;margin-bottom:14px;border:1.5px solid var(--em-border);background:linear-gradient(135deg, rgba(13,148,136,0.08), rgba(124,58,237,0.08))">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <span style="background:linear-gradient(135deg,#0d9488,#7c3aed);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px">KREA 2 TURBO 14B</span>
-          <h2 style="font-size:16px;font-weight:800;margin:0;color:var(--text-main)">🎨 Xưởng Tạo Ảnh Tham Chiếu 8K</h2>
+    <!-- THANH CHUYỂN ĐỘNG CƠ: 🌿 TẠO ẢNH MOSS vs 🎨 TẠO ẢNH KREA 2 -->
+    <div class="c" style="padding:12px 18px;margin-bottom:14px;border:1.5px solid rgba(16,185,129,0.42);background:linear-gradient(135deg, rgba(16,185,129,0.10), rgba(13,148,136,0.08), rgba(124,58,237,0.08))">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <button type="button" id="ist-eng-tab-moss" onclick="switchImageStudioEngineFamily('moss')" class="b b1" style="padding:7px 14px;font-size:12.5px;font-weight:900;background:linear-gradient(135deg,#059669,#0d9488);border:none;border-radius:9px;box-shadow:0 4px 14px rgba(16,185,129,0.32)">
+            🌿 Tạo Ảnh Moss (7 Checkpoints MOSS + Moss-Image-Edit LoRA)
+          </button>
+          <button type="button" id="ist-eng-tab-krea2" onclick="switchImageStudioEngineFamily('krea2')" class="b b2" style="padding:7px 14px;font-size:12px;font-weight:800;border-radius:9px">
+            🎨 Tạo Ảnh Krea 2 (14B Turbo + Civitai)
+          </button>
         </div>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
           <span style="font-size:11px;font-weight:700;color:var(--text-muted);margin-right:2px">Mẫu nhanh:</span>
@@ -16037,6 +16068,71 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
           <button type="button" class="b b2" onclick="fillImageStudioPreset('portrait_f')" style="font-size:11px;padding:5px 9px">👩 Chân Dung 8K</button>
           <button type="button" class="b b2" onclick="fillImageStudioPreset('sensual_18')" style="font-size:11px;padding:5px 9px;border-color:rgba(225,29,72,0.4);color:#e11d48">🔥 Gợi Cảm 18+</button>
           <button type="button" class="b b2" onclick="fillImageStudioPreset('location_169')" style="font-size:11px;padding:5px 9px">🌄 Bối Cảnh</button>
+        </div>
+      </div>
+
+      <!-- BẢNG 7 ĐIỂM KIỂM TRA MOSS IMAGE BASE CHECKPOINTS + MOSS-IMAGE-EDIT LORA -->
+      <div id="ist-moss-cards-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+          <div style="font-size:12.5px;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:7px">
+            <span style="background:#059669;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:999px">MOSS IMAGE ECOSYSTEM</span>
+            <span>Chọn Điểm Kiểm Tra Mô Hình MOSS (Qwen3.5-9B + Flux2 VAE + 8-Steps DMD2 Turbo):</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <a href="https://huggingface.co/chinoll/Moss-Image-Edit" target="_blank" style="font-size:10.5px;font-weight:800;color:#34d399;text-decoration:none;background:rgba(16,185,129,0.12);padding:3px 9px;border-radius:6px;border:1px solid rgba(16,185,129,0.35)">🪄 HF: Moss-Image-Edit LoRA &nearr;</a>
+            <a href="https://github.com/Chenkin-x/ComfyUI-Moss-Image-Edit" target="_blank" style="font-size:10.5px;font-weight:800;color:#38bdf8;text-decoration:none;background:rgba(56,189,248,0.12);padding:3px 9px;border-radius:6px;border:1px solid rgba(56,189,248,0.35)">🧩 GitHub: ComfyUI-Moss-Image-Edit &nearr;</a>
+          </div>
+        </div>
+        <div id="ist-moss-ckpt-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:8px">
+          <div class="ist-moss-card on" data-moss-id="moss_kromoss" onclick="selectMossCheckpointCard('moss_kromoss')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid #10b981;background:rgba(16,185,129,0.12);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:#34d399">🌫️ 1. Kromoss</span>
+              <a href="https://huggingface.co/lodestones/Kromoss" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Cải thiện sương mù trong Base, tăng độ trong trẻo &amp; tương phản sâu</div>
+          </div>
+          <div class="ist-moss-card" data-moss-id="moss_serenity" onclick="selectMossCheckpointCard('moss_serenity')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:var(--text-main)">👩 2. MOSS Serenity</span>
+              <a href="https://huggingface.co/malcolmrey/moss-serenity" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Tăng cường tính thực tế của nhân vật người thật &amp; kết cấu da</div>
+          </div>
+          <div class="ist-moss-card" data-moss-id="moss_imagine" onclick="selectMossCheckpointCard('moss_imagine')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:var(--text-main)">🎬 3. MOSS-Imagine</span>
+              <a href="https://huggingface.co/realrebelai/MOSS-Imagine_ComfyUI" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Biểu hiện điện ảnh theo phong cách Grok Imagine</div>
+          </div>
+          <div class="ist-moss-card" data-moss-id="moss_pastel_bloom" onclick="selectMossCheckpointCard('moss_pastel_bloom')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:var(--text-main)">🌸 4. MOSS Pastel Bloom</span>
+              <a href="https://civitai.com/models/3006255/moss-pastel-bloom" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#f472b6;text-decoration:none;font-weight:800">Civitai &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Màu sắc mềm và đường viền nhẹ nhàng, thơ mộng</div>
+          </div>
+          <div class="ist-moss-card" data-moss-id="moss_animossity" onclick="selectMossCheckpointCard('moss_animossity')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:var(--text-main)">✨ 5. AniMOSSity</span>
+              <a href="https://civitai.com/models/3010746/animossity" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#f472b6;text-decoration:none;font-weight:800">Civitai &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Hoạt hình &times; thực tế, màu sắc sống động rực rỡ</div>
+          </div>
+          <div class="ist-moss-card" data-moss-id="moss_style_ft" onclick="selectMossCheckpointCard('moss_style_ft')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:var(--text-main)">📸 6. MOSS Image Style FT</span>
+              <a href="https://huggingface.co/lamshiu/moss-image-style-ft" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Ảnh chụp nhanh tự nhiên (Natural Snapshot)</div>
+          </div>
+          <div class="ist-moss-card" data-moss-id="moss_kr2" onclick="selectMossCheckpointCard('moss_kr2')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
+              <span style="font-size:12px;font-weight:900;color:var(--text-main)">🔥 7. MOSSkr2</span>
+              <a href="https://huggingface.co/TenStrip/MOSSkr2" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
+            </div>
+            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Krea 2 modul trọng lượng lai MOSS Image SFT</div>
+          </div>
         </div>
       </div>
     </div>
@@ -16134,8 +16230,8 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
             <div>
               <label style="font-size:11px;font-weight:700;color:var(--text-sub);display:block;margin-bottom:4px">⚙️ Mô Hình Gốc (Checkpoint)</label>
-              <select id="ist-checkpoint-sel" class="sel" style="width:100%;padding:7px 10px;font-size:12px;font-weight:700">
-                <option value="gonzalomoKrea2_v40.safetensors" selected>🌟 Gonzalomo Krea 2 v4.0 (Siêu thực 8K)</option>
+              <select id="ist-checkpoint-sel" onchange="onImageStudioCheckpointChange(this.value)" class="sel" style="width:100%;padding:7px 10px;font-size:12px;font-weight:700">
+                <option value="moss_kromoss" selected>🌿 Kromoss — Khử sương mù Base &amp; Tương phản sâu (MOSS)</option>
               </select>
             </div>
             <div>
@@ -16170,10 +16266,21 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
           </div>
         </div>
 
-        <!-- KHUNG TẢI 1-2 ẢNH GỐC KHI Ở CHẾ ĐỘ EDIT / ĐỒNG NHẤT NHÂN VẬT -->
+        <!-- KHUNG TẢI 1-2 ẢNH GỐC KHI Ở CHẾ ĐỘ EDIT (MOSS-IMAGE-EDIT LORA & KREA 2 EDIT) -->
         <div id="ist-edit-refs-box" style="display:none;background:var(--surface-2);border:1.5px dashed var(--em);border-radius:10px;padding:12px 14px">
-          <div style="font-size:12px;font-weight:800;color:var(--em);margin-bottom:8px">
-            ✨ Nạp 1–2 Ảnh Gốc Để Giữ Nét Mặt / Chỉnh Sửa Trang Phục &amp; Bối Cảnh (Krea 2 Image Edit):
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <div id="ist-edit-box-title" style="font-size:12px;font-weight:800;color:var(--em)">
+              🪄 Chỉnh Sửa Ảnh Bằng Lệnh Văn Bản — Moss-Image-Edit LoRA (Đổi màu sắc, trang phục, ánh sáng, mùa &amp; phong cách):
+            </div>
+            <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,0.16);color:#34d399;border:1px solid rgba(16,185,129,0.35)">ApplyMossImageEdit + SkipLayerGuidanceDiT</span>
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px">
+            <span style="font-size:10.5px;font-weight:700;color:var(--text-muted);align-self:center">Lệnh sửa nhanh Moss-Image-Edit:</span>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('outfit')" style="font-size:10.5px;padding:3px 8px">👗 Đổi Trang Phục</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('color')" style="font-size:10.5px;padding:3px 8px">🎨 Đổi Màu Sắc</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('lighting')" style="font-size:10.5px;padding:3px 8px">🌅 Đổi Ánh Sáng</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('season')" style="font-size:10.5px;padding:3px 8px">❄️ Đổi Mùa</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('style')" style="font-size:10.5px;padding:3px 8px">🎬 Đổi Phong Cách</button>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
@@ -23832,9 +23939,115 @@ function transferScriptAiToStudio(autoRun){
   }
 }
 
+let imageStudioActiveEngineFamily = 'moss';
+
+function openMossImageStudioTab(engineFam='moss', preselectMode=''){
+  imageStudioActiveEngineFamily = (engineFam === 'krea2') ? 'krea2' : 'moss';
+  if(typeof gcpuNav === 'function'){
+    gcpuNav('imagestudio');
+  } else if(typeof switchTab === 'function'){
+    switchTab('imagestudio');
+  }
+  switchImageStudioEngineFamily(imageStudioActiveEngineFamily);
+  if(preselectMode){
+    selectImageStudioMode(preselectMode);
+  }
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function switchImageStudioEngineFamily(fam){
+  imageStudioActiveEngineFamily = (fam === 'krea2') ? 'krea2' : 'moss';
+  const btnMoss = document.getElementById('ist-eng-tab-moss');
+  const btnKrea = document.getElementById('ist-eng-tab-krea2');
+  const mossPanel = document.getElementById('ist-moss-cards-panel');
+  if(btnMoss){
+    btnMoss.className = imageStudioActiveEngineFamily === 'moss' ? 'b b1' : 'b b2';
+    btnMoss.style.background = imageStudioActiveEngineFamily === 'moss' ? 'linear-gradient(135deg,#059669,#0d9488)' : '';
+  }
+  if(btnKrea){
+    btnKrea.className = imageStudioActiveEngineFamily === 'krea2' ? 'b b1' : 'b b2';
+    btnKrea.style.background = imageStudioActiveEngineFamily === 'krea2' ? 'linear-gradient(135deg,#0d9488,#7c3aed)' : '';
+  }
+  if(mossPanel){
+    mossPanel.style.display = (imageStudioActiveEngineFamily === 'moss') ? 'block' : 'none';
+  }
+  const ckptSel = document.getElementById('ist-checkpoint-sel');
+  if(ckptSel){
+    const curVal = ckptSel.value || '';
+    if(imageStudioActiveEngineFamily === 'moss' && !curVal.startsWith('moss_')){
+      ckptSel.value = 'moss_kromoss';
+      syncMossCheckpointCardsUI('moss_kromoss');
+    } else if(imageStudioActiveEngineFamily === 'krea2' && curVal.startsWith('moss_')){
+      ckptSel.value = 'gonzalomoKrea2_v40.safetensors';
+      syncMossCheckpointCardsUI('gonzalomoKrea2_v40.safetensors');
+    }
+  }
+  selectImageStudioMode(imageStudioActiveMode || 'text2image');
+  if(typeof gcpuSyncSidebar === 'function') gcpuSyncSidebar();
+}
+
+function selectMossCheckpointCard(ckptId){
+  const ckptSel = document.getElementById('ist-checkpoint-sel');
+  if(ckptSel){
+    ckptSel.value = ckptId;
+  }
+  const modalCkptSel = document.getElementById('krea2-checkpoint-sel');
+  if(modalCkptSel){
+    modalCkptSel.value = ckptId;
+  }
+  syncMossCheckpointCardsUI(ckptId);
+  const found = (krea2CatalogCache.checkpoints || []).find(c => c.id === ckptId);
+  if(found){
+    toast(`🌿 Đã chọn mô hình MOSS: ${found.short_name || found.name}`);
+  }
+}
+
+function onImageStudioCheckpointChange(ckptId){
+  syncMossCheckpointCardsUI(ckptId);
+  if(String(ckptId || '').startsWith('moss_')){
+    imageStudioActiveEngineFamily = 'moss';
+  } else {
+    imageStudioActiveEngineFamily = 'krea2';
+  }
+  selectImageStudioMode(imageStudioActiveMode || 'text2image');
+}
+
+function syncMossCheckpointCardsUI(activeId){
+  document.querySelectorAll('#ist-moss-ckpt-cards .ist-moss-card').forEach(card => {
+    const cid = card.getAttribute('data-moss-id');
+    const isOn = (cid === activeId);
+    card.classList.toggle('on', isOn);
+    card.style.borderColor = isOn ? '#10b981' : 'var(--border)';
+    card.style.background = isOn ? 'rgba(16,185,129,0.14)' : 'var(--surface-2)';
+    const titleSpan = card.querySelector('span');
+    if(titleSpan) titleSpan.style.color = isOn ? '#34d399' : 'var(--text-main)';
+  });
+}
+
+function fillMossEditInstruction(kind){
+  const pInp = document.getElementById('ist-prompt-inp');
+  if(!pInp) return;
+  const presets = {
+    outfit: 'Change the character\'s outfit to ornate crimson and gold Xianxia silk robes while preserving face identity, hair, and pose.',
+    color: 'Change the color scheme of the outfit and ambient environment to deep emerald green and warm champagne gold.',
+    lighting: 'Change the lighting to dramatic cyberpunk neon rim lighting at night with glowing reflections and cinematic shadows.',
+    season: 'Change the season of the background into a snowy winter landscape with gentle falling snowflakes and cold mist.',
+    style: 'Transform the visual style into a vibrant semi-realistic 2.5D anime cinematic illustration while keeping composition intact.'
+  };
+  pInp.value = presets[kind] || presets.outfit;
+  const stepsInp = document.getElementById('ist-steps-inp');
+  const cfgInp = document.getElementById('ist-cfg-inp');
+  const styleSel = document.getElementById('ist-style-sel');
+  if(stepsInp) stepsInp.value = '20';
+  if(cfgInp) cfgInp.value = '4.0';
+  if(styleSel) styleSel.value = 'moss_image_edit_lora';
+  toast('🪄 Đã nạp lệnh chỉnh sửa chuẩn Moss-Image-Edit LoRA (Steps=20, CFG=4.0)!');
+}
+
 async function initImageStudioTab(){
   await loadKrea2CatalogAndHistory();
   populateKrea2StoryboardTargetSelect();
+  switchImageStudioEngineFamily(imageStudioActiveEngineFamily || 'moss');
   if(!_imageStudioInitializedOnce){
     _imageStudioInitializedOnce = true;
     searchImageStudioCivitai();
@@ -23852,15 +24065,34 @@ function selectImageStudioMode(mode){
   if(loadSbBtn) loadSbBtn.style.display = (imageStudioActiveMode === 'batch') ? 'inline-flex' : 'none';
   const lbl = document.getElementById('ist-prompt-label');
   const btn = document.getElementById('btn-ist-generate');
+  const isMoss = (imageStudioActiveEngineFamily === 'moss') || String(document.getElementById('ist-checkpoint-sel')?.value || 'moss_kromoss').startsWith('moss_');
+  const stepsInp = document.getElementById('ist-steps-inp');
+  const cfgInp = document.getElementById('ist-cfg-inp');
   if(imageStudioActiveMode === 'batch'){
     if(lbl) lbl.innerHTML = 'Danh Sách Prompts Tạo Ảnh Hàng Loạt (Mỗi dòng 1 ảnh hoặc <code>Ref_Tên.png | Prompt...</code>):';
-    if(btn) btn.textContent = '🚀 BẮT ĐẦU VẼ HÀNG LOẠT ẢNH KREA 2 TURBO';
+    if(btn) btn.textContent = isMoss ? '🌿 BẮT ĐẦU VẼ HÀNG LOẠT ẢNH MOSS IMAGE' : '🚀 BẮT ĐẦU VẼ HÀNG LOẠT ẢNH KREA 2 TURBO';
   } else if(imageStudioActiveMode === 'edit'){
-    if(lbl) lbl.innerHTML = 'Lệnh Chỉnh Sửa / Đổi Trang Phục &amp; Bối Cảnh Giữ Nguyên Mặt (Krea 2 Edit):';
-    if(btn) btn.textContent = '✨ CHỈNH SỬA & ĐỒNG NHẤT ẢNH BẰNG KREA 2';
+    if(lbl) lbl.innerHTML = isMoss
+      ? '🪄 Lệnh Chỉnh Sửa Ảnh Bằng Chữ — Moss-Image-Edit LoRA (Màu sắc, Trang phục, Ánh sáng, Mùa, Phong cách):'
+      : 'Lệnh Chỉnh Sửa / Đổi Trang Phục &amp; Bối Cảnh Giữ Nguyên Mặt (Krea 2 Edit):';
+    if(btn) btn.textContent = isMoss
+      ? '🪄 CHỈNH SỬA ẢNH BẰNG MOSS-IMAGE-EDIT LORA'
+      : '✨ CHỈNH SỬA & ĐỒNG NHẤT ẢNH BẰNG KREA 2';
+    if(isMoss){
+      if(stepsInp && parseInt(stepsInp.value || '8', 10) < 16) stepsInp.value = '20';
+      if(cfgInp && parseFloat(cfgInp.value || '1.0') < 3.0) cfgInp.value = '4.0';
+    }
   } else {
-    if(lbl) lbl.innerHTML = 'Mô Tả Ảnh Cần Tạo (Hỗ trợ Tiếng Việt &amp; Tiếng Anh):';
-    if(btn) btn.textContent = '🚀 BẮT ĐẦU TẠO ẢNH KREA 2 TURBO (14B)';
+    if(lbl) lbl.innerHTML = isMoss
+      ? '🌿 Mô Tả Ảnh Cần Tạo Bằng MOSS Image (Hỗ trợ Tiếng Việt &amp; Tiếng Anh):'
+      : 'Mô Tả Ảnh Cần Tạo (Hỗ trợ Tiếng Việt &amp; Tiếng Anh):';
+    if(btn) btn.textContent = isMoss
+      ? '🌿 BẮT ĐẦU TẠO ẢNH MOSS (8-STEP DMD2 TURBO)'
+      : '🚀 BẮT ĐẦU TẠO ẢNH KREA 2 TURBO (14B)';
+    if(isMoss){
+      if(stepsInp && parseInt(stepsInp.value || '20', 10) === 20) stepsInp.value = '8';
+      if(cfgInp && parseFloat(cfgInp.value || '4.0') === 4.0) cfgInp.value = '1.0';
+    }
   }
 }
 
@@ -24211,12 +24443,22 @@ async function loadKrea2CatalogAndHistory(){
     if(!res || !res.ok) return;
     krea2CatalogCache = res;
 
-    // 1. Populate Checkpoints in #ist-checkpoint-sel
-    const ckptSel = document.getElementById('ist-checkpoint-sel');
-    if(ckptSel && Array.isArray(res.checkpoints) && res.checkpoints.length){
-      const curCkpt = ckptSel.value;
-      ckptSel.innerHTML = res.checkpoints.map(c => `<option value="${escapeHtml(c.id)}">⚙️ ${escapeHtml(c.name)}</option>`).join('');
-      if(curCkpt) ckptSel.value = curCkpt;
+    // 1. Populate Checkpoints in #ist-checkpoint-sel & #krea2-checkpoint-sel
+    if(Array.isArray(res.checkpoints) && res.checkpoints.length){
+      const ckptOptsHtml = res.checkpoints.map(c => `<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('');
+      ['ist-checkpoint-sel', 'krea2-checkpoint-sel'].forEach(selId => {
+        const ckptSel = document.getElementById(selId);
+        if(ckptSel){
+          const curCkpt = ckptSel.value;
+          ckptSel.innerHTML = ckptOptsHtml;
+          if(curCkpt && res.checkpoints.some(c => c.id === curCkpt)){
+            ckptSel.value = curCkpt;
+          } else {
+            ckptSel.value = 'moss_kromoss';
+          }
+        }
+      });
+      syncMossCheckpointCardsUI(document.getElementById('ist-checkpoint-sel')?.value || 'moss_kromoss');
     }
 
     // 2. Populate Style LoRAs in both #krea2-style-sel and #ist-style-sel
@@ -24771,6 +25013,8 @@ async function runKrea2Generate(){
         steps: Math.max(8, steps),
         cfg: cfg,
         seed: seed,
+        base_checkpoint: document.getElementById('krea2-checkpoint-sel')?.value || 'moss_kromoss',
+        style_lora_id: document.getElementById('krea2-style-sel')?.value || 'none',
         trigger_words: krea2ActiveTriggers,
         ref_image_1: ref1Data,
         ref_image_2: ref2Data,
@@ -24933,15 +25177,19 @@ async function exportImageStudioComfyWorkflow(){
         steps: steps < 10 ? 20 : steps,
         cfg: cfg <= 1.5 ? 4.0 : cfg,
         seed: seed,
+        base_checkpoint: document.getElementById('ist-checkpoint-sel')?.value || 'moss_kromoss',
+        mode: imageStudioActiveMode === 'edit' ? 'edit' : 'text2image',
         lora_name: krea2ActiveLoraName,
         trigger_words: krea2ActiveTriggers
       })
     }).then(r => r.json());
     if(res && res.ok && res.workflow){
+      const ckptNow = document.getElementById('ist-checkpoint-sel')?.value || 'moss_kromoss';
+      const wfPrefix = ckptNow.startsWith('moss_') ? (imageStudioActiveMode === 'edit' ? 'ComfyUI_Moss_Image_Edit' : 'ComfyUI_MOSS_Image') : 'ComfyUI_Krea2_14B';
       const blob = new Blob([JSON.stringify(res.workflow, null, 2)], {type: 'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `ComfyUI_Krea2_14B_Workflow_${Date.now()}.json`;
+      a.download = `${wfPrefix}_Workflow_${Date.now()}.json`;
       a.click();
       toast('🧩 Đã tải xuống file JSON Workflow chuẩn ComfyUI Krea 2 (14B)!');
     }
@@ -30025,7 +30273,9 @@ function gcpuSyncSidebar(){
   const activeTab = activeTabEl ? activeTabEl.dataset.tab : 'dash';
   const curMode = _uxVal('gen-mode', 'reference') || 'reference';
   let activeSbId = activeTab;
-  if(activeTab === 'dash'){
+  if(activeTab === 'imagestudio'){
+    activeSbId = (typeof imageStudioActiveEngineFamily !== 'undefined' && imageStudioActiveEngineFamily === 'moss') ? 'moss' : 'imagestudio';
+  } else if(activeTab === 'dash'){
     if(curMode === 't2v' || curMode === 'fasth3_t2v') activeSbId = 't2v';
     else if(curMode === 'first_frame') activeSbId = 'fl2v';
     else if(curMode === 'char_swap' || curMode === 'skeleton_v2v' || curMode === 'cam_previs') activeSbId = 'vid';
@@ -37296,6 +37546,8 @@ class H(BaseHTTPRequestHandler):
                     seed=int(d.get("seed") if d.get("seed") is not None else -1),
                     lora_name=str(d.get("lora_name") or ""),
                     lora_strength=float(d.get("lora_strength") if d.get("lora_strength") is not None else 1.0),
+                    base_checkpoint=str(d.get("base_checkpoint") or "moss_kromoss"),
+                    mode=str(d.get("mode") or "text2image"),
                 )
                 self._j({"ok": True, "workflow": wf})
             except Exception as e:
