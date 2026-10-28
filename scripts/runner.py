@@ -749,11 +749,35 @@ def resolve_jobs(manifest: dict[str, Any], output_dir: Path) -> list[dict[str, A
             "guides": guides,
             "audio_as_ref": bool(raw.get("audio_as_ref", manifest.get("audio_as_ref", False))),
             "ai_upscale": bool(raw.get("ai_upscale", manifest.get("ai_upscale", False)) or str(os.environ.get("H3_AI_UPSCALE", "0")).strip() == "1"),
+            "selflift": bool(raw.get("selflift", manifest.get("selflift", True)) and str(os.environ.get("H3_SELFLIFT", "1")).strip().lower() not in ("0", "false", "no")),
+            "tst": bool(raw.get("tst", manifest.get("tst", True)) and str(os.environ.get("H3_TST", "1")).strip().lower() not in ("0", "false", "no")),
         })
     return resolved
 
 
-def extract_last_frame_png(video_path: Path, out_png: Path) -> bool:
+def _drift_control_stabilize_frame(frame_png: Path, anchor_ref_png: Path | None = None) -> None:
+    """Drift-Control Anti-Burn: prevent cumulative color/saturation drift and highlight burn across chained clips."""
+    if not frame_png.is_file():
+        return
+    try:
+        from PIL import Image
+        import numpy as np
+        arr = np.asarray(Image.open(frame_png).convert("RGB"), dtype=np.float32)
+        if anchor_ref_png and Path(anchor_ref_png).is_file():
+            ref = np.asarray(Image.open(anchor_ref_png).convert("RGB"), dtype=np.float32)
+            for ch in range(3):
+                m_cur, s_cur = float(arr[:, :, ch].mean()), max(float(arr[:, :, ch].std()), 1.0)
+                m_ref, s_ref = float(ref[:, :, ch].mean()), max(float(ref[:, :, ch].std()), 1.0)
+                t_mean = m_cur * 0.70 + m_ref * 0.30
+                t_std = s_cur * 0.75 + s_ref * 0.25
+                arr[:, :, ch] = (arr[:, :, ch] - m_cur) * (t_std / s_cur) + t_mean
+        arr = np.clip(arr, 2.0, 253.0).round().astype(np.uint8)
+        Image.fromarray(arr).save(frame_png, format="PNG")
+    except Exception:
+        pass
+
+
+def extract_last_frame_png(video_path: Path, out_png: Path, anchor_ref_png: Path | None = None) -> bool:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg or not video_path.is_file():
         return False
@@ -767,6 +791,7 @@ def extract_last_frame_png(video_path: Path, out_png: Path) -> bool:
                 check=False,
             )
             if out_png.is_file() and out_png.stat().st_size > 500:
+                _drift_control_stabilize_frame(out_png, anchor_ref_png)
                 return True
         except Exception:
             pass
@@ -1160,10 +1185,11 @@ def run_batch(
                 prev_id = str(jobs[index - 1].get("id") or f"clip_{index:02d}")
                 sb_refs_dir = SKILL_DIR / "output" / "storyboard_refs"
                 sb_refs_dir.mkdir(parents=True, exist_ok=True)
+                _anchor_ref = (job.get("reference_images") or [None])[0]
                 lf_png = sb_refs_dir / f"LastFrame_{prev_id}.png"
-                if not extract_last_frame_png(prev_completed_mp4, lf_png):
+                if not extract_last_frame_png(prev_completed_mp4, lf_png, _anchor_ref):
                     lf_png = work_root / f"LastFrame_{prev_id}.png"
-                if lf_png.is_file() or extract_last_frame_png(prev_completed_mp4, lf_png):
+                if lf_png.is_file() or extract_last_frame_png(prev_completed_mp4, lf_png, _anchor_ref):
                     apply_continuity_frame_to_job(job, lf_png, prev_job_id=prev_id)
                     current["chained_last_frame"] = str(lf_png)
                     current["reference_images"] = [str(p) for p in job.get("reference_images", [])]
@@ -1412,6 +1438,8 @@ def run_batch(
                 "H3_DIRECTOR_PACK=" + remote_pack,
                 "H3_GUIDES=" + json.dumps(remote_guides, separators=(",", ":")),
                 "H3_AI_UPSCALE=" + ("1" if str(job.get("ai_upscale", False)).lower() in ("true", "1") else "0"),
+                "H3_SELFLIFT=" + ("1" if job.get("selflift", True) else "0"),
+                "H3_TST=" + ("1" if job.get("tst", True) else "0"),
                 "H3_MULTI_JOBS_FILE=" + remote_multi_file,
             ]
             exec_args = ["exec", "--session", session, "--timeout", str(eff_exec_timeout)]

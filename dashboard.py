@@ -3063,7 +3063,7 @@ def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, 
             dim_env = f"H3_DURATION_SECONDS={duration} H3_WIDTH={width} H3_HEIGHT={height} H3_REF_SIZE={ref_size}"
             if audio_path and ui_mode in ("audio_sync", "fasth3_omni"):
                 dim_env += " H3_AUDIO_AS_REF=1"
-            dim_env += (" H3_AI_UPSCALE=1" if (enable_upscale and str(upscale_target) == "AI_x2_deep") else " H3_AI_UPSCALE=0")
+            dim_env += (" H3_AI_UPSCALE=1" if (enable_upscale and str(upscale_target) == "AI_x2_deep") else " H3_AI_UPSCALE=0") + " H3_SELFLIFT=1 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1"
             cmd_args = f"{token_env} {session_env} {seed_env} {mode_env} {lora_env} {dim_env} python3 '{runner}' single"
             for img in images:
                 cmd_args += f" --image '{wsl_path(img)}'"
@@ -3441,7 +3441,7 @@ def run_batch_video(manifest_data, output_dir, gpu="A100", timeout=7200, seed=-1
                     lora_env = f"H3_LORA={clip_job.get('lora', 'pdmd')}"
                     seed_val = clip_job.get("seed", -1)
                     seed_env = f"H3_SEED={seed_val}" if seed_val != -1 else ""
-                    dim_env = f"H3_DURATION_SECONDS={clip_job.get('duration_seconds', 15)} H3_WIDTH={clip_job.get('width', 576)} H3_HEIGHT={clip_job.get('height', 1024)} H3_REF_SIZE=max H3_AI_UPSCALE=0"
+                    dim_env = f"H3_DURATION_SECONDS={clip_job.get('duration_seconds', 15)} H3_WIDTH={clip_job.get('width', 576)} H3_HEIGHT={clip_job.get('height', 1024)} H3_REF_SIZE=max H3_AI_UPSCALE=0 H3_SELFLIFT=1 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1"
                     clip_timeout = 3600  # base gen + bắt buộc H3VideoUpsampler 2K trên Colab
 
                     cmd = f"{token_env} {session_env} {seed_env} {mode_env} {lora_env} {dim_env} python3 '{runner}' single"
@@ -13741,15 +13741,15 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 
               <div class="adv-item">
                 <div class="adv-row">
-                  <span class="adv-label">💎 H3VideoUpsampler <span id="upscale-badge" class="chip chip-g" style="display:inline-block;font-size:9.5px;padding:1px 6px">LUÔN BẬT</span></span>
+                  <span class="adv-label">⚡ SelfLift 4K + TST + Drift-Control <span id="upscale-badge" class="chip chip-g" style="display:inline-block;font-size:9.5px;padding:1px 6px">LUÔN BẬT</span></span>
                   <div class="adv-ctl">
                     <select id="upscale-target" disabled style="opacity:0.9;cursor:default">
-                      <option value="AI_x2" selected>💎 AI Latent x2 (Mặc định)</option>
+                      <option value="AI_x2" selected>⚡ SelfLift 3D Lift + TST</option>
                     </select>
                     <input type="checkbox" id="enable-upscale" style="display:none">
                   </div>
                 </div>
-                <div class="adv-hint">Mọi video tạo ra đều bắt buộc chạy qua <b>H3VideoUpsampler (3D Latent + h3upscale_v2_x2)</b> trên Colab trước khi trả về. Phóng nét <b>0 CU (1080p/2K/4K Local)</b>: bấm nút <b>⬆️</b> ở <b>Thư Viện</b> để up tay.</div>
+                <div class="adv-hint">Tích hợp <b>SelfLift Progressive (75% Low-Res 0.5x &rarr; 3D Latent Upscaler Lift &rarr; 25% Full-Res)</b> + <b>H3 TST (ổn định chuyển động)</b> + <b>ChunkFFN/LowVRAMAttn</b> + <b>Drift-Control Anti-Burn (chống trôi/cháy màu khi nối đoạn)</b>. Phóng nét <b>1080p/2K/4K Local (0 CU)</b>: bấm nút <b>⬆️</b> ở <b>Thư Viện</b>.</div>
               </div>
 
               <div class="adv-item">
@@ -13966,7 +13966,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
           <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
             <label style="margin:0;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px">
               <span data-i18n="b_upscale_label">⬆️ Tự động Upscale hàng loạt</span>
-              <span id="b-upscale-badge" class="chip chip-g" style="display:inline-block;font-size:10px;padding:1px 6px">💎 H3VideoUpsampler · LUÔN BẬT</span>
+              <span id="b-upscale-badge" class="chip chip-g" style="display:inline-block;font-size:10px;padding:1px 6px">⚡ SelfLift 3D + TST + Drift-Control · LUÔN BẬT</span>
             </label>
             <div style="display:flex;align-items:center;gap:8px">
               <select id="b-upscale-target" disabled style="padding:2px 8px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-main);font-weight:700;opacity:0.9;cursor:default">
