@@ -906,6 +906,7 @@ def _run_wsl_cmd(cmd: str, timeout: int = 600) -> Tuple[int, str]:
 
 _IMAGE_ACC_LOCK = threading.Lock()
 _ACTIVE_IMAGE_ACCOUNTS: Dict[str, Dict[str, Any]] = {}
+_WARM_IMAGE_ACCOUNTS: Dict[str, float] = {}
 _IMAGE_RR_COUNTER: int = 0
 
 
@@ -917,6 +918,12 @@ def get_active_image_accounts() -> List[str]:
 def get_active_image_tasks() -> Dict[str, Dict[str, Any]]:
     with _IMAGE_ACC_LOCK:
         return {k: dict(v) for k, v in _ACTIVE_IMAGE_ACCOUNTS.items()}
+
+
+def get_warm_image_accounts() -> List[str]:
+    now = time.time()
+    with _IMAGE_ACC_LOCK:
+        return [em for em, ts in _WARM_IMAGE_ACCOUNTS.items() if (now - ts) < 840]
 
 
 def _generate_via_colab_gpu(
@@ -939,7 +946,10 @@ def _generate_via_colab_gpu(
 ) -> Tuple[Optional[bytes], str, str, str]:
     """
     Chạy trực tiếp mô hình MOSS Image / Krea 2 Gốc trên máy ảo Google Colab GPU (L4 / A100 / T4) thông qua ComfyUI.
-    Tự động phân tải thông minh qua các tài khoản Colab đang rảnh (không đụng tài khoản đang tạo Video hoặc đang vẽ ảnh khác).
+    Tối ưu tốc độ:
+    1) Ưu tiên số 1 cho Tài Khoản RẢNH + ĐÃ ẤM (đã bật ComfyUI & nạp sẵn Model 18GB trong VRAM) -> Chỉ mất ~10-15 giây/ảnh!
+    2) Nếu TK ấm đang bận (tạo Video hoặc đang vẽ ảnh khác), lập tức nhảy sang TK rảnh tiếp theo để chạy song song.
+    3) Truyền thẳng Prompt qua biến môi trường Base64 (`KREA2_PROMPT_B64`), bỏ hẳn bước `colab upload` file text tốn 5 giây.
     """
     global _IMAGE_RR_COUNTER
     nb_path = SCRIPT_DIR / "assets" / "Krea2_Turbo_Colab.ipynb"
@@ -948,70 +958,85 @@ def _generate_via_colab_gpu(
     if not nb_path.is_file() or not runner_path.is_file():
         return None, "", "", "Không tìm thấy file Krea2_Turbo_Colab.ipynb hoặc runner.py"
 
-    # 1. Thu thập danh sách tất cả tài khoản Colab còn CU (> 0.05 CU)
+    # 1. Thu thập danh sách tài khoản Colab còn CU (ưu tiên dùng ngay danh sách đã có trong RAM từ dashboard.py, không tốn 3s gọi WSL)
     funded_emails: List[str] = []
     if eligible_accounts:
         for em in eligible_accounts:
             if em and em not in funded_emails:
                 funded_emails.append(em)
 
-    code_l, out_l = _run_wsl_cmd(f"python3 '{_wsl_path(mgr_path)}' list", timeout=15)
-    fallback_email = ""
-    if code_l == 0 and out_l:
-        try:
-            accs = json.loads(out_l)
-            funded_tuples = []
-            for a in (accs if isinstance(accs, list) else []):
-                em = a.get("email")
-                bal = a.get("balance")
-                try:
-                    bf = float(str(bal).split()[0]) if bal is not None else 0.0
-                except Exception:
-                    bf = 0.0
-                if em and bf > 0.05:
-                    funded_tuples.append((1 if a.get("selected") else 0, bf, em))
-            funded_tuples.sort(reverse=True)
-            for _, _, em in funded_tuples:
-                if em not in funded_emails:
-                    funded_emails.append(em)
-            if not funded_emails and accs and isinstance(accs, list) and accs[0].get("email"):
-                fallback_email = accs[0]["email"]
-        except Exception:
-            pass
+    if not funded_emails:
+        code_l, out_l = _run_wsl_cmd(f"python3 '{_wsl_path(mgr_path)}' list", timeout=15)
+        if code_l == 0 and out_l:
+            try:
+                accs = json.loads(out_l)
+                funded_tuples = []
+                for a in (accs if isinstance(accs, list) else []):
+                    em = a.get("email")
+                    bal = a.get("balance")
+                    try:
+                        bf = float(str(bal).split()[0]) if bal is not None else 0.0
+                    except Exception:
+                        bf = 0.0
+                    if em and bf > 0.05:
+                        funded_tuples.append((1 if a.get("selected") else 0, bf, em))
+                funded_tuples.sort(reverse=True)
+                for _, _, em in funded_tuples:
+                    if em not in funded_emails:
+                        funded_emails.append(em)
+                if not funded_emails and accs and isinstance(accs, list) and accs[0].get("email"):
+                    funded_emails = [accs[0]["email"]]
+            except Exception:
+                pass
 
-    if not funded_emails and fallback_email:
-        funded_emails = [fallback_email]
-
-    # 2. Chọn tài khoản RẢNH (ưu tiên TK không bận tạo Video VÀ không bận vẽ Ảnh khác)
+    # 2. Chọn tài khoản RẢNH thông minh:
+    # - Tier 0: TK Rảnh VÀ Đang Ấm (ComfyUI + Model 18GB đã nằm sẵn trong VRAM trong 14 phút qua) -> Vẽ ảnh tiếp theo chỉ ~12 giây!
+    # - Tier 1: TK Rảnh khác (Dùng khi Tier 0 đang bận vẽ ảnh 1 hoặc đang tạo Video -> Chạy song song đa TK!)
+    now_ts = time.time()
     busy_vid_set = set(busy_video_accounts or [])
     with _IMAGE_ACC_LOCK:
         busy_img_set = set(_ACTIVE_IMAGE_ACCOUNTS.keys())
-        tier1_idle = [em for em in funded_emails if em not in busy_vid_set and em not in busy_img_set]
+        tier0_warm_idle = [
+            em for em in funded_emails
+            if em not in busy_vid_set
+            and em not in busy_img_set
+            and (now_ts - float(_WARM_IMAGE_ACCOUNTS.get(em) or 0.0)) < 840
+        ]
+        tier0_warm_idle.sort(key=lambda em: float(_WARM_IMAGE_ACCOUNTS.get(em) or 0.0), reverse=True)
+
+        tier1_cold_idle = [
+            em for em in funded_emails
+            if em not in busy_vid_set
+            and em not in busy_img_set
+            and em not in tier0_warm_idle
+        ]
+        if len(tier1_cold_idle) > 1:
+            rot = _IMAGE_RR_COUNTER % len(tier1_cold_idle)
+            tier1_cold_idle = tier1_cold_idle[rot:] + tier1_cold_idle[:rot]
+        _IMAGE_RR_COUNTER += 1
+
         tier2_no_vid = [em for em in funded_emails if em not in busy_vid_set and em in busy_img_set]
         tier3_busy_vid = [em for em in funded_emails if em in busy_vid_set]
-
-        if len(tier1_idle) > 1:
-            rot = _IMAGE_RR_COUNTER % len(tier1_idle)
-            tier1_idle = tier1_idle[rot:] + tier1_idle[:rot]
-        _IMAGE_RR_COUNTER += 1
 
         ordered_candidates: List[str] = []
         if preferred_account and preferred_account in funded_emails:
             ordered_candidates.append(preferred_account)
-        for em in (tier1_idle + tier2_no_vid + tier3_busy_vid):
+        for em in (tier0_warm_idle + tier1_cold_idle + tier2_no_vid + tier3_busy_vid):
             if em and em not in ordered_candidates:
                 ordered_candidates.append(em)
         if not ordered_candidates:
             ordered_candidates = [""]
 
         acc_email = ordered_candidates[0]
+        is_already_warm = bool(acc_email and (now_ts - float(_WARM_IMAGE_ACCOUNTS.get(acc_email) or 0.0)) < 720)
         if acc_email:
             _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
                 "email": acc_email,
                 "mode": mode,
                 "checkpoint": base_checkpoint,
+                "warm": is_already_warm,
                 "started_at": time.strftime("%H:%M:%S"),
-                "ts": time.time(),
+                "ts": now_ts,
             }
 
     gpu_choice = (colab_gpu or "A100").strip().upper()
@@ -1027,7 +1052,7 @@ def _generate_via_colab_gpu(
     loc_ref2 = td / f"krea2_ref2_{uid}.png"
 
     try:
-        # 3. Khởi tạo hoặc tái sử dụng phiên ấm trên Colab (Tự động chuyển sang TK tiếp theo nếu TK đầu bị hết GPU)
+        # 3. Khởi tạo hoặc tái sử dụng phiên ấm trên Colab
         started_ok = False
         last_start_err = ""
         for cand_idx, cand_email in enumerate(ordered_candidates):
@@ -1036,17 +1061,23 @@ def _generate_via_colab_gpu(
                     if acc_email:
                         _ACTIVE_IMAGE_ACCOUNTS.pop(acc_email, None)
                     acc_email = cand_email
+                    is_already_warm = bool(acc_email and (time.time() - float(_WARM_IMAGE_ACCOUNTS.get(acc_email) or 0.0)) < 720)
                     if acc_email:
                         _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
                             "email": acc_email,
                             "mode": mode,
                             "checkpoint": base_checkpoint,
+                            "warm": is_already_warm,
                             "started_at": time.strftime("%H:%M:%S"),
                             "ts": time.time(),
                         }
             safe_acc = re.sub(r"[^a-zA-Z0-9_]", "_", acc_email or "default")
             tok_env = f"COLAB_TOKEN_PATH='/root/.config/colab-cli/tokens/{acc_email}.json' " if acc_email else ""
             session = f"h3_warm_{safe_acc}"
+            # Nếu phiên vừa chạy ấm trong 12 phút qua, bỏ qua bước gọi runner.py start (tiết kiệm 5-7 giây!)
+            if is_already_warm:
+                started_ok = True
+                break
             c_start, o_start = _run_wsl_cmd(
                 f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'",
                 timeout=300,
@@ -1070,23 +1101,12 @@ def _generate_via_colab_gpu(
         safe_acc = re.sub(r"[^a-zA-Z0-9_]", "_", acc_email or "default")
         tok_env = f"COLAB_TOKEN_PATH='/root/.config/colab-cli/tokens/{acc_email}.json' " if acc_email else ""
         session = f"h3_warm_{safe_acc}"
+        cfg_arg = f"--config='/root/.config/colab-cli/tokens/sessions_{acc_email}.json'" if acc_email else ""
 
-        loc_prompt.write_text(en_prompt, encoding="utf-8")
-        rem_prompt = f"/content/krea2_prompt_{uid}.txt"
+        prompt_b64 = base64.b64encode(en_prompt.encode("utf-8")).decode("ascii")
         rem_out = f"/content/krea2_out_{uid}.png"
         rem_ref1 = ""
         rem_ref2 = ""
-
-        c_up, o_up = _run_wsl_cmd(
-            f"{tok_env}colab --auth=oauth2 --config='/root/.config/colab-cli/tokens/sessions_{acc_email}.json' upload --session '{session}' '{_wsl_path(loc_prompt)}' '{rem_prompt}'"
-            if acc_email
-            else f"colab --auth=oauth2 upload --session '{session}' '{_wsl_path(loc_prompt)}' '{rem_prompt}'",
-            timeout=60,
-        )
-        if c_up != 0:
-            return None, "", "", f"Upload prompt lên Colab thất bại: {o_up[-160:]}"
-
-        cfg_arg = f"--config='/root/.config/colab-cli/tokens/sessions_{acc_email}.json'" if acc_email else ""
 
         if mode == "edit" and ref_image_1:
             raw_r1 = None
@@ -1097,10 +1117,14 @@ def _generate_via_colab_gpu(
             if raw_r1:
                 loc_ref1.write_bytes(raw_r1)
                 rem_ref1 = f"/content/krea2_ref1_{uid}.png"
-                _run_wsl_cmd(
+                c_u1, _ = _run_wsl_cmd(
                     f"{tok_env}colab --auth=oauth2 {cfg_arg} upload --session '{session}' '{_wsl_path(loc_ref1)}' '{rem_ref1}'",
                     timeout=90,
                 )
+                if c_u1 != 0 and is_already_warm:
+                    # Nếu phiên ấm hết hạn, tự động bật lại phiên rồi upload lại
+                    _run_wsl_cmd(f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'", timeout=300)
+                    _run_wsl_cmd(f"{tok_env}colab --auth=oauth2 {cfg_arg} upload --session '{session}' '{_wsl_path(loc_ref1)}' '{rem_ref1}'", timeout=90)
 
         if mode == "edit" and ref_image_2:
             raw_r2 = None
@@ -1122,7 +1146,7 @@ def _generate_via_colab_gpu(
         env_flags = " ".join([
             f"--env 'KREA2_MODE={mode}'",
             f"--env 'KREA2_CHECKPOINT={base_checkpoint}'",
-            f"--env 'KREA2_PROMPT_FILE={rem_prompt}'",
+            f"--env 'KREA2_PROMPT_B64={prompt_b64}'",
             f"--env 'KREA2_OUTPUT_PATH={rem_out}'",
             f"--env 'KREA2_WIDTH={width}'",
             f"--env 'KREA2_HEIGHT={height}'",
@@ -1140,6 +1164,15 @@ def _generate_via_colab_gpu(
             f"{tok_env}colab --auth=oauth2 {cfg_arg} exec --session '{session}' --timeout 600 {env_flags} --file '{_wsl_path(nb_path)}'",
             timeout=620,
         )
+        if c_ex != 0 and is_already_warm:
+            # Nếu phiên ấm đã bị đóng trên Colab, khởi động lại phiên và chạy lại ngay
+            with _IMAGE_ACC_LOCK:
+                _WARM_IMAGE_ACCOUNTS.pop(acc_email, None)
+            _run_wsl_cmd(f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'", timeout=300)
+            c_ex, o_ex = _run_wsl_cmd(
+                f"{tok_env}colab --auth=oauth2 {cfg_arg} exec --session '{session}' --timeout 600 {env_flags} --file '{_wsl_path(nb_path)}'",
+                timeout=620,
+            )
         if c_ex != 0:
             return None, "", "", f"Colab Krea 2 exec lỗi: {o_ex[-240:]}"
 
@@ -1148,6 +1181,9 @@ def _generate_via_colab_gpu(
             timeout=120,
         )
         if c_dl == 0 and loc_out.is_file() and loc_out.stat().st_size > 4096:
+            with _IMAGE_ACC_LOCK:
+                if acc_email:
+                    _WARM_IMAGE_ACCOUNTS[acc_email] = time.time()
             raw_out = loc_out.read_bytes()
             png_bytes = _format_and_upscale_image_bytes(raw_out, width, height, crop_watermark_px=0)
             short_ckpt = base_checkpoint.replace(".safetensors", "")

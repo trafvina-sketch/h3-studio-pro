@@ -24881,6 +24881,9 @@ function _renderImageStudioWaitQueue(){
     const ss = String(sec % 60).padStart(2, '0');
     const pct = Math.min(94, Math.max(12, Math.round((1 - Math.exp(-sec / 28)) * 95)));
     const shortP = t.prompt.length > 90 ? (t.prompt.slice(0, 90) + '...') : t.prompt;
+    const stageNote = sec <= 22
+      ? '⚡ Máy chủ đang vẽ ảnh trên GPU (Khi GPU đã ấm chỉ mất ~10–15 giây)'
+      : '🔥 Lần đầu nạp Model 18GB vào VRAM (~1.5–2 phút) — Từ ảnh thứ 2 trở đi chỉ mất ~12 giây!';
     return `
       <div style="display:flex;flex-direction:column;gap:5px;padding:${tasks.length > 1 ? '7px 9px' : '2px 0'};background:${tasks.length > 1 ? 'rgba(0,0,0,0.22)' : 'transparent'};border-radius:8px">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
@@ -24894,6 +24897,7 @@ function _renderImageStudioWaitQueue(){
         <div style="font-size:11.5px;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
           💬 Prompt: ${escapeHtml(shortP || '—')}
         </div>
+        <div style="font-size:10.5px;color:#94a3b8">${stageNote}</div>
         <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden">
           <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#10b981,#38bdf8);transition:width 0.8s ease"></div>
         </div>
@@ -35023,12 +35027,14 @@ class H(BaseHTTPRequestHandler):
                     if isinstance(w_st, dict) and w_st.get("status") == "running":
                         busy_video_set.add(em_k)
             try:
-                from scripts.krea2_civitai_engine import get_active_image_accounts, get_active_image_tasks
+                from scripts.krea2_civitai_engine import get_active_image_accounts, get_active_image_tasks, get_warm_image_accounts
                 busy_image_set = get_active_image_accounts()
                 busy_image_tasks = get_active_image_tasks()
+                warm_image_list = get_warm_image_accounts()
             except Exception:
                 busy_image_set = set()
                 busy_image_tasks = {}
+                warm_image_list = []
             for acc in raw_accs:
                 em = acc.get("email")
                 en = is_worker_enabled(em)
@@ -35082,6 +35088,7 @@ class H(BaseHTTPRequestHandler):
                 "busy_image_accounts": [e for e in ready_workers if e in busy_image_set],
                 "idle_ready_accounts": [e for e in ready_workers if e not in busy_video_set and e not in busy_image_set],
                 "active_image_tasks": busy_image_tasks,
+                "warm_image_accounts": warm_image_list,
                 "parallel_multiplier": max(1, len(ready_workers)),
                 "total_cu": round(total_enabled_cu, 2),
                 "total_cu_all": round(total_all_cu, 2),
