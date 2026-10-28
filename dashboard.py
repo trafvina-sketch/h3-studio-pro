@@ -16214,10 +16214,11 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
               <span id="ist-prompt-label">Nhập Mô Tả Ảnh (Tiếng Việt hoặc Tiếng Anh):</span>
             </div>
             <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-              <button type="button" class="b b2" onclick="fillImageStudioPreset('xianxia_black')" style="font-size:10.5px;padding:3px 8px">⚔️ Kiếm Khách</button>
-              <button type="button" class="b b2" onclick="fillImageStudioPreset('xianxia_red')" style="font-size:10.5px;padding:3px 8px">🌸 Nữ Hiệp</button>
-              <button type="button" class="b b2" onclick="fillImageStudioPreset('portrait_f')" style="font-size:10.5px;padding:3px 8px">👩 Chân Dung</button>
-              <button type="button" class="b b2" onclick="fillImageStudioPreset('location_169')" style="font-size:10.5px;padding:3px 8px">🌄 Bối Cảnh</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('photoreal')" style="font-size:10.5px;padding:3px 8px" title="Bấm nhiều lần để đổi mẫu Prompt Ảnh Chân Thật (Moss Serenity)">📸 Ảnh Chân Thật</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('cg_3d')" style="font-size:10.5px;padding:3px 8px" title="Bấm nhiều lần để đổi mẫu Prompt Ảnh 3D / Tiên Hiệp (Moss Kromoss)">🧊 Ảnh 3D</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('anime_2d')" style="font-size:10.5px;padding:3px 8px" title="Bấm nhiều lần để đổi mẫu Prompt Hoạt Hình 2D / Anime (AniMOSSity)">🎨 Hoạt Hình 2D</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('fight_action')" style="font-size:10.5px;padding:3px 8px" title="Bấm nhiều lần để đổi mẫu Prompt Chiến Đấu / Hành Động (Moss Imagine)">⚔️ Chiến Đấu</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('location_169')" style="font-size:10.5px;padding:3px 8px" title="Bấm nhiều lần để đổi mẫu Prompt Bối Cảnh 8K (Moss Kromoss)">🌄 Bối Cảnh</button>
               <button type="button" id="btn-ist-load-sb-refs" class="b b2" onclick="loadMissingStoryboardRefsToImageBatch()" style="display:none;font-size:10.5px;padding:3px 8px;color:var(--em)">📥 Nạp DS Thực Thể</button>
               <button type="button" class="b b3" onclick="document.getElementById('ist-prompt-inp').value=''" style="font-size:10.5px;padding:3px 7px;color:#ef4444">🗑️ Xóa</button>
             </div>
@@ -24128,41 +24129,136 @@ function syncImageStudioAspectPills(resVal){
   }
 }
 
+var _istPresetCycleIdx = {};
 function fillImageStudioPreset(presetKey){
   const pInp = document.getElementById('ist-prompt-inp');
   const resSel = document.getElementById('ist-res-sel');
   if(!pInp) return;
-  const presets = {
-    xianxia_black: {
-      res: '1344x768',
-      prompt: 'Ultra-photorealistic 8k Xianxia CG cinematic medium close-up portrait of a stoic male swordsman in flowing matte black silk robes standing on a glowing spiritual sword above an endless cyan-teal sea of clouds, wind blowing long dark hair, top sunlight breaking through golden-rimmed clouds, sharp focus, raw photo.'
-    },
-    xianxia_red: {
-      res: '1344x768',
-      prompt: 'Ultra-photorealistic 8k Xianxia CG cinematic portrait of an agile female swordsman in vivid crimson silk satin robes wielding an ancient drawn blade in hand, soaring above a sea of clouds with ancient pagoda spires in background, warm golden side-backlight rim lighting, sharp focus.'
-    },
-    portrait_f: {
-      res: '1024x1024',
-      prompt: 'Ultra-photorealistic 8k raw portrait photo of a young woman, natural skin texture with subtle pores, expressive eyes, soft golden-hour key light and warm rim light, clean background, 85mm f/1.4 lens, single person reference sheet standard.'
-    },
-    sensual_18: {
-      res: '832x1216',
-      prompt: 'tạo cô gái khoả thân nghệ thuật, ánh sáng điện ảnh ấm áp, làn da chân thực sắc nét 8k'
-    },
-    location_169: {
-      res: '1344x768',
-      prompt: 'Wide establishing architectural environment photo, sunlit pastoral farmyard with weathered wooden fences, dirt path, wildflowers and distant barn under clear morning sky, natural volumetric sunlight, 8k photorealistic live-action.'
-    }
+  const presetPools = {
+    photoreal: [
+      {
+        ckpt: 'moss_serenity',
+        res: '832x1216',
+        prompt: 'Ultra-photorealistic 8k raw portrait photo of a young Asian woman in a sunlit Parisian cafe, natural skin texture with subtle pores and peach fuzz, expressive warm brown eyes, wearing an off-white linen blouse, golden hour sunlight streaming through glass window creating soft warm rim light on dark wavy hair, 85mm f/1.4 lens, shallow depth of field, Kodak Portra 400 film grain.'
+      },
+      {
+        ckpt: 'moss_serenity',
+        res: '1344x768',
+        prompt: 'Cinematic photorealistic street photography in rainy Tokyo neon night, a handsome young man in a dark charcoal trench coat holding a transparent umbrella, wet asphalt reflecting cyan and magenta neon signs, raindrops on glass, natural skin texture, moody Wong Kar-wai lighting, 50mm f/1.2 anamorphic lens, 8k raw photo.'
+      },
+      {
+        ckpt: 'moss_style_ft',
+        res: '832x1216',
+        prompt: 'Candid natural snapshot photo of a graceful Vietnamese girl wearing traditional white Ao Dai standing by an ancient moss-covered temple wall in Hanoi autumn, golden morning sunbeams filtering through banyan tree leaves, gentle breeze moving silk fabric, hyper-realistic skin details, 8k DSLR photography.'
+      }
+    ],
+    cg_3d: [
+      {
+        ckpt: 'moss_kromoss',
+        res: '1344x768',
+        prompt: 'Masterpiece 3D Unreal Engine 5 cinematic render, Xianxia immortal sword master in flowing black and gold dragon-embroidered silk robes standing on a floating obsidian cliff above a swirling sea of cyan clouds, levitating glowing jade runes and ancient spirit swords around him, volumetric god rays, subsurface scattering skin, Octane Render, 8k.'
+      },
+      {
+        ckpt: 'moss_kromoss',
+        res: '832x1216',
+        prompt: '3D CG movie quality portrait of a celestial silver-haired fairy empress wearing translucent iridescent crystal armor and flowing moonlit silk ribbons, glowing blue lotus floating in her palm, bioluminescent stardust particles in a dark mystic forest, Pixar and Final Fantasy VII Remake hybrid 3D fidelity, ray-traced reflections, 8k.'
+      },
+      {
+        ckpt: 'moss_imagine',
+        res: '1344x768',
+        prompt: 'Hyper-detailed 3D sci-fi cybernetic valkyrie in sleek white and gold mecha exosuit standing atop a futuristic Neo-Seoul skyscraper at sunset, holographic wings deployed, volumetric fog and orange sunlight reflecting on brushed titanium armor, Unreal Engine 5 Lumen lighting, 8k.'
+      }
+    ],
+    anime_2d: [
+      {
+        ckpt: 'moss_animossity',
+        res: '1344x768',
+        prompt: 'Masterpiece 2D anime key visual in the style of Makoto Shinkai and CoMix Wave Films, a high school boy and girl standing on a pedestrian overpass at magic hour twilight, dramatic towering cumulus clouds glowing in vibrant violet, coral pink, and golden orange as a comet streaks across the starry sky, sparkling lens flare, crisp cel-shaded linework, 8k.'
+      },
+      {
+        ckpt: 'moss_animossity',
+        res: '832x1216',
+        prompt: 'High-contrast Ufotable 2D anime illustration of a fierce kitsune shrine maiden with long silver hair and glowing fox ears, holding a flaming katana under a blood-red full moon, swirling cherry blossom petals and fiery embers, dynamic wind motion, vibrant neon rim lighting, razor-sharp anime line art.'
+      },
+      {
+        ckpt: 'moss_pastel_bloom',
+        res: '1024x1024',
+        prompt: 'Soft pastel 2D anime illustration of a cozy magical witch workshop inside a giant hollow tree, a cute young witch with oversized hat brewing a glowing starry potion while a black cat sleeps on stacks of ancient spellbooks, warm fairy lights, gentle watercolor pastel tones, Studio Ghibli inspired warmth.'
+      }
+    ],
+    fight_action: [
+      {
+        ckpt: 'moss_imagine',
+        res: '1344x768',
+        prompt: 'Dynamic low-angle action combat shot, two martial arts grandmasters clashing mid-air over a shattered bamboo forest during a thunderstorm, one wielding a blazing crimson fire spear and the other a crackling blue lightning katana, shockwave ring shattering raindrops and stone tiles in slow-motion, intense facial expressions, flying sparks, cinematic motion blur, 8k.'
+      },
+      {
+        ckpt: 'moss_kromoss',
+        res: '1344x768',
+        prompt: 'Epic boss battle wide cinematic shot, a lone armored dark knight leaping forward with a greatsword wreathed in black-gold flames against a colossal ancient lava dragon roaring atop a ruined gothic cathedral, volcanic ash, molten magma splashes, dramatic chiaroscuro lighting, extreme scale and impact.'
+      },
+      {
+        ckpt: 'moss_animossity',
+        res: '1344x768',
+        prompt: 'Explosive 2D anime sakuga fight scene frame, cyberpunk katana duelist executing a high-speed slash dash through a rain-soaked neon alley, neon cyan plasma blade trail slicing a combat mech in half, electric arcs, debris flying toward the camera, extreme foreshortening perspective, Ufotable impact frames.'
+      }
+    ],
+    location_169: [
+      {
+        ckpt: 'moss_kromoss',
+        res: '1344x768',
+        prompt: 'Colossal Xianxia celestial palace city floating above an endless sea of golden clouds at sunrise, monumental white jade bridges, levitating mountain peaks with waterfalls cascading into the void, flocks of white cranes flying, volumetric god rays, atmospheric depth, 8k photorealistic concept art.'
+      },
+      {
+        ckpt: 'moss_imagine',
+        res: '1344x768',
+        prompt: 'Breathtaking cyberpunk Neo-Tokyo metropolis at midnight seen from a high rooftop, towering holographic billboards, flying vehicles leaving light trails between megastructures, wet neon-lit streets below, volumetric atmospheric haze, Blade Runner 2049 cinematography, 8k.'
+      }
+    ],
+    xianxia_black: [
+      {
+        ckpt: 'moss_kromoss',
+        res: '1344x768',
+        prompt: 'Ultra-photorealistic 8k Xianxia CG cinematic medium close-up portrait of a stoic male swordsman in flowing matte black silk robes standing on a glowing spiritual sword above an endless cyan-teal sea of clouds, wind blowing long dark hair, top sunlight breaking through golden-rimmed clouds, sharp focus, raw photo.'
+      }
+    ],
+    xianxia_red: [
+      {
+        ckpt: 'moss_kromoss',
+        res: '1344x768',
+        prompt: 'Ultra-photorealistic 8k Xianxia CG cinematic portrait of an agile female swordsman in vivid crimson silk satin robes wielding an ancient drawn blade in hand, soaring above a sea of clouds with ancient pagoda spires in background, warm golden side-backlight rim lighting, sharp focus.'
+      }
+    ],
+    portrait_f: [
+      {
+        ckpt: 'moss_serenity',
+        res: '1024x1024',
+        prompt: 'Ultra-photorealistic 8k raw portrait photo of a young woman, natural skin texture with subtle pores, expressive eyes, soft golden-hour key light and warm rim light, clean background, 85mm f/1.4 lens, single person reference sheet standard.'
+      }
+    ],
+    sensual_18: [
+      {
+        ckpt: 'moss_serenity',
+        res: '832x1216',
+        prompt: 'tạo cô gái khoả thân nghệ thuật, ánh sáng điện ảnh ấm áp, làn da chân thực sắc nét 8k'
+      }
+    ]
   };
-  const chosen = presets[presetKey];
+  const pool = presetPools[presetKey] || presetPools.photoreal;
+  const idx = (_istPresetCycleIdx[presetKey] || 0) % pool.length;
+  _istPresetCycleIdx[presetKey] = idx + 1;
+  const chosen = pool[idx];
   if(!chosen) return;
   selectImageStudioMode('text2image');
+  if(chosen.ckpt && typeof selectMossCheckpointCard === 'function'){
+    selectMossCheckpointCard(chosen.ckpt);
+  }
   pInp.value = chosen.prompt;
   if(resSel && chosen.res){
     resSel.value = chosen.res;
     syncImageStudioAspectPills(chosen.res);
   }
-  toast('✨ Đã nạp mẫu Prompt tạo ảnh 8K chuẩn MiniMax H3!');
+  toast(`✨ Đã nạp mẫu Prompt MOSS (${idx + 1}/${pool.length}) — Bấm lại nút để đổi mẫu khác!`);
 }
 
 async function onImageStudioEditRefChange(slotNum, inputEl){
