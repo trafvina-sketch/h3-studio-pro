@@ -930,7 +930,32 @@ def _run_wsl_cmd(cmd: str, timeout: int = 600) -> Tuple[int, str]:
 
 _IMAGE_ACC_LOCK = threading.Lock()
 _ACTIVE_IMAGE_ACCOUNTS: Dict[str, Dict[str, Any]] = {}
-_WARM_IMAGE_ACCOUNTS: Dict[str, float] = {}
+_WARM_IMAGE_FILE = SCRIPT_DIR / "temp" / "warm_image_accounts.json"
+
+
+def _load_persisted_warm_accounts() -> Dict[str, float]:
+    try:
+        if _WARM_IMAGE_FILE.is_file():
+            data = json.loads(_WARM_IMAGE_FILE.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                now = time.time()
+                return {str(k): float(v) for k, v in data.items() if (now - float(v or 0.0)) < 840}
+    except Exception:
+        pass
+    return {}
+
+
+def _save_persisted_warm_accounts(warm_map: Dict[str, float]) -> None:
+    try:
+        _WARM_IMAGE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        now = time.time()
+        clean = {str(k): float(v) for k, v in warm_map.items() if (now - float(v or 0.0)) < 840}
+        _WARM_IMAGE_FILE.write_text(json.dumps(clean), encoding="utf-8")
+    except Exception:
+        pass
+
+
+_WARM_IMAGE_ACCOUNTS: Dict[str, float] = _load_persisted_warm_accounts()
 _IMAGE_RR_COUNTER: int = 0
 
 
@@ -1126,6 +1151,15 @@ def _generate_via_colab_gpu(
             if is_already_warm:
                 started_ok = True
                 break
+            # Kiểm tra nhanh 2 giây xem phiên Colab trên tài khoản này có đang sống sẵn không (kể cả khi vừa khởi động lại app)
+            cfg_probe = f"--config='/root/.config/colab-cli/tokens/sessions_{acc_email}.json'" if acc_email else ""
+            c_pr, _ = _run_wsl_cmd(
+                f"{tok_env}colab --auth=oauth2 {cfg_probe} ls --session '{session}' /content",
+                timeout=18,
+            )
+            if c_pr == 0:
+                started_ok = True
+                break
             c_start, o_start = _run_wsl_cmd(
                 f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'",
                 timeout=300,
@@ -1209,7 +1243,7 @@ def _generate_via_colab_gpu(
             f"--env 'KREA2_REF2={rem_ref2}'",
         ])
 
-        exec_tm = 150 if is_already_warm else 600
+        exec_tm = 360 if is_already_warm else 600
         c_ex, o_ex = _run_wsl_cmd(
             f"{tok_env}colab --auth=oauth2 {cfg_arg} exec --session '{session}' --timeout {exec_tm} {env_flags} --file '{_wsl_path(nb_path)}'",
             timeout=exec_tm + 20,
@@ -1234,6 +1268,7 @@ def _generate_via_colab_gpu(
             with _IMAGE_ACC_LOCK:
                 if acc_email:
                     _WARM_IMAGE_ACCOUNTS[acc_email] = time.time()
+                    _save_persisted_warm_accounts(_WARM_IMAGE_ACCOUNTS)
             raw_out = loc_out.read_bytes()
             png_bytes = _format_and_upscale_image_bytes(raw_out, width, height, crop_watermark_px=0)
             short_ckpt = base_checkpoint.replace(".safetensors", "").replace(".gguf", "")

@@ -163,23 +163,31 @@ def _sync_or_cleanup_server_assignments(session: str, gpu: str, on_line: Callabl
         f"target_gpu = {gpu.upper()!r}\n"
         "assignments = state.client.list_assignments()\n"
         "if not assignments:\n"
+        "    try: state.store.remove(target_sess)\n"
+        "    except Exception: pass\n"
         "    print('NO_ASSIGNMENTS')\n"
         "    sys.exit(0)\n"
         "rebound = False\n"
+        "old_s = None\n"
+        "try: old_s = state.store.get(target_sess)\n"
+        "except Exception: pass\n"
         "for a in assignments:\n"
         "    acc_val = getattr(a.accelerator, 'value', str(a.accelerator)).upper()\n"
         "    var_val = getattr(a.variant, 'name', str(a.variant))\n"
         "    shp_val = getattr(a.machine_shape, 'name', str(a.machine_shape))\n"
         "    if (acc_val == target_gpu or (target_gpu != 'CLEANUP_ALL' and acc_val in ('A100', 'L4', 'T4', 'V100'))) and not rebound:\n"
+        "        rpi = a.runtime_proxy_info\n"
         "        s = SessionState(\n"
         "            name=target_sess,\n"
-        "            token=a.runtime_proxy_info.token,\n"
-        "            url=a.runtime_proxy_info.url,\n"
+        "            token=rpi.token if rpi else (old_s.token if old_s else ''),\n"
+        "            url=rpi.url if rpi else (old_s.url if old_s else ''),\n"
         "            endpoint=a.endpoint,\n"
-        "            token_expires_at=a.runtime_proxy_info.expires_at(),\n"
+        "            token_expires_at=rpi.expires_at() if rpi else (old_s.token_expires_at if old_s else ''),\n"
         "            variant=var_val,\n"
         "            accelerator=acc_val,\n"
         "            machine_shape=shp_val,\n"
+        "            kernel_id=old_s.kernel_id if (old_s and old_s.endpoint == a.endpoint) else None,\n"
+        "            session_id=old_s.session_id if (old_s and old_s.endpoint == a.endpoint) else None,\n"
         "        )\n"
         "        state.store.add(s)\n"
         "        rebound = True\n"
@@ -338,10 +346,20 @@ def start_session(
     #    - Nếu tài khoản đang có phiên CPU (NONE) thì tự tắt phiên CPU đó.
     #    - Nếu tài khoản đang có sẵn phiên GPU (A100) thì gắn lại vào `session` và kiểm tra kết nối.
     #    - Nếu là tài khoản mới thêm vào / chưa có phiên nào, sẽ đi xuống bước 2 để chạy `colab new` và cài đặt từ đầu!
+    # Thử kết nối trực tiếp vào phiên ấm hiện có TRƯỚC (không ghi đè kernel_id/session_id nếu phiên đang sống!)
+    try:
+        probe_out = call_colab(["ls", "--session", session, "/content"], label="reuse warm Colab session", timeout=20)
+        on_line(f"[colab] Reusing active warm GPU session '{session}'.")
+        state.update({"status": "active", "session": session, "output": probe_out, "reused": True, "updated_at": now_iso()})
+        write_progress(progress_path, state)
+        return
+    except Exception:
+        pass
+
     _sync_or_cleanup_server_assignments(session, gpu, on_line=on_line)
     try:
-        probe_out = call_colab(["ls", "--session", session, "/content"], label="reuse warm Colab session", timeout=25)
-        on_line(f"[colab] Reusing active warm GPU session '{session}'.")
+        probe_out = call_colab(["ls", "--session", session, "/content"], label="reuse rebound Colab session", timeout=25)
+        on_line(f"[colab] Reusing rebound warm GPU session '{session}'.")
         state.update({"status": "active", "session": session, "output": probe_out, "reused": True, "updated_at": now_iso()})
         write_progress(progress_path, state)
         return
