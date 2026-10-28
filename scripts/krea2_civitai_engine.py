@@ -84,7 +84,7 @@ def save_krea2_config(hf_token: str = "", horde_api_key: str = "") -> Dict[str, 
 MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     {
         "id": "moss_kromoss",
-        "name": "🌿 Kromoss — Cải thiện sương mù trong Base & Tương phản sâu (Khuyên dùng)",
+        "name": "🌿 Moss Kromoss — Ảnh Trong Trẻo & Sắc Nét (Khuyên dùng)",
         "short_name": "Kromoss",
         "engine_family": "moss",
         "hf_repo": "lodestones/Kromoss",
@@ -96,7 +96,7 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "moss_serenity",
-        "name": "🌿 MOSS Serenity v6 — Tăng cường tính thực tế của nhân vật thực tế",
+        "name": "👩 Moss Serenity — Nhân Vật Người Thật Siêu Thực",
         "short_name": "MOSS Serenity",
         "engine_family": "moss",
         "hf_repo": "malcolmrey/moss-serenity",
@@ -108,7 +108,7 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "moss_imagine",
-        "name": "🌿 MOSS-Imagine — Biểu hiện điện ảnh theo phong cách Grok Imagine",
+        "name": "🎬 Moss Imagine — Phong Cách Điện Ảnh Grok",
         "short_name": "MOSS-Imagine",
         "engine_family": "moss",
         "hf_repo": "realrebelai/MOSS-Imagine_ComfyUI",
@@ -120,7 +120,7 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "moss_pastel_bloom",
-        "name": "🌿 MOSS Pastel Bloom — Màu sắc mềm và đường viền nhẹ nhàng",
+        "name": "🌸 Moss Pastel Bloom — Màu Sắc Mềm & Dịu Nhẹ",
         "short_name": "MOSS Pastel Bloom",
         "engine_family": "moss",
         "hf_repo": "lodestones/Kromoss",
@@ -133,7 +133,7 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "moss_animossity",
-        "name": "🌿 AniMOSSity — Hoạt hình × Thực tế, màu sắc sống động",
+        "name": "✨ Moss AniMOSSity — Hoạt Hình × Thực Tế Sống Động",
         "short_name": "AniMOSSity",
         "engine_family": "moss",
         "hf_repo": "lodestones/Kromoss",
@@ -146,7 +146,7 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "moss_style_ft",
-        "name": "🌿 MOSS Image Style FT — Ảnh chụp nhanh tự nhiên",
+        "name": "📸 Moss Style FT — Ảnh Chụp Tự Nhiên",
         "short_name": "MOSS Style FT",
         "engine_family": "moss",
         "hf_repo": "lamshiu/moss-image-style-ft",
@@ -158,7 +158,7 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "moss_kr2",
-        "name": "🌿 MOSSkr2 — Krea 2 modul trọng lượng lai MOSS Image",
+        "name": "🔥 Moss × Krea 2 (MOSSkr2)",
         "short_name": "MOSSkr2",
         "engine_family": "moss",
         "hf_repo": "TenStrip/MOSSkr2",
@@ -175,7 +175,7 @@ KREA2_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     *MOSS_BASE_CHECKPOINTS,
     {
         "id": "gonzalomoKrea2_v40.safetensors",
-        "name": "🎨 Gonzalomo Krea 2 v4.0 (Siêu thực & Điện ảnh / Krea 2)",
+        "name": "🎨 Krea 2 v4.0 — Siêu Thực & Điện Ảnh",
         "short_name": "Gonzalomo Krea 2 v4.0",
         "engine_family": "krea2",
         "hf_repo": "",
@@ -184,7 +184,7 @@ KREA2_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "pornmasterKrea2_v2TurboInt8.safetensors",
-        "name": "🎨 Krea 2 Realism v2 Turbo Int8 (Chi tiết cơ thể & Uncensored 18+)",
+        "name": "🎨 Krea 2 Realism v2 — Siêu Thực (Hỗ trợ 18+)",
         "short_name": "Krea 2 Realism v2",
         "engine_family": "krea2",
         "hf_repo": "",
@@ -193,7 +193,7 @@ KREA2_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "museByStableYogi_v25EXTENDEDTURBO.safetensors",
-        "name": "🎨 Muse Extended Turbo v2.5 (Chân dung & Ánh sáng nghệ thuật)",
+        "name": "🎨 Krea 2 Muse v2.5 — Chân Dung Nghệ Thuật",
         "short_name": "Muse Turbo v2.5",
         "engine_family": "krea2",
         "hf_repo": "",
@@ -202,7 +202,7 @@ KREA2_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
     },
     {
         "id": "comfy_org_krea2_turbo_fp8",
-        "name": "🎨 Krea 2 Turbo Official FP8 (Comfy-Org Chính thức)",
+        "name": "🎨 Krea 2 Official — Bản Gốc Chuẩn",
         "short_name": "Krea 2 Official FP8",
         "engine_family": "krea2",
         "hf_repo": "Comfy-Org/Krea-2",

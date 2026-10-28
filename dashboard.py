@@ -12742,56 +12742,49 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
     </div>
 
     <div class="gcpu-sb-group">
-      <div class="gcpu-sb-label">Video AI Đa Luồng</div>
+      <div class="gcpu-sb-label">Tạo Video &amp; Tạo Ảnh</div>
       <button type="button" class="gcpu-sb-link" data-sb-id="scriptai" onclick="gcpuNav('scriptai')" style="border:1px solid rgba(16,185,129,0.28);background:rgba(16,185,129,0.06);margin-bottom:4px">
-        <span class="sb-ico">🧠</span> <span>Phân Tích Kịch Bản AI</span>
-        <span class="gcpu-sb-badge" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.4)">GEMINI</span>
-      </button>
-      <button type="button" class="gcpu-sb-link" data-sb-id="t2v" onclick="gcpuNav('dash','t2v')">
-        <span class="sb-ico">✍️</span> <span>Text to Video (T2V)</span>
+        <span class="sb-ico">🎬</span> <span>Làm Phim Từ Kịch Bản</span>
+        <span class="gcpu-sb-badge" style="background:rgba(16,185,129,0.2);color:#34d399;border-color:rgba(16,185,129,0.4)">AI</span>
       </button>
       <button type="button" class="gcpu-sb-link on" data-sb-id="img" onclick="gcpuNav('dash','reference')">
-        <span class="sb-ico">🖼️</span> <span>Ảnh Nhân Vật (I2V)</span>
-        <span class="gcpu-sb-badge">I2V</span>
+        <span class="sb-ico">🖼️</span> <span>Tạo Video Từ Ảnh</span>
+      </button>
+      <button type="button" class="gcpu-sb-link" data-sb-id="t2v" onclick="gcpuNav('dash','t2v')">
+        <span class="sb-ico">✍️</span> <span>Tạo Video Từ Chữ</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="fl2v" onclick="gcpuNav('dash','first_frame')">
-        <span class="sb-ico">🎞️</span> <span>Keyframe Đầu – Cuối</span>
-        <span class="gcpu-sb-badge">FL2V</span>
+        <span class="sb-ico">🎞️</span> <span>Video Ảnh Đầu – Cuối</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="vid" onclick="gcpuNav('dash','char_swap')">
-        <span class="sb-ico">🔄</span> <span>Theo Video Mẫu (V2V)</span>
-        <span class="gcpu-sb-badge">V2V</span>
+        <span class="sb-ico">🔄</span> <span>Tạo Theo Video Mẫu</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="aud" onclick="gcpuNav('dash','audio_sync')">
-        <span class="sb-ico">🎵</span> <span>Khớp Nhạc MP3</span>
+        <span class="sb-ico">🎵</span> <span>Ghép Nhạc Nhép Môi</span>
       </button>
-      <button type="button" class="gcpu-sb-link" data-sb-id="movie" onclick="gcpuNav('scriptai')" title="Chế độ khuyên dùng số 1: Phân tích kịch bản -> Khóa ảnh tham chiếu <Picture 1..N> -> Tự nối Keyframe cuối -> Chạy liên tiếp 1 lần trên VRAM">
-        <span class="sb-ico">🎬</span> <span>Phim Dài Nhiều Cảnh</span>
-        <span class="gcpu-sb-badge" style="background:rgba(201,173,125,0.2);color:#e5d1b0;border-color:rgba(201,173,125,0.4)">TOP 1</span>
-      </button>
-      <button type="button" class="gcpu-sb-link" data-sb-id="moss" onclick="openMossImageStudioTab('moss')" style="border:1px solid rgba(16,185,129,0.34);background:rgba(16,185,129,0.08);margin-bottom:3px" title="Tạo ảnh bằng 7 Base Checkpoints MOSS Image (Kromoss, Serenity, MOSS-Imagine, Pastel Bloom, AniMOSSity, Style FT, MOSSkr2) + Sửa ảnh bằng Moss-Image-Edit LoRA">
+      <button type="button" class="gcpu-sb-link" data-sb-id="moss" onclick="openMossImageStudioTab('moss','text2image')" style="border:1px solid rgba(16,185,129,0.34);background:rgba(16,185,129,0.08);margin-top:3px" title="Tạo ảnh mới hoặc Edit ảnh bằng Moss / Krea 2">
         <span class="sb-ico">🌿</span> <span>Tạo Ảnh Moss</span>
         <span class="gcpu-sb-badge" style="background:rgba(16,185,129,0.22);color:#34d399;border-color:rgba(16,185,129,0.45)">MOSS</span>
       </button>
-      <button type="button" class="gcpu-sb-link" data-sb-id="imagestudio" onclick="openMossImageStudioTab('krea2')">
-        <span class="sb-ico">🎨</span> <span>Tạo Ảnh Krea 2 (8K)</span>
+      <button type="button" class="gcpu-sb-link" data-sb-id="imagestudio" onclick="openMossImageStudioTab('moss','edit')">
+        <span class="sb-ico">🪄</span> <span>Edit Ảnh</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="batch" onclick="gcpuNav('batch')">
-        <span class="sb-ico">⚡</span> <span>Chạy Hàng Loạt</span>
+        <span class="sb-ico">⚡</span> <span>Tạo Video Hàng Loạt</span>
       </button>
     </div>
 
     <div class="gcpu-sb-group">
       <div class="gcpu-sb-label">Thư Viện &amp; Lịch Sử</div>
       <button type="button" class="gcpu-sb-link" data-sb-id="charlib" onclick="gcpuOpenCharLib()">
-        <span class="sb-ico">👤</span> <span>Library (@nhanvat)</span>
+        <span class="sb-ico">👤</span> <span>Kho Nhân Vật</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="gallery" onclick="gcpuNav('gallery')">
-        <span class="sb-ico">📂</span> <span>History (Đã tạo)</span>
+        <span class="sb-ico">📂</span> <span>Lịch Sử Đã Tạo</span>
         <span class="gcpu-sb-badge" id="sb-gallery-badge">0</span>
       </button>
       <button type="button" class="gcpu-sb-link" data-sb-id="queue" onclick="gcpuNav('queue')">
-        <span class="sb-ico">⏳</span> <span>Hàng Đợi (Queue)</span>
+        <span class="sb-ico">⏳</span> <span>Hàng Đợi</span>
         <span class="gcpu-sb-badge" id="sb-queue-badge" style="display:none">0</span>
       </button>
     </div>
@@ -14346,7 +14339,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #2b4c50;padding-bottom:10px;margin-bottom:14px;flex-wrap:wrap">
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
               <span style="background:linear-gradient(135deg,#059669,#7c3aed);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px">MOSS IMAGE &bull; MOSS-IMAGE-EDIT &bull; KREA 2</span>
-              <h3 style="margin:0;font-size:17px;font-weight:800;color:#f3d488">🌿 Xưởng Tạo Ảnh MOSS (7 Checkpoints + Edit LoRA) &amp; Krea 2</h3>
+              <h3 style="margin:0;font-size:17px;font-weight:800;color:#f3d488">🌿 Tạo Ảnh &amp; Edit Ảnh Nhanh</h3>
             </div>
             <div style="display:flex;gap:6px;align-items:center">
               <button type="button" class="b b2" onclick="exportKrea2ComfyWorkflow()" style="background:#1c3238;color:#6ee7b7;border-color:#059669;padding:5px 10px;font-size:11px;font-weight:700" title="Xuất file JSON Workflow chuẩn ComfyUI Krea 2 (Subgraph Qwen3_4B + Flux2VAE + Krea2 14B)">
@@ -14376,8 +14369,8 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
                 <div>
                   <label style="font-size:11px;font-weight:700;color:#a5dfca;display:block;margin-bottom:3px">⚡ Chế độ Tạo / Sửa Ảnh</label>
                   <select id="krea2-mode-sel" onchange="onKrea2ModeChange()" style="width:100%;padding:6px 8px;font-size:11.5px;border-radius:7px;background:#182a2f;color:#e9f3ef;border:1px solid #3c6562;font-weight:700">
-                    <option value="text2image" selected>🖼️ Text-to-Image (Tạo ảnh mới)</option>
-                    <option value="edit">🪄 Image Edit (Sửa / Đồng nhất từ 1–2 ảnh gốc)</option>
+                    <option value="text2image" selected>🖼️ Tạo Ảnh Mới</option>
+                    <option value="edit">🪄 Edit Ảnh</option>
                   </select>
                 </div>
                 <div>
@@ -14431,7 +14424,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 
               <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                 <button type="button" class="b b1" id="btn-krea2-generate" onclick="runKrea2Generate()" style="flex:1.4;padding:9px 14px;font-size:13px;font-weight:800;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none">
-                  🚀 Tạo Ảnh Bằng Krea 2 Turbo (14B)
+                  🖼️ Tạo Ảnh Ngay
                 </button>
                 <select id="krea2-target-sb-ref" style="flex:1;padding:7px 8px;font-size:11.5px;border-radius:7px;background:#182a2f;color:#f3d488;border:1px solid #4e7773;font-weight:700" title="Chọn thực thể Ref_*.png trong Storyboard nếu muốn lưu đè trực tiếp vào thực thể đó">
                   <option value="">📌 (Tùy chọn) Gắn trực tiếp vào thực thể Ref_*.png...</option>
@@ -16048,244 +16041,69 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
     </div>
   </div>
 
-  <!-- TAB: XƯỞNG TẠO ẢNH MOSS (7 CHECKPOINTS + MOSS-IMAGE-EDIT LORA) & KREA 2 PRO -->
+  <!-- TAB: TẠO ẢNH & EDIT ẢNH (ĐƠN GIẢN, DỄ HIỂU) -->
   <div id="p-imagestudio" style="display:none">
-    <!-- THANH CHUYỂN ĐỘNG CƠ: 🌿 TẠO ẢNH MOSS vs 🎨 TẠO ẢNH KREA 2 -->
-    <div class="c" style="padding:12px 18px;margin-bottom:14px;border:1.5px solid rgba(16,185,129,0.42);background:linear-gradient(135deg, rgba(16,185,129,0.10), rgba(13,148,136,0.08), rgba(124,58,237,0.08))">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <button type="button" id="ist-eng-tab-moss" onclick="switchImageStudioEngineFamily('moss')" class="b b1" style="padding:7px 14px;font-size:12.5px;font-weight:900;background:linear-gradient(135deg,#059669,#0d9488);border:none;border-radius:9px;box-shadow:0 4px 14px rgba(16,185,129,0.32)">
-            🌿 Tạo Ảnh Moss (7 Checkpoints MOSS + Moss-Image-Edit LoRA)
-          </button>
-          <button type="button" id="ist-eng-tab-krea2" onclick="switchImageStudioEngineFamily('krea2')" class="b b2" style="padding:7px 14px;font-size:12px;font-weight:800;border-radius:9px">
-            🎨 Tạo Ảnh Krea 2 (14B Turbo + Civitai)
-          </button>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-          <span style="font-size:11px;font-weight:700;color:var(--text-muted);margin-right:2px">Mẫu nhanh:</span>
-          <button type="button" class="b b2" onclick="fillImageStudioPreset('xianxia_black')" style="font-size:11px;padding:5px 9px">⚔️ Kiếm Khách</button>
-          <button type="button" class="b b2" onclick="fillImageStudioPreset('xianxia_red')" style="font-size:11px;padding:5px 9px">🌸 Nữ Hiệp</button>
-          <button type="button" class="b b2" onclick="fillImageStudioPreset('portrait_f')" style="font-size:11px;padding:5px 9px">👩 Chân Dung 8K</button>
-          <button type="button" class="b b2" onclick="fillImageStudioPreset('sensual_18')" style="font-size:11px;padding:5px 9px;border-color:rgba(225,29,72,0.4);color:#e11d48">🔥 Gợi Cảm 18+</button>
-          <button type="button" class="b b2" onclick="fillImageStudioPreset('location_169')" style="font-size:11px;padding:5px 9px">🌄 Bối Cảnh</button>
-        </div>
-      </div>
-
-      <!-- BẢNG 7 ĐIỂM KIỂM TRA MOSS IMAGE BASE CHECKPOINTS + MOSS-IMAGE-EDIT LORA -->
-      <div id="ist-moss-cards-panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-          <div style="font-size:12.5px;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:7px">
-            <span style="background:#059669;color:#fff;font-size:10px;font-weight:900;padding:2px 8px;border-radius:999px">MOSS IMAGE ECOSYSTEM</span>
-            <span>Chọn Điểm Kiểm Tra Mô Hình MOSS (Qwen3.5-9B + Flux2 VAE + 8-Steps DMD2 Turbo):</span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-            <a href="https://huggingface.co/chinoll/Moss-Image-Edit" target="_blank" style="font-size:10.5px;font-weight:800;color:#34d399;text-decoration:none;background:rgba(16,185,129,0.12);padding:3px 9px;border-radius:6px;border:1px solid rgba(16,185,129,0.35)">🪄 HF: Moss-Image-Edit LoRA &nearr;</a>
-            <a href="https://github.com/Chenkin-x/ComfyUI-Moss-Image-Edit" target="_blank" style="font-size:10.5px;font-weight:800;color:#38bdf8;text-decoration:none;background:rgba(56,189,248,0.12);padding:3px 9px;border-radius:6px;border:1px solid rgba(56,189,248,0.35)">🧩 GitHub: ComfyUI-Moss-Image-Edit &nearr;</a>
-          </div>
-        </div>
-        <div id="ist-moss-ckpt-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:8px">
-          <div class="ist-moss-card on" data-moss-id="moss_kromoss" onclick="selectMossCheckpointCard('moss_kromoss')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid #10b981;background:rgba(16,185,129,0.12);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:#34d399">🌫️ 1. Kromoss</span>
-              <a href="https://huggingface.co/lodestones/Kromoss" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Cải thiện sương mù trong Base, tăng độ trong trẻo &amp; tương phản sâu</div>
-          </div>
-          <div class="ist-moss-card" data-moss-id="moss_serenity" onclick="selectMossCheckpointCard('moss_serenity')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:var(--text-main)">👩 2. MOSS Serenity</span>
-              <a href="https://huggingface.co/malcolmrey/moss-serenity" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Tăng cường tính thực tế của nhân vật người thật &amp; kết cấu da</div>
-          </div>
-          <div class="ist-moss-card" data-moss-id="moss_imagine" onclick="selectMossCheckpointCard('moss_imagine')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:var(--text-main)">🎬 3. MOSS-Imagine</span>
-              <a href="https://huggingface.co/realrebelai/MOSS-Imagine_ComfyUI" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Biểu hiện điện ảnh theo phong cách Grok Imagine</div>
-          </div>
-          <div class="ist-moss-card" data-moss-id="moss_pastel_bloom" onclick="selectMossCheckpointCard('moss_pastel_bloom')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:var(--text-main)">🌸 4. MOSS Pastel Bloom</span>
-              <a href="https://civitai.com/models/3006255/moss-pastel-bloom" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#f472b6;text-decoration:none;font-weight:800">Civitai &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Màu sắc mềm và đường viền nhẹ nhàng, thơ mộng</div>
-          </div>
-          <div class="ist-moss-card" data-moss-id="moss_animossity" onclick="selectMossCheckpointCard('moss_animossity')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:var(--text-main)">✨ 5. AniMOSSity</span>
-              <a href="https://civitai.com/models/3010746/animossity" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#f472b6;text-decoration:none;font-weight:800">Civitai &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Hoạt hình &times; thực tế, màu sắc sống động rực rỡ</div>
-          </div>
-          <div class="ist-moss-card" data-moss-id="moss_style_ft" onclick="selectMossCheckpointCard('moss_style_ft')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:var(--text-main)">📸 6. MOSS Image Style FT</span>
-              <a href="https://huggingface.co/lamshiu/moss-image-style-ft" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Ảnh chụp nhanh tự nhiên (Natural Snapshot)</div>
-          </div>
-          <div class="ist-moss-card" data-moss-id="moss_kr2" onclick="selectMossCheckpointCard('moss_kr2')" style="cursor:pointer;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface-2);transition:all .15s">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px">
-              <span style="font-size:12px;font-weight:900;color:var(--text-main)">🔥 7. MOSSkr2</span>
-              <a href="https://huggingface.co/TenStrip/MOSSkr2" target="_blank" onclick="event.stopPropagation()" style="font-size:9.5px;color:#38bdf8;text-decoration:none;font-weight:800">HF &nearr;</a>
-            </div>
-            <div style="font-size:10.5px;color:var(--text-sub);margin-top:3px;line-height:1.35">Krea 2 modul trọng lượng lai MOSS Image SFT</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="imagestudio-grid">
-      <!-- CỘT TRÁI: BÀN ĐIỀU KHIỂN TẠO ẢNH KREA 2 -->
-      <div class="c" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+      <!-- CỘT TRÁI: BẢNG ĐIỀU KHIỂN TẠO ẢNH / EDIT ẢNH ĐƠN GIẢN -->
+      <div class="c" style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
 
-        <!-- BƯỚC 1: CHỌN CHẾ ĐỘ & NGUỒN GPU TRÊN CÙNG 1 HÀNG GỌN GÀNG -->
+        <!-- 1. CHỌN CHẾ ĐỘ: TẠO ẢNH / EDIT ẢNH / TẠO HÀNG LOẠT -->
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
-            <div class="st-sec-title">
+            <div class="st-sec-title" style="margin:0">
               <span class="step-num">1</span>
-              <span>Chế Độ &amp; Nguồn GPU</span>
+              <span>Chọn Chức Năng</span>
             </div>
-            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-              <select id="ist-compute-mode" onchange="onImageStudioComputeModeChange()" class="sel" style="display:none">
-                <option value="colab_gpu" selected>🔥 Google Colab GPU — Krea 2 Gốc</option>
-              </select>
-              <select id="ist-colab-gpu" class="sel admin-only-el" onchange="onImageStudioComputeModeChange()" class="sel" style="width:auto;padding:4px 8px;font-size:11.5px;font-weight:800" title="Chọn loại GPU khi chạy trực tiếp trên Google Colab">
-                <option value="A100" selected>🚀 Colab A100 (80GB • Dùng chung phiên Video)</option>
-                <option value="L4">⚡ Colab L4 (24GB • ~400 ảnh/CU)</option>
-                <option value="T4">💡 Colab T4 (16GB • ~600 ảnh/CU)</option>
-              </select>
-              <span id="ist-cu-cost-badge" class="admin-only-el" style="font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;background:rgba(245,158,11,0.16);color:#d97706;border:1px solid rgba(245,158,11,0.4)">🔥 100% Colab GPU</span>
+            <div style="display:flex;gap:5px;align-items:center">
+              <button type="button" id="ist-eng-tab-moss" onclick="switchImageStudioEngineFamily('moss')" class="b b1" style="padding:4px 10px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#059669,#0d9488);border:none;border-radius:7px">
+                🌿 Model Moss
+              </button>
+              <button type="button" id="ist-eng-tab-krea2" onclick="switchImageStudioEngineFamily('krea2')" class="b b2" style="padding:4px 10px;font-size:11px;font-weight:700;border-radius:7px">
+                🎨 Model Krea 2
+              </button>
             </div>
           </div>
+
           <div class="ist-mode-grid" id="ist-mode-cards">
             <div class="ist-mode-card on" data-ist-mode="text2image" onclick="selectImageStudioMode('text2image')">
               <div class="ist-mc-head">
                 <div class="ist-mc-title-wrap">
-                  <span class="ist-mc-icon">📸</span>
-                  <span class="ist-mc-name">Tạo Ảnh Mới 8K</span>
+                  <span class="ist-mc-icon">🖼️</span>
+                  <span class="ist-mc-name">Tạo Ảnh</span>
                 </div>
-                <span class="ist-mc-badge">T2I 8K</span>
               </div>
-              <div class="ist-mc-desc">Vẽ nhân vật, bối cảnh đơn từ Prompt Việt / Anh</div>
+              <div class="ist-mc-desc">Tạo ảnh mới từ mô tả chữ</div>
             </div>
             <div class="ist-mode-card" data-ist-mode="edit" onclick="selectImageStudioMode('edit')">
               <div class="ist-mc-head">
                 <div class="ist-mc-title-wrap">
-                  <span class="ist-mc-icon">✨</span>
-                  <span class="ist-mc-name">Sửa &amp; Giữ Mặt</span>
+                  <span class="ist-mc-icon">🪄</span>
+                  <span class="ist-mc-name">Edit Ảnh</span>
                 </div>
-                <span class="ist-mc-badge">IMG EDIT</span>
               </div>
-              <div class="ist-mc-desc">Nạp 1–2 ảnh gốc giữ nét mặt, đổi trang phục/cảnh</div>
+              <div class="ist-mc-desc">Tải ảnh lên để sửa trang phục, màu, bối cảnh</div>
             </div>
             <div class="ist-mode-card" data-ist-mode="batch" onclick="selectImageStudioMode('batch')">
               <div class="ist-mc-head">
                 <div class="ist-mc-title-wrap">
                   <span class="ist-mc-icon">📦</span>
-                  <span class="ist-mc-name">Vẽ Hàng Loạt</span>
+                  <span class="ist-mc-name">Tạo Hàng Loạt</span>
                 </div>
-                <span class="ist-mc-badge">BATCH</span>
               </div>
-              <div class="ist-mc-desc">Mỗi dòng 1 Prompt hoặc tự vẽ trọn bộ <code>Ref_*.png</code></div>
+              <div class="ist-mc-desc">Tạo nhiều ảnh cùng lúc (mỗi dòng 1 ảnh)</div>
             </div>
           </div>
         </div>
 
-        <!-- BƯỚC 2: TỶ LỆ KHUNG HÌNH (CHỈ 1 DẢI NÚT DUY NHẤT, KHÔNG TRÙNG DROPDOWN) + MODEL -->
-        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:11px">
-          <div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-              <label style="font-size:11.5px;font-weight:800;color:var(--text-main)">📐 Tỷ Lệ Khung Hình Chuẩn H3</label>
-              <span id="ist-res-label-badge" style="font-size:11px;font-weight:800;color:var(--em)">1344 &times; 768 px (16:9 Điện ảnh)</span>
-              <input type="hidden" id="ist-res-sel" value="1344x768">
-            </div>
-            <div class="ist-aspect-bar" id="ist-aspect-pills">
-              <div class="ist-aspect-pill on" data-res="1344x768" onclick="selectImageStudioAspect('1344x768')" title="1344 × 768 px (16:9 Điện ảnh)">
-                <span class="ist-aspect-frame" style="width:18px;height:11px"></span>
-                <span style="font-size:11px;font-weight:800;color:var(--text-main)">16:9 Ngang</span>
-              </div>
-              <div class="ist-aspect-pill" data-res="768x1344" onclick="selectImageStudioAspect('768x1344')" title="768 × 1344 px (9:16 TikTok/Reels)">
-                <span class="ist-aspect-frame" style="width:11px;height:18px"></span>
-                <span style="font-size:11px;font-weight:800;color:var(--text-main)">9:16 Dọc</span>
-              </div>
-              <div class="ist-aspect-pill" data-res="1024x1024" onclick="selectImageStudioAspect('1024x1024')" title="1024 × 1024 px (1:1 Chuẩn Ref)">
-                <span class="ist-aspect-frame" style="width:14px;height:14px"></span>
-                <span style="font-size:11px;font-weight:800;color:var(--text-main)">1:1 Vuông</span>
-              </div>
-              <div class="ist-aspect-pill" data-res="1216x832" onclick="selectImageStudioAspect('1216x832')" title="1216 × 832 px (3:2 Phim)">
-                <span class="ist-aspect-frame" style="width:17px;height:12px"></span>
-                <span style="font-size:11px;font-weight:800;color:var(--text-main)">3:2 Phim</span>
-              </div>
-              <div class="ist-aspect-pill" data-res="832x1216" onclick="selectImageStudioAspect('832x1216')" title="832 × 1216 px (2:3 Chân dung)">
-                <span class="ist-aspect-frame" style="width:12px;height:17px"></span>
-                <span style="font-size:11px;font-weight:800;color:var(--text-main)">2:3 Chân dung</span>
-              </div>
-            </div>
+        <!-- KHUNG TẢI ẢNH CẦN EDIT (CHỈ HIỆN KHI BẤM "EDIT ẢNH") -->
+        <div id="ist-edit-refs-box" style="display:none;background:var(--surface-2);border:1.5px dashed #10b981;border-radius:10px;padding:12px 14px">
+          <div style="font-size:12.5px;font-weight:800;color:#34d399;margin-bottom:8px">
+            📤 Tải Ảnh Cần Edit (Giữ nguyên khuôn mặt, sửa theo yêu cầu):
           </div>
-
-          <!-- CHECKPOINT & STYLE LORA -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div>
-              <label style="font-size:11px;font-weight:700;color:var(--text-sub);display:block;margin-bottom:4px">⚙️ Mô Hình Gốc (Checkpoint)</label>
-              <select id="ist-checkpoint-sel" onchange="onImageStudioCheckpointChange(this.value)" class="sel" style="width:100%;padding:7px 10px;font-size:12px;font-weight:700">
-                <option value="moss_kromoss" selected>🌿 Kromoss — Khử sương mù Base &amp; Tương phản sâu (MOSS)</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size:11px;font-weight:700;color:var(--text-sub);display:block;margin-bottom:4px">🎨 Phong Cách Style LoRA</label>
-              <select id="ist-style-sel" onchange="onImageStudioStyleChange()" class="sel" style="width:100%;padding:7px 10px;font-size:12px;font-weight:700">
-                <option value="">✨ Mặc định (Krea 2 Raw Photorealistic)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- 4 Ô THÔNG SỐ KỸ THUẬT -->
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end">
-            <div>
-              <label style="font-size:10.5px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:3px">⚡ Số bước (Steps)</label>
-              <input type="number" id="ist-steps-inp" value="8" min="1" max="50" class="sel" style="width:100%;padding:6px 9px;font-size:12px;font-weight:700">
-            </div>
-            <div>
-              <label style="font-size:10.5px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:3px">🎯 Độ bám CFG</label>
-              <input type="number" id="ist-cfg-inp" value="1.0" step="0.5" min="1" max="10" class="sel" style="width:100%;padding:6px 9px;font-size:12px;font-weight:700">
-            </div>
-            <div>
-              <label style="font-size:10.5px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:3px">✨ Độ mạnh LoRA</label>
-              <input type="number" id="ist-lora-str-inp" value="0.85" step="0.05" min="0" max="1.5" class="sel" style="width:100%;padding:6px 9px;font-size:12px;font-weight:700">
-            </div>
-            <div>
-              <label style="font-size:10.5px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:3px">🎲 Hạt giống (Seed)</label>
-              <div style="display:flex;gap:4px">
-                <input type="number" id="ist-seed-inp" value="-1" class="sel" style="flex:1;padding:6px 9px;font-size:12px;font-weight:700" title="-1 = Ngẫu nhiên">
-                <button type="button" class="b b2" onclick="document.getElementById('ist-seed-inp').value='-1'" style="padding:5px 8px;font-size:11px" title="Đặt về ngẫu nhiên (-1)">🔄</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- KHUNG TẢI 1-2 ẢNH GỐC KHI Ở CHẾ ĐỘ EDIT (MOSS-IMAGE-EDIT LORA & KREA 2 EDIT) -->
-        <div id="ist-edit-refs-box" style="display:none;background:var(--surface-2);border:1.5px dashed var(--em);border-radius:10px;padding:12px 14px">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-            <div id="ist-edit-box-title" style="font-size:12px;font-weight:800;color:var(--em)">
-              🪄 Chỉnh Sửa Ảnh Bằng Lệnh Văn Bản — Moss-Image-Edit LoRA (Đổi màu sắc, trang phục, ánh sáng, mùa &amp; phong cách):
-            </div>
-            <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,0.16);color:#34d399;border:1px solid rgba(16,185,129,0.35)">ApplyMossImageEdit + SkipLayerGuidanceDiT</span>
-          </div>
-          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px">
-            <span style="font-size:10.5px;font-weight:700;color:var(--text-muted);align-self:center">Lệnh sửa nhanh Moss-Image-Edit:</span>
-            <button type="button" class="b b2" onclick="fillMossEditInstruction('outfit')" style="font-size:10.5px;padding:3px 8px">👗 Đổi Trang Phục</button>
-            <button type="button" class="b b2" onclick="fillMossEditInstruction('color')" style="font-size:10.5px;padding:3px 8px">🎨 Đổi Màu Sắc</button>
-            <button type="button" class="b b2" onclick="fillMossEditInstruction('lighting')" style="font-size:10.5px;padding:3px 8px">🌅 Đổi Ánh Sáng</button>
-            <button type="button" class="b b2" onclick="fillMossEditInstruction('season')" style="font-size:10.5px;padding:3px 8px">❄️ Đổi Mùa</button>
-            <button type="button" class="b b2" onclick="fillMossEditInstruction('style')" style="font-size:10.5px;padding:3px 8px">🎬 Đổi Phong Cách</button>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
             <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-                <span style="font-size:11px;font-weight:700;color:var(--text-main)">Ảnh gốc 1 (Nhân vật chính):</span>
+                <span style="font-size:11.5px;font-weight:700;color:var(--text-main)">Ảnh gốc 1 (Bắt buộc):</span>
                 <button type="button" class="b b3" onclick="clearImageStudioEditRef(1)" style="font-size:10px;padding:2px 6px;color:#ef4444">Xóa</button>
               </div>
               <input type="file" id="ist-ref1-inp" accept="image/*" onchange="onImageStudioEditRefChange(1, this)" style="width:100%;font-size:11px">
@@ -16293,108 +16111,194 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
             </div>
             <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-                <span style="font-size:11px;font-weight:700;color:var(--text-main)">Ảnh gốc 2 (Phụ / Bối cảnh / Trang phục):</span>
+                <span style="font-size:11.5px;font-weight:700;color:var(--text-main)">Ảnh gốc 2 (Tùy chọn):</span>
                 <button type="button" class="b b3" onclick="clearImageStudioEditRef(2)" style="font-size:10px;padding:2px 6px;color:#ef4444">Xóa</button>
               </div>
               <input type="file" id="ist-ref2-inp" accept="image/*" onchange="onImageStudioEditRefChange(2, this)" style="width:100%;font-size:11px">
               <img id="ist-ref2-prev" src="" style="display:none;margin-top:6px;width:100%;max-height:110px;object-fit:contain;border-radius:6px;background:#000">
             </div>
           </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
+            <span style="font-size:11px;font-weight:700;color:var(--text-muted)">Gợi ý Edit nhanh:</span>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('outfit')" style="font-size:11px;padding:4px 9px">👗 Đổi Trang Phục</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('color')" style="font-size:11px;padding:4px 9px">🎨 Đổi Màu Sắc</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('lighting')" style="font-size:11px;padding:4px 9px">🌅 Đổi Ánh Sáng</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('season')" style="font-size:11px;padding:4px 9px">❄️ Đổi Mùa</button>
+            <button type="button" class="b b2" onclick="fillMossEditInstruction('style')" style="font-size:11px;padding:4px 9px">🎬 Đổi Phong Cách</button>
+          </div>
         </div>
 
-        <!-- BƯỚC 2: SOẠN PROMPT TẠO ẢNH (KHÔNG LẶP SỐ 2. 2.) -->
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;flex-wrap:wrap;gap:6px">
-            <div class="st-sec-title">
-              <span class="step-num">2</span>
-              <span id="ist-prompt-label">Mô Tả Ảnh Cần Tạo (Hỗ trợ Tiếng Việt &amp; Tiếng Anh):</span>
+        <!-- 2. CHỌN MODEL & TỶ LỆ KHUNG HÌNH (GỌN GÀNG TRONG 1 KHUNG) -->
+        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+          <div>
+            <label style="font-size:11.5px;font-weight:800;color:var(--text-main);display:block;margin-bottom:5px">🌿 Chọn Model Tạo Ảnh</label>
+            <select id="ist-checkpoint-sel" onchange="onImageStudioCheckpointChange(this.value)" class="sel" style="width:100%;padding:8px 11px;font-size:12.5px;font-weight:700">
+              <option value="moss_kromoss" selected>🌿 Moss Kromoss — Ảnh Trong Trẻo &amp; Sắc Nét (Khuyên dùng)</option>
+            </select>
+          </div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+              <label style="font-size:11.5px;font-weight:800;color:var(--text-main)">📐 Tỷ Lệ Khung Hình</label>
+              <span id="ist-res-label-badge" style="font-size:11px;font-weight:700;color:var(--em)">16:9 Ngang (1344 × 768)</span>
+              <input type="hidden" id="ist-res-sel" value="1344x768">
             </div>
-            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-              <button type="button" id="btn-ist-load-sb-refs" class="b b2" onclick="loadMissingStoryboardRefsToImageBatch()" style="display:none;font-size:11px;padding:4px 9px;color:var(--em);border-color:var(--em-border);font-weight:700" title="Tự động nạp danh sách các thực thể Ref_*.png đang thiếu ảnh thật trong Storyboard vào ô tạo hàng loạt">
-                📥 Nạp DS Thực Thể Ref_*.png Cần Vẽ
-              </button>
-              <button type="button" class="b b3" onclick="document.getElementById('ist-prompt-inp').value=''" style="font-size:11px;padding:4px 8px;color:#ef4444">🗑️ Xóa</button>
+            <div class="ist-aspect-bar" id="ist-aspect-pills">
+              <div class="ist-aspect-pill on" data-res="1344x768" onclick="selectImageStudioAspect('1344x768')">
+                <span class="ist-aspect-frame" style="width:18px;height:11px"></span>
+                <span style="font-size:11px;font-weight:800;color:var(--text-main)">16:9 Ngang</span>
+              </div>
+              <div class="ist-aspect-pill" data-res="768x1344" onclick="selectImageStudioAspect('768x1344')">
+                <span class="ist-aspect-frame" style="width:11px;height:18px"></span>
+                <span style="font-size:11px;font-weight:800;color:var(--text-main)">9:16 Dọc</span>
+              </div>
+              <div class="ist-aspect-pill" data-res="1024x1024" onclick="selectImageStudioAspect('1024x1024')">
+                <span class="ist-aspect-frame" style="width:14px;height:14px"></span>
+                <span style="font-size:11px;font-weight:800;color:var(--text-main)">1:1 Vuông</span>
+              </div>
+              <div class="ist-aspect-pill" data-res="1216x832" onclick="selectImageStudioAspect('1216x832')">
+                <span class="ist-aspect-frame" style="width:17px;height:12px"></span>
+                <span style="font-size:11px;font-weight:800;color:var(--text-main)">3:2 Ngang</span>
+              </div>
+              <div class="ist-aspect-pill" data-res="832x1216" onclick="selectImageStudioAspect('832x1216')">
+                <span class="ist-aspect-frame" style="width:12px;height:17px"></span>
+                <span style="font-size:11px;font-weight:800;color:var(--text-main)">2:3 Dọc</span>
+              </div>
             </div>
           </div>
-          <textarea id="ist-prompt-inp" rows="4" style="width:100%;font-size:13px;padding:11px 13px;border-radius:10px;background:var(--surface);color:var(--text-main);border:1.5px solid var(--border);line-height:1.55;box-shadow:var(--shadow-sm)" placeholder="Nhập mô tả bức ảnh bằng Tiếng Việt hoặc Tiếng Anh...&#10;VD: Cô gái châu Á xinh đẹp quyến rũ trong phòng ngủ ánh sáng điện ảnh 8K&#10;Hoặc: Ultra-photorealistic 8k cinematic portrait of a stoic black-robed swordsman standing on a glowing spiritual sword above a sea of clouds."></textarea>
-
-          <!-- THANH TRIGGER WORDS ĐANG GẮN -->
-          <div id="ist-active-triggers-bar" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"></div>
         </div>
 
-        <!-- NÚT TẠO ẢNH & TÙY CHỌN GẮN THỰC THỂ REF_*.PNG -->
-        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:10px;align-items:stretch">
-          <button type="button" class="b b1" id="btn-ist-generate" onclick="runImageStudioGenerate()" style="padding:13px 18px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none;justify-content:center;border-radius:10px;box-shadow:0 4px 14px rgba(124,58,237,0.28)">
-            🚀 BẮT ĐẦU TẠO ẢNH KREA 2 TURBO (14B)
+        <!-- 3. NHẬP MÔ TẢ ẢNH / LỆNH EDIT ẢNH -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;flex-wrap:wrap;gap:6px">
+            <div class="st-sec-title" style="margin:0">
+              <span class="step-num">2</span>
+              <span id="ist-prompt-label">Nhập Mô Tả Ảnh (Tiếng Việt hoặc Tiếng Anh):</span>
+            </div>
+            <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('xianxia_black')" style="font-size:10.5px;padding:3px 8px">⚔️ Kiếm Khách</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('xianxia_red')" style="font-size:10.5px;padding:3px 8px">🌸 Nữ Hiệp</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('portrait_f')" style="font-size:10.5px;padding:3px 8px">👩 Chân Dung</button>
+              <button type="button" class="b b2" onclick="fillImageStudioPreset('location_169')" style="font-size:10.5px;padding:3px 8px">🌄 Bối Cảnh</button>
+              <button type="button" id="btn-ist-load-sb-refs" class="b b2" onclick="loadMissingStoryboardRefsToImageBatch()" style="display:none;font-size:10.5px;padding:3px 8px;color:var(--em)">📥 Nạp DS Thực Thể</button>
+              <button type="button" class="b b3" onclick="document.getElementById('ist-prompt-inp').value=''" style="font-size:10.5px;padding:3px 7px;color:#ef4444">🗑️ Xóa</button>
+            </div>
+          </div>
+          <textarea id="ist-prompt-inp" rows="4" style="width:100%;font-size:13px;padding:11px 13px;border-radius:10px;background:var(--surface);color:var(--text-main);border:1.5px solid var(--border);line-height:1.55" placeholder="Nhập mô tả bức ảnh bằng Tiếng Việt hoặc Tiếng Anh...&#10;VD: Cô gái châu Á xinh đẹp trong ánh nắng hoàng hôn điện ảnh&#10;Hoặc nếu đang ở mục Edit Ảnh: Đổi trang phục sang áo cổ trang màu đỏ, giữ nguyên khuôn mặt"></textarea>
+          <div id="ist-active-triggers-bar" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px"></div>
+        </div>
+
+        <!-- NÚT BẤM CHÍNH: TẠO ẢNH NGAY / EDIT ẢNH NGAY -->
+        <div style="display:flex;gap:10px;align-items:stretch;flex-wrap:wrap">
+          <button type="button" class="b b1" id="btn-ist-generate" onclick="runImageStudioGenerate()" style="flex:1;padding:13px 18px;font-size:14.5px;font-weight:900;background:linear-gradient(135deg,#059669,#0d9488);border:none;justify-content:center;border-radius:10px;box-shadow:0 4px 14px rgba(16,185,129,0.28)">
+            🖼️ TẠO ẢNH NGAY
           </button>
-          <select id="ist-target-sb-ref" class="sel" style="width:100%;padding:10px 12px;font-size:11.5px;font-weight:700;border-radius:10px" title="Nếu chọn 1 thực thể Ref_*.png tại đây, ảnh vừa tạo xong sẽ tự động lưu đè trực tiếp vào thực thể đó trong Storyboard">
-            <option value="">📌 (Tùy chọn) Gắn vào Ref_*.png...</option>
+          <select id="ist-target-sb-ref" class="sel" style="display:none;width:220px;padding:10px 12px;font-size:11.5px;font-weight:700;border-radius:10px">
+            <option value="">📌 Gắn vào Ref_*.png...</option>
           </select>
         </div>
 
-        <!-- TRÌNH DUYỆT CIVITAI HELPER THU GỌN ĐƯỢC (KHÔNG CHIẾM CHỖ KHI KHÔNG DÙNG) -->
-        <details style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px 14px">
-          <summary style="cursor:pointer;font-size:12px;font-weight:800;color:var(--text-main);display:flex;justify-content:space-between;align-items:center;list-style:none">
-            <span>🌐 Mở Kho Civitai Helper (Tìm LoRA, Trigger Words &amp; Xuất ComfyUI JSON)</span>
-            <span style="font-size:11px;color:var(--em);font-weight:700">Bấm để mở / đóng &blacktriangledown;</span>
+        <!-- TÙY CHỈNH NÂNG CAO (THU GỌN ĐỂ GIAO DIỆN ĐƠN GIẢN, KHÔNG RỐI MẮT) -->
+        <details style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:9px 13px">
+          <summary style="cursor:pointer;font-size:11.5px;font-weight:700;color:var(--text-muted);display:flex;justify-content:space-between;align-items:center;list-style:none">
+            <span>⚙️ Cài Đặt Nâng Cao (Steps, CFG, Seed, Style LoRA &amp; Civitai)</span>
+            <span style="font-size:10.5px">Mở / Đóng ▾</span>
           </summary>
-          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-            <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-              <select id="ist-civitai-type" onchange="searchImageStudioCivitai()" class="sel" style="width:115px;padding:6px 8px;font-size:11px;font-weight:700">
-                <option value="">Tất cả loại</option>
-                <option value="LORA">Chỉ LoRA</option>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div>
+                <label style="font-size:11px;font-weight:700;color:var(--text-sub);display:block;margin-bottom:3px">🎨 Phong cách phụ (LoRA)</label>
+                <select id="ist-style-sel" onchange="onImageStudioStyleChange()" class="sel" style="width:100%;padding:6px 9px;font-size:11.5px;font-weight:700">
+                  <option value="">✨ Mặc định (Không dùng LoRA phụ)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:700;color:var(--text-sub);display:block;margin-bottom:3px">🚀 Nguồn GPU Colab</label>
+                <select id="ist-compute-mode" onchange="onImageStudioComputeModeChange()" class="sel" style="display:none">
+                  <option value="colab_gpu" selected>Colab GPU</option>
+                </select>
+                <select id="ist-colab-gpu" onchange="onImageStudioComputeModeChange()" class="sel" style="width:100%;padding:6px 9px;font-size:11.5px;font-weight:700">
+                  <option value="A100" selected>Colab A100 (80GB • Nhanh nhất)</option>
+                  <option value="L4">Colab L4 (24GB • Tiết kiệm CU)</option>
+                  <option value="T4">Colab T4 (16GB)</option>
+                </select>
+                <span id="ist-cu-cost-badge" style="display:none"></span>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+              <div>
+                <label style="font-size:10.5px;color:var(--text-muted);display:block;margin-bottom:2px">Steps</label>
+                <input type="number" id="ist-steps-inp" value="8" min="1" max="50" class="sel" style="width:100%;padding:5px 8px;font-size:11.5px">
+              </div>
+              <div>
+                <label style="font-size:10.5px;color:var(--text-muted);display:block;margin-bottom:2px">CFG</label>
+                <input type="number" id="ist-cfg-inp" value="1.0" step="0.5" min="1" max="10" class="sel" style="width:100%;padding:5px 8px;font-size:11.5px">
+              </div>
+              <div>
+                <label style="font-size:10.5px;color:var(--text-muted);display:block;margin-bottom:2px">LoRA</label>
+                <input type="number" id="ist-lora-str-inp" value="0.85" step="0.05" min="0" max="1.5" class="sel" style="width:100%;padding:5px 8px;font-size:11.5px">
+              </div>
+              <div>
+                <label style="font-size:10.5px;color:var(--text-muted);display:block;margin-bottom:2px">Seed (-1=Ngẫu nhiên)</label>
+                <input type="number" id="ist-seed-inp" value="-1" class="sel" style="width:100%;padding:5px 8px;font-size:11.5px">
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:4px">
+              <select id="ist-civitai-type" onchange="searchImageStudioCivitai()" class="sel" style="width:110px;padding:5px 8px;font-size:11px">
+                <option value="">Tất cả</option>
+                <option value="LORA">LoRA</option>
                 <option value="Checkpoint">Checkpoint</option>
               </select>
-              <input type="text" id="ist-civitai-query" value="Krea" placeholder="Tìm trên Civitai (Krea, Flux, Realistic, Anime)..." class="sel" style="flex:1;padding:6px 10px;font-size:11.5px" onkeydown="if(event.key==='Enter')searchImageStudioCivitai()">
-              <button type="button" class="b b1" onclick="searchImageStudioCivitai()" style="padding:6px 13px;font-size:11.5px;background:#0284c7;font-weight:700">🔍 Tìm</button>
-              <button type="button" class="b b2" onclick="exportImageStudioComfyWorkflow()" style="font-size:11px;padding:6px 10px;color:var(--em);border-color:var(--em-border);font-weight:700" title="Xuất file JSON Workflow chuẩn ComfyUI Krea 2">⚡ Xuất ComfyUI (.json)</button>
+              <input type="text" id="ist-civitai-query" value="MOSS" placeholder="Tìm thêm trên Civitai..." class="sel" style="flex:1;padding:5px 9px;font-size:11px" onkeydown="if(event.key==='Enter')searchImageStudioCivitai()">
+              <button type="button" class="b b2" onclick="searchImageStudioCivitai()" style="padding:5px 10px;font-size:11px">🔍 Tìm Civitai</button>
+              <button type="button" class="b b2" onclick="exportImageStudioComfyWorkflow()" style="font-size:11px;padding:5px 10px">⚡ Xuất ComfyUI (.json)</button>
             </div>
-            <div id="ist-civitai-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;max-height:280px;overflow-y:auto;padding-right:4px"></div>
+            <div id="ist-civitai-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:220px;overflow-y:auto"></div>
           </div>
         </details>
 
       </div>
 
-      <!-- CỘT PHẢI: KHUNG KIỂM DUYỆT ẢNH 8K & THAO TÁC NHANH -->
-      <div class="c" style="padding:16px 18px;display:flex;flex-direction:column;gap:12px;position:sticky;top:74px">
+      <!-- CỘT PHẢI: KẾT QUẢ ẢNH & DÙNG NGAY -->
+      <div class="c" style="padding:18px 20px;display:flex;flex-direction:column;gap:12px;position:sticky;top:74px">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-          <div style="font-size:14px;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:6px">
-            <span>📸 Khung Kiểm Duyệt Tuyệt Tác 8K (Preview)</span>
+          <div style="font-size:14.5px;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:6px">
+            <span>🖼️ Kết Quả Ảnh</span>
           </div>
           <div style="display:flex;gap:6px;align-items:center">
-            <button type="button" class="b b2" onclick="openImageLibraryLightbox(-1)" style="font-size:11px;padding:3px 9px;font-weight:700" title="Mở hộp xem ảnh phóng to toàn màn hình (Lightbox)">🔍 Phóng to</button>
+            <button type="button" class="b b2" onclick="openImageLibraryLightbox(-1)" style="font-size:11px;padding:4px 10px;font-weight:700">🔍 Xem lớn</button>
             <span id="ist-preview-badge" class="chip chip-g" style="font-size:11px;padding:3px 10px">✨ Sẵn sàng</span>
           </div>
         </div>
 
         <div class="ist-preview-canvas">
-          <img id="ist-result-img" src="" onclick="openImageLibraryLightbox(-1)" style="max-width:100%;max-height:470px;border-radius:10px;display:none;object-fit:contain;cursor:zoom-in;box-shadow:0 8px 28px rgba(0,0,0,0.65)" title="Bấm để mở hộp xem ảnh phóng to toàn màn hình (Lightbox)">
-          <div id="ist-result-placeholder" style="color:#cbd5e1;font-size:12.5px;padding:32px 22px;line-height:1.65;max-width:360px">
-            <div style="font-size:40px;margin-bottom:10px">🎨</div>
-            <div style="font-weight:700;color:#f8fafc;font-size:13.5px;margin-bottom:4px">Khung Hiển Thị Ảnh 8K Chuyên Nghiệp</div>
-            <div style="color:#94a3b8;font-size:12px">Nhập mô tả (Tiếng Việt hoặc Tiếng Anh) bên trái rồi bấm <b>"BẮT ĐẦU TẠO ẢNH"</b>. Ảnh tạo xong sẽ hiển thị nét căng tại đây.</div>
+          <img id="ist-result-img" src="" onclick="openImageLibraryLightbox(-1)" style="max-width:100%;max-height:470px;border-radius:10px;display:none;object-fit:contain;cursor:zoom-in;box-shadow:0 8px 28px rgba(0,0,0,0.65)">
+          <div id="ist-result-placeholder" style="color:#cbd5e1;font-size:12.5px;padding:32px 22px;line-height:1.65;max-width:340px">
+            <div style="font-size:38px;margin-bottom:8px">🖼️</div>
+            <div style="font-weight:700;color:#f8fafc;font-size:13.5px;margin-bottom:4px">Chưa Có Ảnh Hiển Thị</div>
+            <div style="color:#94a3b8;font-size:12px">Chọn <b>Tạo Ảnh</b> hoặc <b>Edit Ảnh</b> ở cột bên trái rồi bấm nút thực hiện.</div>
           </div>
           <div id="ist-result-meta" style="font-size:11.5px;color:#34d399;margin-top:10px;display:none;font-weight:600;background:rgba(15,23,42,0.82);padding:8px 12px;border-radius:8px;border:1px solid rgba(52,211,153,0.28);width:100%;text-align:left"></div>
         </div>
 
-        <!-- DÀN NÚT THAO TÁC 1-CHẠM VỚI ẢNH ĐANG CHỌN (KHÔNG TRÙNG LẶP) -->
+        <!-- 3 NÚT THAO TÁC RÕ RÀNG -->
         <div id="ist-result-actions" style="display:none;grid-template-columns:repeat(3,1fr);gap:8px">
           <button type="button" class="b b1" onclick="sendKrea2ImageToStudio('studio')" style="padding:9px 10px;font-size:11.5px;font-weight:800;background:#059669;justify-content:center">
-            📥 Đẩy Sang Studio
+            📥 Dùng Tạo Video
           </button>
           <button type="button" class="b b1" onclick="sendKrea2ImageToStudio('batch')" style="padding:9px 10px;font-size:11.5px;font-weight:800;background:#0284c7;justify-content:center">
-            📦 Đẩy Sang Batch
+            📦 Đưa Vào Hàng Loạt
           </button>
           <button type="button" class="b b2" onclick="saveKrea2ImageAsCharPreset()" style="padding:9px 10px;font-size:11.5px;font-weight:800;justify-content:center">
-            👤 Lưu Kho Nhân Vật
+            💾 Lưu Nhân Vật
           </button>
         </div>
 
-        <!-- DẢI PHIM NGANG GỌN GÀNG (FILMSTRIP 1 HÀNG — KHÔNG LẶP LẠI CẢ LƯỚI THƯ VIỆN) -->
+        <!-- DẢI ẢNH VỪA TẠO -->
         <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:2px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:6px">
-            <span style="font-size:11.5px;font-weight:800;color:var(--text-sub)">⚡ Đổi Nhanh Ảnh Vừa Tạo (<span id="ist-recent-count">0</span>)</span>
-            <button type="button" class="b b3" onclick="document.getElementById('ist-full-library-section')?.scrollIntoView({behavior:'smooth'})" style="font-size:10.5px;padding:2px 8px;color:var(--em);font-weight:700">Xem toàn bộ Thư Viện &darr;</button>
+            <span style="font-size:11.5px;font-weight:800;color:var(--text-sub)">🕘 Ảnh Vừa Tạo (<span id="ist-recent-count">0</span>)</span>
+            <button type="button" class="b b3" onclick="document.getElementById('ist-full-library-section')?.scrollIntoView({behavior:'smooth'})" style="font-size:10.5px;padding:2px 8px;color:var(--em);font-weight:700">Xem Thư Viện &darr;</button>
           </div>
           <div id="ist-recent-grid" style="display:flex;gap:7px;overflow-x:auto;padding-bottom:4px"></div>
         </div>
@@ -16406,7 +16310,7 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)">
         <div>
           <h3 style="font-size:16px;font-weight:800;color:var(--text-main);margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span>📚 Thư Viện Ảnh 8K &amp; Kho Nhân Vật Tham Chiếu</span>
+            <span>📚 Thư Viện Ảnh Đã Tạo</span>
             <span id="ist-full-lib-badge" class="chip chip-g" style="font-size:11px;padding:2px 10px">0 ảnh</span>
           </h3>
           <p style="font-size:12px;color:var(--text-muted);margin:3px 0 0 0">
@@ -24056,6 +23960,7 @@ async function initImageStudioTab(){
 
 function selectImageStudioMode(mode){
   imageStudioActiveMode = mode || 'text2image';
+  if(typeof gcpuSyncSidebar === 'function') gcpuSyncSidebar();
   document.querySelectorAll('#ist-mode-cards .ist-mode-card').forEach(c => {
     c.classList.toggle('on', c.getAttribute('data-ist-mode') === imageStudioActiveMode);
   });
@@ -24069,26 +23974,18 @@ function selectImageStudioMode(mode){
   const stepsInp = document.getElementById('ist-steps-inp');
   const cfgInp = document.getElementById('ist-cfg-inp');
   if(imageStudioActiveMode === 'batch'){
-    if(lbl) lbl.innerHTML = 'Danh Sách Prompts Tạo Ảnh Hàng Loạt (Mỗi dòng 1 ảnh hoặc <code>Ref_Tên.png | Prompt...</code>):';
-    if(btn) btn.textContent = isMoss ? '🌿 BẮT ĐẦU VẼ HÀNG LOẠT ẢNH MOSS IMAGE' : '🚀 BẮT ĐẦU VẼ HÀNG LOẠT ẢNH KREA 2 TURBO';
+    if(lbl) lbl.innerHTML = 'Nhập Danh Sách Mô Tả (Mỗi dòng 1 ảnh):';
+    if(btn) btn.textContent = '📦 TẠO ẢNH HÀNG LOẠT';
   } else if(imageStudioActiveMode === 'edit'){
-    if(lbl) lbl.innerHTML = isMoss
-      ? '🪄 Lệnh Chỉnh Sửa Ảnh Bằng Chữ — Moss-Image-Edit LoRA (Màu sắc, Trang phục, Ánh sáng, Mùa, Phong cách):'
-      : 'Lệnh Chỉnh Sửa / Đổi Trang Phục &amp; Bối Cảnh Giữ Nguyên Mặt (Krea 2 Edit):';
-    if(btn) btn.textContent = isMoss
-      ? '🪄 CHỈNH SỬA ẢNH BẰNG MOSS-IMAGE-EDIT LORA'
-      : '✨ CHỈNH SỬA & ĐỒNG NHẤT ẢNH BẰNG KREA 2';
+    if(lbl) lbl.innerHTML = 'Nhập Yêu Cầu Edit Ảnh (Đổi trang phục, màu sắc, ánh sáng, mùa, phong cách...):';
+    if(btn) btn.textContent = '🪄 EDIT ẢNH NGAY';
     if(isMoss){
       if(stepsInp && parseInt(stepsInp.value || '8', 10) < 16) stepsInp.value = '20';
       if(cfgInp && parseFloat(cfgInp.value || '1.0') < 3.0) cfgInp.value = '4.0';
     }
   } else {
-    if(lbl) lbl.innerHTML = isMoss
-      ? '🌿 Mô Tả Ảnh Cần Tạo Bằng MOSS Image (Hỗ trợ Tiếng Việt &amp; Tiếng Anh):'
-      : 'Mô Tả Ảnh Cần Tạo (Hỗ trợ Tiếng Việt &amp; Tiếng Anh):';
-    if(btn) btn.textContent = isMoss
-      ? '🌿 BẮT ĐẦU TẠO ẢNH MOSS (8-STEP DMD2 TURBO)'
-      : '🚀 BẮT ĐẦU TẠO ẢNH KREA 2 TURBO (14B)';
+    if(lbl) lbl.innerHTML = 'Nhập Mô Tả Ảnh Cần Tạo (Tiếng Việt hoặc Tiếng Anh):';
+    if(btn) btn.textContent = '🖼️ TẠO ẢNH NGAY';
     if(isMoss){
       if(stepsInp && parseInt(stepsInp.value || '20', 10) === 20) stepsInp.value = '8';
       if(cfgInp && parseFloat(cfgInp.value || '4.0') === 4.0) cfgInp.value = '1.0';
@@ -25041,7 +24938,7 @@ async function runKrea2Generate(){
   } finally {
     if(btn){
       btn.disabled = false;
-      btn.textContent = '🚀 Tạo Ảnh Bằng Krea 2 Turbo (14B)';
+      btn.textContent = '🖼️ Tạo Ảnh Ngay';
     }
   }
 }
@@ -30274,7 +30171,7 @@ function gcpuSyncSidebar(){
   const curMode = _uxVal('gen-mode', 'reference') || 'reference';
   let activeSbId = activeTab;
   if(activeTab === 'imagestudio'){
-    activeSbId = (typeof imageStudioActiveEngineFamily !== 'undefined' && imageStudioActiveEngineFamily === 'moss') ? 'moss' : 'imagestudio';
+    activeSbId = (typeof imageStudioActiveMode !== 'undefined' && imageStudioActiveMode === 'edit') ? 'imagestudio' : 'moss';
   } else if(activeTab === 'dash'){
     if(curMode === 't2v' || curMode === 'fasth3_t2v') activeSbId = 't2v';
     else if(curMode === 'first_frame') activeSbId = 'fl2v';
