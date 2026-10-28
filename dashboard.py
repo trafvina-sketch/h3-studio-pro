@@ -16169,10 +16169,20 @@ Cuối cùng xuất thêm danh sách rút gọn mỗi cảnh 1 dòng (nối bằ
         <!-- 2. CHỌN MODEL & TỶ LỆ KHUNG HÌNH (GỌN GÀNG TRONG 1 KHUNG) -->
         <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
           <div>
-            <label style="font-size:11.5px;font-weight:800;color:var(--text-main);display:block;margin-bottom:5px">🌿 Chọn Model Tạo Ảnh</label>
+            <label style="font-size:11.5px;font-weight:800;color:var(--text-main);display:block;margin-bottom:5px">🌿 Chọn Model Tạo Ảnh (MOSS Image &amp; Fibo 2.0 GGUF)</label>
             <select id="ist-checkpoint-sel" onchange="onImageStudioCheckpointChange(this.value)" class="sel" style="width:100%;padding:8px 11px;font-size:12.5px;font-weight:700">
               <option value="moss_kromoss" selected>🌿 Moss Kromoss — Ảnh Trong Trẻo &amp; Sắc Nét (Khuyên dùng)</option>
+              <option value="fibo2_edit_turbo">⚡ Fibo 2.0 Turbo GGUF — 4-Steps Siêu Tốc (Tạo Ảnh &amp; Edit Ảnh)</option>
+              <option value="fibo2_dev">🎯 Fibo 2.0 Dev GGUF — Chi Tiết Cao &amp; Chữ Viết Sắc Nét</option>
             </select>
+            <div id="ist-moss-ckpt-cards" style="display:flex;gap:5px;flex-wrap:wrap;margin-top:7px">
+              <button type="button" class="b b2 ist-moss-card on" data-moss-id="moss_kromoss" onclick="selectMossCheckpointCard('moss_kromoss')" style="font-size:10.5px;padding:3.5px 9px;border-radius:7px"><span>🌿 Moss Kromoss</span></button>
+              <button type="button" class="b b2 ist-moss-card" data-moss-id="moss_serenity" onclick="selectMossCheckpointCard('moss_serenity')" style="font-size:10.5px;padding:3.5px 9px;border-radius:7px"><span>👩 Moss Serenity</span></button>
+              <button type="button" class="b b2 ist-moss-card" data-moss-id="fibo2_edit_turbo" onclick="selectMossCheckpointCard('fibo2_edit_turbo')" style="font-size:10.5px;padding:3.5px 9px;border-radius:7px;border-color:rgba(245,158,11,0.45)"><span>⚡ Fibo 2.0 Turbo (4-Steps)</span></button>
+              <button type="button" class="b b2 ist-moss-card" data-moss-id="fibo2_dev" onclick="selectMossCheckpointCard('fibo2_dev')" style="font-size:10.5px;padding:3.5px 9px;border-radius:7px;border-color:rgba(56,189,248,0.45)"><span>🎯 Fibo 2.0 Dev GGUF</span></button>
+              <button type="button" class="b b2 ist-moss-card" data-moss-id="moss_imagine" onclick="selectMossCheckpointCard('moss_imagine')" style="font-size:10.5px;padding:3.5px 9px;border-radius:7px"><span>🎬 Moss Imagine</span></button>
+              <button type="button" class="b b2 ist-moss-card" data-moss-id="moss_animossity" onclick="selectMossCheckpointCard('moss_animossity')" style="font-size:10.5px;padding:3.5px 9px;border-radius:7px"><span>✨ AniMOSSity</span></button>
+            </div>
           </div>
 
           <div>
@@ -24037,16 +24047,32 @@ function selectMossCheckpointCard(ckptId){
   if(modalCkptSel){
     modalCkptSel.value = ckptId;
   }
+  const stepsInp = document.getElementById('ist-steps-inp');
+  const cfgInp = document.getElementById('ist-cfg-inp');
+  if(ckptId === 'fibo2_edit_turbo'){
+    if(stepsInp) stepsInp.value = '4';
+    if(cfgInp) cfgInp.value = '1.0';
+  } else if(stepsInp && parseInt(stepsInp.value || '8', 10) === 4){
+    stepsInp.value = '8';
+  }
   syncMossCheckpointCardsUI(ckptId);
   const found = (krea2CatalogCache.checkpoints || []).find(c => c.id === ckptId);
   if(found){
-    toast(`🌿 Đã chọn mô hình MOSS: ${found.short_name || found.name}`);
+    toast(`✨ Đã chọn Model: ${found.short_name || found.name}`);
   }
 }
 
 function onImageStudioCheckpointChange(ckptId){
   syncMossCheckpointCardsUI(ckptId);
-  if(String(ckptId || '').startsWith('moss_')){
+  const stepsInp = document.getElementById('ist-steps-inp');
+  const cfgInp = document.getElementById('ist-cfg-inp');
+  if(ckptId === 'fibo2_edit_turbo'){
+    if(stepsInp) stepsInp.value = '4';
+    if(cfgInp) cfgInp.value = '1.0';
+  } else if(stepsInp && parseInt(stepsInp.value || '8', 10) === 4){
+    stepsInp.value = '8';
+  }
+  if(String(ckptId || '').startsWith('moss_') || String(ckptId || '').startsWith('fibo2_')){
     imageStudioActiveEngineFamily = 'moss';
   } else {
     imageStudioActiveEngineFamily = 'krea2';

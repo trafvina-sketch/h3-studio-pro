@@ -169,6 +169,30 @@ MOSS_BASE_CHECKPOINTS: List[Dict[str, Any]] = [
         "style_prompt_boost": "",
         "desc_vi": "Krea 2 modul trọng lượng kết hợp nền tảng MOSS Image SFT BF16 v1.",
     },
+    {
+        "id": "fibo2_edit_turbo",
+        "name": "⚡ Fibo 2.0 Turbo GGUF — 4-Steps Siêu Tốc (Tạo Ảnh & Edit Ảnh)",
+        "short_name": "Fibo 2.0 Turbo (4-Steps)",
+        "engine_family": "fibo2",
+        "hf_repo": "realrebelai/Fibo-2.0_GGUFs",
+        "hf_file": "fibo2_edit_turbo-Q8_0.gguf",
+        "hf_file_bf16": "fibo2_edit_turbo-Q8_0.gguf",
+        "source_url": "https://huggingface.co/realrebelai/Fibo-2.0_GGUFs",
+        "style_prompt_boost": "",
+        "desc_vi": "Bản Fibo 2.0 Edit Turbo GGUF 4-Steps siêu nhanh: vừa tạo ảnh mới vừa chỉnh sửa 1–2 ảnh tham chiếu cực chuẩn chỉ với 4 bước.",
+    },
+    {
+        "id": "fibo2_dev",
+        "name": "🎯 Fibo 2.0 Dev GGUF — Chi Tiết Cao & Chữ Viết Sắc Nét",
+        "short_name": "Fibo 2.0 Dev GGUF",
+        "engine_family": "fibo2",
+        "hf_repo": "realrebelai/Fibo-2.0_GGUFs",
+        "hf_file": "fibo2_dev-Q8_0.gguf",
+        "hf_file_bf16": "fibo2_dev-Q8_0.gguf",
+        "source_url": "https://huggingface.co/realrebelai/Fibo-2.0_GGUFs",
+        "style_prompt_boost": "",
+        "desc_vi": "Bản Fibo 2.0 Dev GGUF kết hợp Turbo LoRA 8-Steps: bám sát bố cục phức tạp, ánh sáng điện ảnh và chữ viết rõ nét.",
+    },
 ]
 
 # Danh sách Base Checkpoints MOSS Image + Krea 2
@@ -1166,6 +1190,7 @@ def _generate_via_colab_gpu(
 
         lora_repo = (lora_obj.get("repo_id") if lora_obj else "") or ""
         lora_file = (lora_obj.get("filename") if lora_obj else "") or ""
+        eff_steps = 4 if base_checkpoint == "fibo2_edit_turbo" else (max(4, steps) if str(base_checkpoint).startswith("fibo2_") else max(8, steps))
 
         env_flags = " ".join([
             f"--env 'KREA2_MODE={mode}'",
@@ -1174,7 +1199,7 @@ def _generate_via_colab_gpu(
             f"--env 'KREA2_OUTPUT_PATH={rem_out}'",
             f"--env 'KREA2_WIDTH={width}'",
             f"--env 'KREA2_HEIGHT={height}'",
-            f"--env 'KREA2_STEPS={max(8, steps)}'",
+            f"--env 'KREA2_STEPS={eff_steps}'",
             f"--env 'KREA2_CFG={cfg_val}'",
             f"--env 'KREA2_SEED={seed}'",
             f"--env 'KREA2_LORA_REPO={lora_repo}'",
@@ -1211,12 +1236,17 @@ def _generate_via_colab_gpu(
                     _WARM_IMAGE_ACCOUNTS[acc_email] = time.time()
             raw_out = loc_out.read_bytes()
             png_bytes = _format_and_upscale_image_bytes(raw_out, width, height, crop_watermark_px=0)
-            short_ckpt = base_checkpoint.replace(".safetensors", "")
+            short_ckpt = base_checkpoint.replace(".safetensors", "").replace(".gguf", "")
             is_moss_ckpt = str(base_checkpoint).startswith("moss_")
+            is_fibo_ckpt = str(base_checkpoint).startswith("fibo2_")
             acc_short = (acc_email.split("@")[0] if acc_email else "default")
-            eng_tag = (
-                f"Colab {gpu_choice} ({acc_short}) • {'MOSS-Image-Edit LoRA' if (is_moss_ckpt and mode == 'edit') else ('MOSS Image' if is_moss_ckpt else 'Krea 2 Gốc')} ({short_ckpt})"
-            )
+            if is_fibo_ckpt:
+                fam_lbl = "Fibo 2.0 Edit Turbo" if mode == "edit" else "Fibo 2.0 GGUF"
+            elif is_moss_ckpt:
+                fam_lbl = "MOSS-Image-Edit LoRA" if mode == "edit" else "MOSS Image"
+            else:
+                fam_lbl = "Krea 2 Gốc"
+            eng_tag = f"Colab {gpu_choice} ({acc_short}) • {fam_lbl} ({short_ckpt})"
             return (
                 png_bytes,
                 eng_tag,
@@ -1512,8 +1542,9 @@ def generate_image_with_krea2(
         }
 
     is_moss_model = str(base_checkpoint).startswith("moss_")
+    is_fibo_model = str(base_checkpoint).startswith("fibo2_")
     if output_path is None:
-        prefix_fn = "MOSS" if is_moss_model else "Krea2"
+        prefix_fn = "FIBO2" if is_fibo_model else ("MOSS" if is_moss_model else "Krea2")
         fname = f"{prefix_fn}_{int(time.time())}_{uuid.uuid4().hex[:5]}.png"
         out_file = KREA2_OUTPUT_DIR / fname
     else:
@@ -1524,7 +1555,7 @@ def generate_image_with_krea2(
     # Lưu kèm file .civitai.info chuẩn Civitai Helper
     civitai_info = {
         "model": used_engine_label,
-        "baseModel": "MOSS-Image" if is_moss_model else "Krea 2 Turbo",
+        "baseModel": "Fibo 2.0" if is_fibo_model else ("MOSS-Image" if is_moss_model else "Krea 2 Turbo"),
         "checkpoint": ckpt_info["name"],
         "checkpointId": ckpt_info["id"],
         "styleLora": lora_obj["name"] if lora_obj else "None",
