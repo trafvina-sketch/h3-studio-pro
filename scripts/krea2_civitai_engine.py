@@ -20,6 +20,7 @@ import base64
 import json
 import random
 import re
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -903,6 +904,21 @@ def _run_wsl_cmd(cmd: str, timeout: int = 600) -> Tuple[int, str]:
         return -1, str(e)
 
 
+_IMAGE_ACC_LOCK = threading.Lock()
+_ACTIVE_IMAGE_ACCOUNTS: Dict[str, Dict[str, Any]] = {}
+_IMAGE_RR_COUNTER: int = 0
+
+
+def get_active_image_accounts() -> List[str]:
+    with _IMAGE_ACC_LOCK:
+        return list(_ACTIVE_IMAGE_ACCOUNTS.keys())
+
+
+def get_active_image_tasks() -> Dict[str, Dict[str, Any]]:
+    with _IMAGE_ACC_LOCK:
+        return {k: dict(v) for k, v in _ACTIVE_IMAGE_ACCOUNTS.items()}
+
+
 def _generate_via_colab_gpu(
     en_prompt: str,
     width: int,
@@ -917,25 +933,34 @@ def _generate_via_colab_gpu(
     ref_image_1: str = "",
     ref_image_2: str = "",
     colab_gpu: str = "L4",
+    busy_video_accounts: Optional[List[str]] = None,
+    eligible_accounts: Optional[List[str]] = None,
+    preferred_account: str = "",
 ) -> Tuple[Optional[bytes], str, str, str]:
     """
-    Chạy trực tiếp mô hình Krea 2 Gốc (gonzalomoKrea2_v40 / pornmasterKrea2_v2TurboInt8 + Qwen3-VL-4B + Qwen Image VAE)
-    trên máy ảo Google Colab GPU (L4 / A100 / T4) thông qua ComfyUI.
-    Chi phí siêu tiết kiệm: ~0.0025 CU / ảnh trên GPU L4 (~400 ảnh / 1 CU), giữ nguyên phiên ấm h3_warm_*.
+    Chạy trực tiếp mô hình MOSS Image / Krea 2 Gốc trên máy ảo Google Colab GPU (L4 / A100 / T4) thông qua ComfyUI.
+    Tự động phân tải thông minh qua các tài khoản Colab đang rảnh (không đụng tài khoản đang tạo Video hoặc đang vẽ ảnh khác).
     """
+    global _IMAGE_RR_COUNTER
     nb_path = SCRIPT_DIR / "assets" / "Krea2_Turbo_Colab.ipynb"
     runner_path = SCRIPT_DIR / "scripts" / "runner.py"
     mgr_path = SCRIPT_DIR / "scripts" / "account_manager.py"
     if not nb_path.is_file() or not runner_path.is_file():
         return None, "", "", "Không tìm thấy file Krea2_Turbo_Colab.ipynb hoặc runner.py"
 
-    # Tìm tài khoản Colab có nhiều CU nhất
-    acc_email = ""
+    # 1. Thu thập danh sách tất cả tài khoản Colab còn CU (> 0.05 CU)
+    funded_emails: List[str] = []
+    if eligible_accounts:
+        for em in eligible_accounts:
+            if em and em not in funded_emails:
+                funded_emails.append(em)
+
     code_l, out_l = _run_wsl_cmd(f"python3 '{_wsl_path(mgr_path)}' list", timeout=15)
+    fallback_email = ""
     if code_l == 0 and out_l:
         try:
             accs = json.loads(out_l)
-            funded = []
+            funded_tuples = []
             for a in (accs if isinstance(accs, list) else []):
                 em = a.get("email")
                 bal = a.get("balance")
@@ -944,36 +969,54 @@ def _generate_via_colab_gpu(
                 except Exception:
                     bf = 0.0
                 if em and bf > 0.05:
-                    funded.append((1 if a.get("selected") else 0, bf, em))
-            funded.sort(reverse=True)
-            if funded:
-                acc_email = funded[0][2]
-            elif accs and isinstance(accs, list) and accs[0].get("email"):
-                acc_email = accs[0]["email"]
+                    funded_tuples.append((1 if a.get("selected") else 0, bf, em))
+            funded_tuples.sort(reverse=True)
+            for _, _, em in funded_tuples:
+                if em not in funded_emails:
+                    funded_emails.append(em)
+            if not funded_emails and accs and isinstance(accs, list) and accs[0].get("email"):
+                fallback_email = accs[0]["email"]
         except Exception:
             pass
 
-    safe_acc = re.sub(r"[^a-zA-Z0-9_]", "_", acc_email or "default")
-    tok_env = f"COLAB_TOKEN_PATH='/root/.config/colab-cli/tokens/{acc_email}.json' " if acc_email else ""
-    session = f"h3_warm_{safe_acc}"
+    if not funded_emails and fallback_email:
+        funded_emails = [fallback_email]
+
+    # 2. Chọn tài khoản RẢNH (ưu tiên TK không bận tạo Video VÀ không bận vẽ Ảnh khác)
+    busy_vid_set = set(busy_video_accounts or [])
+    with _IMAGE_ACC_LOCK:
+        busy_img_set = set(_ACTIVE_IMAGE_ACCOUNTS.keys())
+        tier1_idle = [em for em in funded_emails if em not in busy_vid_set and em not in busy_img_set]
+        tier2_no_vid = [em for em in funded_emails if em not in busy_vid_set and em in busy_img_set]
+        tier3_busy_vid = [em for em in funded_emails if em in busy_vid_set]
+
+        if len(tier1_idle) > 1:
+            rot = _IMAGE_RR_COUNTER % len(tier1_idle)
+            tier1_idle = tier1_idle[rot:] + tier1_idle[:rot]
+        _IMAGE_RR_COUNTER += 1
+
+        ordered_candidates: List[str] = []
+        if preferred_account and preferred_account in funded_emails:
+            ordered_candidates.append(preferred_account)
+        for em in (tier1_idle + tier2_no_vid + tier3_busy_vid):
+            if em and em not in ordered_candidates:
+                ordered_candidates.append(em)
+        if not ordered_candidates:
+            ordered_candidates = [""]
+
+        acc_email = ordered_candidates[0]
+        if acc_email:
+            _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
+                "email": acc_email,
+                "mode": mode,
+                "checkpoint": base_checkpoint,
+                "started_at": time.strftime("%H:%M:%S"),
+                "ts": time.time(),
+            }
+
     gpu_choice = (colab_gpu or "A100").strip().upper()
     if gpu_choice not in ("L4", "A100", "T4", "V100"):
         gpu_choice = "A100"
-
-    # 1. Khởi tạo hoặc tái sử dụng phiên ấm trên Colab
-    c_start, o_start = _run_wsl_cmd(
-        f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'",
-        timeout=300,
-    )
-    if c_start != 0:
-        alt_gpu = "L4" if gpu_choice == "A100" else "A100"
-        gpu_choice = alt_gpu
-        c_start, o_start = _run_wsl_cmd(
-            f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'",
-            timeout=300,
-        )
-    if c_start != 0:
-        return None, "", "", f"Không thể mở phiên Colab GPU ({o_start[-200:]})"
 
     td = SCRIPT_DIR / "temp"
     td.mkdir(parents=True, exist_ok=True)
@@ -984,6 +1027,50 @@ def _generate_via_colab_gpu(
     loc_ref2 = td / f"krea2_ref2_{uid}.png"
 
     try:
+        # 3. Khởi tạo hoặc tái sử dụng phiên ấm trên Colab (Tự động chuyển sang TK tiếp theo nếu TK đầu bị hết GPU)
+        started_ok = False
+        last_start_err = ""
+        for cand_idx, cand_email in enumerate(ordered_candidates):
+            if cand_idx > 0:
+                with _IMAGE_ACC_LOCK:
+                    if acc_email:
+                        _ACTIVE_IMAGE_ACCOUNTS.pop(acc_email, None)
+                    acc_email = cand_email
+                    if acc_email:
+                        _ACTIVE_IMAGE_ACCOUNTS[acc_email] = {
+                            "email": acc_email,
+                            "mode": mode,
+                            "checkpoint": base_checkpoint,
+                            "started_at": time.strftime("%H:%M:%S"),
+                            "ts": time.time(),
+                        }
+            safe_acc = re.sub(r"[^a-zA-Z0-9_]", "_", acc_email or "default")
+            tok_env = f"COLAB_TOKEN_PATH='/root/.config/colab-cli/tokens/{acc_email}.json' " if acc_email else ""
+            session = f"h3_warm_{safe_acc}"
+            c_start, o_start = _run_wsl_cmd(
+                f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{gpu_choice}'",
+                timeout=300,
+            )
+            if c_start != 0:
+                alt_gpu = "L4" if gpu_choice == "A100" else "A100"
+                c_start, o_start = _run_wsl_cmd(
+                    f"{tok_env}python3 '{_wsl_path(runner_path)}' start --session '{session}' --gpu '{alt_gpu}'",
+                    timeout=300,
+                )
+                if c_start == 0:
+                    gpu_choice = alt_gpu
+            if c_start == 0:
+                started_ok = True
+                break
+            last_start_err = o_start[-200:] if o_start else "Timeout/Error"
+
+        if not started_ok:
+            return None, "", "", f"Không thể mở phiên Colab GPU ({last_start_err})"
+
+        safe_acc = re.sub(r"[^a-zA-Z0-9_]", "_", acc_email or "default")
+        tok_env = f"COLAB_TOKEN_PATH='/root/.config/colab-cli/tokens/{acc_email}.json' " if acc_email else ""
+        session = f"h3_warm_{safe_acc}"
+
         loc_prompt.write_text(en_prompt, encoding="utf-8")
         rem_prompt = f"/content/krea2_prompt_{uid}.txt"
         rem_out = f"/content/krea2_out_{uid}.png"
@@ -1065,8 +1152,9 @@ def _generate_via_colab_gpu(
             png_bytes = _format_and_upscale_image_bytes(raw_out, width, height, crop_watermark_px=0)
             short_ckpt = base_checkpoint.replace(".safetensors", "")
             is_moss_ckpt = str(base_checkpoint).startswith("moss_")
+            acc_short = (acc_email.split("@")[0] if acc_email else "default")
             eng_tag = (
-                f"Colab GPU {gpu_choice} • {'MOSS-Image-Edit LoRA' if (is_moss_ckpt and mode == 'edit') else ('MOSS Image' if is_moss_ckpt else 'Krea 2 Gốc')} ({short_ckpt})"
+                f"Colab {gpu_choice} ({acc_short}) • {'MOSS-Image-Edit LoRA' if (is_moss_ckpt and mode == 'edit') else ('MOSS Image' if is_moss_ckpt else 'Krea 2 Gốc')} ({short_ckpt})"
             )
             return (
                 png_bytes,
@@ -1076,6 +1164,9 @@ def _generate_via_colab_gpu(
             )
         return None, "", "", f"Tải ảnh từ Colab thất bại: {o_dl[-180:]}"
     finally:
+        with _IMAGE_ACC_LOCK:
+            if acc_email:
+                _ACTIVE_IMAGE_ACCOUNTS.pop(acc_email, None)
         for fp in (loc_prompt, loc_out, loc_ref1, loc_ref2):
             try:
                 fp.unlink(missing_ok=True)
@@ -1101,6 +1192,9 @@ def generate_image_with_krea2(
     output_path: Optional[Path] = None,
     compute_mode: str = "colab_gpu",
     colab_gpu: str = "A100",
+    busy_video_accounts: Optional[List[str]] = None,
+    eligible_accounts: Optional[List[str]] = None,
+    preferred_account: str = "",
 ) -> Dict[str, Any]:
     """
     Sinh ảnh chất lượng cao bằng Hệ thống Đa Cụm GPU:
@@ -1158,6 +1252,9 @@ def generate_image_with_krea2(
             ref_image_1=ref_image_1,
             ref_image_2=ref_image_2,
             colab_gpu=colab_gpu or "A100",
+            busy_video_accounts=busy_video_accounts,
+            eligible_accounts=eligible_accounts,
+            preferred_account=preferred_account,
         )
         if c_bytes:
             img_bytes = c_bytes

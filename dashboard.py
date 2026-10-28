@@ -2575,21 +2575,32 @@ def _process_queue(from_timer: bool = False):
             elif isinstance(alloc, str):
                 busy_emails.add(alloc)
 
-        # Lọc ra các tài khoản rảnh rỗi (IDLE) và ƯU TIÊN GPU ĐANG NÓNG (Warm Session Affinity trong 8 phút gần nhất)
+        # Kiểm tra thêm các tài khoản đang bận tạo ảnh Moss / Krea 2 để ưu tiên tài khoản hoàn toàn rảnh
+        try:
+            from scripts.krea2_civitai_engine import get_active_image_accounts
+            active_img_emails = get_active_image_accounts()
+        except Exception:
+            active_img_emails = set()
+
+        # Lọc ra các tài khoản rảnh rỗi (không bận Video) và ưu tiên:
+        # (1) Không đang bận tạo ảnh Moss/Krea2 -> (2) GPU đang ấm trong 8 phút -> (3) Số dư CU cao
         idle_accounts = [acc for acc in eligible if acc.get("email") and acc["email"] not in busy_emails]
         now_ts_q = time.time()
         idle_accounts.sort(
             key=lambda a: (
+                0 if a.get("email") in active_img_emails else 1,
                 1 if (now_ts_q - float(account_workers.get(a.get("email"), {}).get("last_active_ts") or 0.0)) < 480 else 0,
                 float(str(a.get("balance")).split()[0]) if a.get("balance") is not None else 0.0,
             ),
             reverse=True,
         )
+        pure_idle_accounts = [acc for acc in idle_accounts if acc.get("email") not in active_img_emails]
 
-        # TIẾT KIỆM CU:
-        # 1) Nếu chưa có GPU nào chạy và lệnh đầu tiên có thể gom lô (< 10 lệnh), chờ 3 giây để gom các lệnh gửi liền kề vào chung 1 lần chạy.
+        # CHẾ ĐỘ ĐA TÀI KHOẢN SONG SONG:
+        # - Khi người dùng chỉ có 1 tài khoản (hoặc không còn TK rảnh), giữ cơ chế gom lô tiết kiệm CU.
+        # - Khi người dùng có >= 2 tài khoản và đang có TK rảnh (idle_accounts), PHÂN PHỐI NGAY LẬP TỨC sang TK rảnh tiếp theo!
         first_q_info = active_jobs.get(job_queue[0], {})
-        if not current_running_jobs and not from_timer and _can_coalesce_single_job(first_q_info) and len(job_queue) < MAX_COALESCED_BATCH:
+        if len(eligible) <= 1 and not current_running_jobs and not from_timer and _can_coalesce_single_job(first_q_info) and len(job_queue) < MAX_COALESCED_BATCH:
             for idx, qid in enumerate(job_queue):
                 if qid in active_jobs:
                     active_jobs[qid]["queue_pos"] = idx + 1
@@ -2597,9 +2608,8 @@ def _process_queue(from_timer: bool = False):
             _schedule_coalesce_dispatch()
             return
 
-        # 2) Nếu đã có ít nhất 1 GPU đang chạy và số lệnh đang chờ <= 10 * số GPU đang chạy,
-        #    KHÔNG đánh thức thêm Colab lạnh mới (đỡ tốn 3 phút nạp model), mà gom tối đa 10 lệnh chờ GPU ấm chạy xong xử lý 1 mẻ!
-        if current_running_jobs and all(_can_coalesce_single_job(active_jobs.get(qid, {})) for qid in job_queue):
+        # Chỉ chờ GPU ấm khi KHÔNG CÒN tài khoản rảnh nào khác (pure_idle_accounts == 0)
+        if not pure_idle_accounts and current_running_jobs and all(_can_coalesce_single_job(active_jobs.get(qid, {})) for qid in job_queue):
             active_gpu_cnt = max(1, len(current_running_jobs))
             if len(job_queue) <= MAX_COALESCED_BATCH * active_gpu_cnt:
                 for idx, qid in enumerate(job_queue):
@@ -2608,8 +2618,13 @@ def _process_queue(from_timer: bool = False):
                         active_jobs[qid]["stage_label"] = f"⏳ Đang gom lô trên GPU ấm (Vị trí #{idx + 1}/{MAX_COALESCED_BATCH} — Chạy liền mạch ngay khi phiên trước xong)..."
                 return
 
-        # Phân phối các lệnh trong hàng chờ (Gom tối đa 10 lệnh đơn cùng loại vào 1 phiên VRAM Colab)
+        # Phân phối các lệnh trong hàng chờ: Chia đều cho tất cả các tài khoản rảnh trước (1 lệnh/TK rảnh),
+        # chỉ gom nhiều lệnh vào 1 TK khi số lệnh trong hàng đợi nhiều hơn số TK rảnh!
         while job_queue and idle_accounts:
+            avail_acc_cnt = max(1, len(idle_accounts))
+            total_pending_now = len(job_queue)
+            max_per_acc = max(1, min(MAX_COALESCED_BATCH, (total_pending_now + avail_acc_cnt - 1) // avail_acc_cnt))
+
             next_jid = job_queue.pop(0)
             job_info = active_jobs.get(next_jid, {})
             handler = job_handlers.get(next_jid)
@@ -2631,15 +2646,15 @@ def _process_queue(from_timer: bool = False):
                 current_running_job = next_jid
                 to_launch.append((next_jid, handler, allocated_target))
             else:
-                # Kiểm tra xem có thể gom thêm tới tối đa 10 lệnh đơn trong hàng đợi vào cùng 1 phiên VRAM không
+                # Chia đều trên các TK rảnh: chỉ gom tối đa max_per_acc lệnh trên mỗi TK
                 coalesced_jids = [next_jid]
-                if _can_coalesce_single_job(job_info):
+                if max_per_acc > 1 and _can_coalesce_single_job(job_info):
                     base_lora = str((job_info.get("_coalesce_spec") or {}).get("lora") or "pdmd").strip().lower()
                     rem_queue = []
                     for cand_jid in job_queue:
                         cand_info = active_jobs.get(cand_jid, {})
                         cand_lora = str((cand_info.get("_coalesce_spec") or {}).get("lora") or "pdmd").strip().lower()
-                        if len(coalesced_jids) < MAX_COALESCED_BATCH and _can_coalesce_single_job(cand_info) and cand_lora == base_lora:
+                        if len(coalesced_jids) < max_per_acc and _can_coalesce_single_job(cand_info) and cand_lora == base_lora:
                             coalesced_jids.append(cand_jid)
                         else:
                             rem_queue.append(cand_jid)
@@ -2870,6 +2885,12 @@ def schedule_idle_gpu_stop(idle_seconds: int = 480):
         def _auto_stop():
             with queue_lock:
                 has_active = bool(current_running_jobs or job_queue)
+            try:
+                from scripts.krea2_civitai_engine import get_active_image_accounts
+                if get_active_image_accounts():
+                    has_active = True
+            except Exception:
+                pass
             if not has_active:
                 try:
                     stop_all_warm_sessions()
@@ -12846,6 +12867,23 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 <!-- MAIN CONTAINER -->
 <div class="page">
 
+  <!-- THANH ĐIỀU PHỐI ĐA TÀI KHOẢN THỜI GIAN THỰC (CHẠY SONG SONG VIDEO + ẢNH MOSS + BATCH) -->
+  <div id="multi-acc-live-banner" style="background:linear-gradient(135deg, rgba(16,185,129,0.10), rgba(14,165,233,0.08));border:1px solid rgba(16,185,129,0.32);border-radius:12px;padding:9px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1">
+      <span id="mac-summary-pill" style="background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(16,185,129,0.45);font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap">
+        ⚡ Đa Tài Khoản: Đang tải...
+      </span>
+      <div id="mac-accounts-pills" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
+      <span id="mac-parallel-hint" style="font-size:11.5px;color:var(--text-sub);line-height:1.4">
+        💡 Tự động chia việc: <b>TK 1</b> đang tạo Video &rarr; Bấm <b>Tạo Ảnh / Edit Ảnh</b> hoặc <b>Video tiếp theo</b> sẽ chạy ngay trên <b>TK 2..N</b>!
+      </span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <button type="button" class="b b2" onclick="doRefresh(false)" style="padding:4px 9px;font-size:11px;font-weight:700" title="Làm mới trạng thái các tài khoản">🔄 Làm mới</button>
+      <button type="button" class="b b2" onclick="openSettingsModal()" style="padding:4px 10px;font-size:11px;font-weight:800;border-color:var(--em-border);color:var(--em-light)">⚙️ Quản lý TK</button>
+    </div>
+  </div>
+
   <!-- BANNER KHI BẬT 18+ (GỌN 1 DÒNG) -->
   <div id="adult-mode-banner" style="display:none;background:linear-gradient(135deg, rgba(225,29,72,0.14), rgba(147,51,234,0.14));border:1px solid rgba(225,29,72,0.45);border-radius:10px;padding:8px 14px;margin-bottom:14px;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:8px;font-size:12px">
@@ -14049,9 +14087,9 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
                   <input type="checkbox" id="b-auto-merge" checked style="width:15px;height:15px;cursor:pointer">
                   <span>🎞️ Tự động ghép tất cả clip thành 1 Video Dài (.MP4)</span>
                 </label>
-                <label style="margin:0;font-size:12px;font-weight:800;color:#d97706;display:flex;align-items:center;gap:6px;cursor:pointer" title="Bật/Tắt chế độ tự động cắt frame cuối của cảnh trước để làm ảnh tham chiếu cùng với các ảnh tham chiếu của cảnh tiếp theo">
-                  <input type="checkbox" id="b-chain-last-frame" checked style="width:15px;height:15px;cursor:pointer">
-                  <span>🔗 Auto cắt Frame Cuối làm tham chiếu cùng Ref cảnh tiếp theo</span>
+                <label style="margin:0;font-size:12px;font-weight:800;color:#d97706;display:flex;align-items:center;gap:6px;cursor:pointer" title="Nếu TẮT: Chạy song song cùng lúc trên tất cả các tài khoản (Nhanh gấp N lần). Nếu BẬT: Chạy tuần tự cảnh trước xong mới lấy Frame cuối cho cảnh sau.">
+                  <input type="checkbox" id="b-chain-last-frame" onchange="updateBatchWorkerUI()" style="width:15px;height:15px;cursor:pointer">
+                  <span>🔗 Nối Frame Cuối cảnh trước (Tắt để chạy song song nhiều TK cùng lúc)</span>
                 </label>
               </div>
               <span class="chip chip-g" style="font-size:10.5px;padding:2px 8px">FFmpeg Auto-Merge</span>
@@ -18252,6 +18290,7 @@ async function doRefresh(silent = false){
     }
     renderAccountList(savedAccounts);
     updateBatchWorkerUI();
+    if(typeof renderMultiAccountLiveBanner === 'function') renderMultiAccountLiveBanner(r);
     if(!silent) toast(`✅ Đã cập nhật CU! Tổng CU còn lại: ${totalCUVal != null ? Number(totalCUVal).toFixed(1) : '--'} CU`);
     return r;
   } catch(e) {
@@ -18405,9 +18444,78 @@ async function toggleWorkerAccount(email, enabled){
   } catch(e){}
 }
 
+function renderMultiAccountLiveBanner(statusObj){
+  const banner = document.getElementById('multi-acc-live-banner');
+  const sumPill = document.getElementById('mac-summary-pill');
+  const pillsWrap = document.getElementById('mac-accounts-pills');
+  const hintEl = document.getElementById('mac-parallel-hint');
+  if(!banner || !sumPill || !pillsWrap) return;
+
+  const accs = (typeof savedAccounts !== 'undefined' && Array.isArray(savedAccounts)) ? savedAccounts : [];
+  const readyAccs = accs.filter(a => (a.balance || 0) > 0.05 && a.enabled !== false);
+  const busyVid = readyAccs.filter(a => a.busy_video);
+  const busyImg = readyAccs.filter(a => a.busy_image);
+  const idleReady = readyAccs.filter(a => !a.busy_video && !a.busy_image);
+
+  if(accs.length === 0){
+    sumPill.textContent = '⚠️ Chưa kết nối Tài Khoản';
+    sumPill.style.background = 'rgba(239,68,68,0.16)';
+    sumPill.style.color = '#f87171';
+    pillsWrap.innerHTML = '';
+    if(hintEl) hintEl.innerHTML = 'Bấm <b>⚙️ Quản lý TK</b> để kết nối 1 hoặc nhiều tài khoản Google Colab.';
+    return;
+  }
+
+  sumPill.style.background = 'rgba(16,185,129,0.2)';
+  sumPill.style.color = '#34d399';
+  sumPill.innerHTML = `⚡ Cụm Đa TK: <b>${idleReady.length}/${readyAccs.length} TK Rảnh</b>` +
+    (busyVid.length ? ` &bull; 🎬 ${busyVid.length} TK đang tạo Video` : '') +
+    (busyImg.length ? ` &bull; 🖼️ ${busyImg.length} TK đang tạo Ảnh` : '');
+
+  pillsWrap.innerHTML = readyAccs.map((a, idx) => {
+    const shortEm = (a.email || '').split('@')[0];
+    const cuTxt = a.balance != null ? Number(a.balance).toFixed(1) + ' CU' : '';
+    let stBadge = '🟢 Rảnh';
+    let bg = 'rgba(16,185,129,0.12)';
+    let bd = 'rgba(16,185,129,0.35)';
+    let col = '#34d399';
+    if(a.busy_video){
+      stBadge = '🎬 Đang tạo Video';
+      bg = 'rgba(56,189,248,0.16)';
+      bd = 'rgba(56,189,248,0.45)';
+      col = '#38bdf8';
+    } else if(a.busy_image){
+      stBadge = '🖼️ Đang tạo Ảnh';
+      bg = 'rgba(245,158,11,0.16)';
+      bd = 'rgba(245,158,11,0.45)';
+      col = '#fbbf24';
+    }
+    return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;background:${bg};border:1px solid ${bd};color:${col}" title="${escapeHtml(a.email)} (${cuTxt})">` +
+      `<span>TK${idx + 1} (${escapeHtml(shortEm)}): ${stBadge}</span>` +
+      (cuTxt ? `<span style="opacity:0.8;font-size:10px">${cuTxt}</span>` : '') +
+    `</span>`;
+  }).join('');
+
+  if(hintEl){
+    if(readyAccs.length >= 2){
+      if(idleReady.length > 0 && (busyVid.length > 0 || busyImg.length > 0)){
+        hintEl.innerHTML = `✅ Đang còn <b>${idleReady.length} TK rảnh</b> — Bạn có thể bấm <b>Tạo Ảnh / Edit Ảnh</b> hoặc <b>Tạo Video tiếp theo</b> ngay lập tức mà không cần chờ!`;
+      } else if(idleReady.length === readyAccs.length){
+        hintEl.innerHTML = `🚀 Sẵn sàng chạy song song <b>×${readyAccs.length} tốc độ</b> (Vừa tạo Video ở TK 1, vừa tạo Ảnh/Video ở TK 2..${readyAccs.length} hoặc chạy Hàng Loạt cùng lúc).`;
+      } else {
+        hintEl.innerHTML = `⏳ Tất cả <b>${readyAccs.length} TK</b> đang bận xử lý. Lệnh mới sẽ tự động vào TK hoàn tất sớm nhất!`;
+      }
+    } else {
+      hintEl.innerHTML = `💡 Kết nối thêm tài khoản ở nút <b>⚙️ Quản lý TK</b> để vừa tạo Video vừa tạo Ảnh hoặc chạy hàng loạt nhiều TK cùng lúc!`;
+    }
+  }
+}
+
 function updateBatchWorkerUI(){
   const cb = document.getElementById('b-multi-account');
-  const isMulti = cb ? cb.checked : true;
+  const chainCb = document.getElementById('b-chain-last-frame');
+  const isChain = chainCb ? chainCb.checked : false;
+  const isMulti = (cb ? cb.checked : true) && !isChain;
   const badge = document.getElementById('b-multi-badge');
   const btn = document.getElementById('btn-batch-gen');
   const listEl = document.getElementById('b-workers-list');
@@ -24749,85 +24857,118 @@ async function runImageStudioGenerate(){
   const btn = document.getElementById('btn-ist-generate');
   const badge = document.getElementById('ist-preview-badge');
 
-  // Chế độ Vẽ Hàng Loạt (Batch Images)
+  const readyAccsNow = (typeof savedAccounts !== 'undefined' && Array.isArray(savedAccounts))
+    ? savedAccounts.filter(a => (a.balance || 0) > 0.05 && a.enabled !== false)
+    : [];
+  const idleAccsNow = readyAccsNow.filter(a => !a.busy_video && !a.busy_image);
+  const workerPoolSize = Math.max(1, idleAccsNow.length || readyAccsNow.length || 1);
+
+  // Chế độ Tạo Hàng Loạt (Batch Images — Chạy SONG SONG trên nhiều tài khoản cùng lúc!)
   if(imageStudioActiveMode === 'batch'){
     const lines = rawInput.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-    if(!lines.length) return toast('⚠️ Vui lòng nhập ít nhất 1 dòng Prompt!');
+    if(!lines.length) return toast('⚠️ Vui lòng nhập ít nhất 1 dòng mô tả ảnh!');
+    const parallelCnt = Math.min(lines.length, workerPoolSize);
     if(btn) btn.disabled = true;
-    toast(`🎨 Bắt đầu vẽ hàng loạt ${lines.length} ảnh bằng Krea 2 Turbo...`);
+    toast(`🚀 Bắt đầu tạo hàng loạt ${lines.length} ảnh (Chạy song song ${parallelCnt} tài khoản cùng lúc)...`);
     let successCnt = 0;
+    let doneCnt = 0;
+    let nextIdx = 0;
     try {
-      for(let i = 0; i < lines.length; i++){
-        const ln = lines[i];
-        let lineTargetRef = '';
-        let linePrompt = ln;
-        if(ln.includes('|')){
-          const parts = ln.split('|');
-          if(parts[0].trim().match(/\.(png|jpg|jpeg|webp)$/i) || parts[0].trim().startsWith('Ref_')){
-            lineTargetRef = parts[0].trim();
-            linePrompt = parts.slice(1).join('|').trim();
+      const workerFn = async (workerIdx) => {
+        while(nextIdx < lines.length){
+          const curIdx = nextIdx++;
+          const ln = lines[curIdx];
+          let lineTargetRef = '';
+          let linePrompt = ln;
+          if(ln.includes('|')){
+            const parts = ln.split('|');
+            if(parts[0].trim().match(/\.(png|jpg|jpeg|webp)$/i) || parts[0].trim().startsWith('Ref_')){
+              lineTargetRef = parts[0].trim();
+              linePrompt = parts.slice(1).join('|').trim();
+            }
           }
+          if(btn) btn.textContent = `⏳ Đang tạo song song (${doneCnt}/${lines.length} xong — ${parallelCnt} TK chạy cùng lúc)...`;
+          if(badge) badge.textContent = `⚡ Đang chạy ${parallelCnt} TK (${doneCnt}/${lines.length})...`;
+          setTimeout(() => { try { doRefresh(true); } catch(e){} }, 400);
+          const res = await fetch('/api/krea2/generate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              prompt: linePrompt,
+              mode: 'text2image',
+              width: width,
+              height: height,
+              steps: steps,
+              cfg: cfg,
+              seed: seed,
+              base_checkpoint: ckpt,
+              style_lora_id: styleId,
+              lora_strength: loraStr,
+              trigger_words: krea2ActiveTriggers,
+              compute_mode: computeMode,
+              colab_gpu: colabGpu,
+              target_sb_ref: lineTargetRef || (lines.length === 1 ? targetSbRef : '')
+            })
+          }).then(r => r.json()).catch(err => ({ok: false, error: err.message}));
+          doneCnt++;
+          if(res && res.ok){
+            successCnt++;
+            krea2LastGeneratedResult = res;
+            renderKrea2ResultPreview(res);
+            if(res.storyboard) applyStoryboardDataToUI(res.storyboard);
+            const accLbl = res.colab_account ? ` [TK: ${res.colab_account.split('@')[0]}]` : '';
+            toast(`✅ Đã xong ảnh ${doneCnt}/${lines.length}${accLbl}`);
+          }
+          if(btn) btn.textContent = `⏳ Đang tạo song song (${doneCnt}/${lines.length} xong — ${parallelCnt} TK)...`;
+          if(badge) badge.textContent = `Đang tạo ${doneCnt}/${lines.length}...`;
+          try { doRefresh(true); } catch(e){}
         }
-        if(btn) btn.textContent = `⏳ Đang vẽ ảnh ${i + 1}/${lines.length}${lineTargetRef ? ' (' + lineTargetRef + ')' : ''}...`;
-        if(badge) badge.textContent = `Đang vẽ ${i + 1}/${lines.length}...`;
-        const res = await fetch('/api/krea2/generate', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            prompt: linePrompt,
-            mode: 'text2image',
-            width: width,
-            height: height,
-            steps: steps,
-            cfg: cfg,
-            seed: seed,
-            base_checkpoint: ckpt,
-            style_lora_id: styleId,
-            lora_strength: loraStr,
-            trigger_words: krea2ActiveTriggers,
-            compute_mode: computeMode,
-            colab_gpu: colabGpu,
-            target_sb_ref: lineTargetRef || (lines.length === 1 ? targetSbRef : '')
-          })
-        }).then(r => r.json());
-        if(res && res.ok){
-          successCnt++;
-          krea2LastGeneratedResult = res;
-          renderKrea2ResultPreview(res);
-          if(res.storyboard) applyStoryboardDataToUI(res.storyboard);
-        }
+      };
+      const workers = [];
+      for(let w = 0; w < parallelCnt; w++){
+        workers.push(workerFn(w));
       }
+      await Promise.all(workers);
       await loadKrea2CatalogAndHistory();
-      if(badge) badge.textContent = `Hoàn tất ${successCnt}/${lines.length} ảnh`;
-      toast(`🎉 Đã vẽ xong ${successCnt}/${lines.length} ảnh Krea 2!`);
+      if(badge) badge.textContent = `✅ Hoàn tất ${successCnt}/${lines.length} ảnh`;
+      toast(`🎉 Đã tạo xong ${successCnt}/${lines.length} ảnh (Đa tài khoản song song)!`);
     } catch(e){
-      toast('⚠️ Lỗi khi vẽ hàng loạt: ' + e.message);
+      toast('⚠️ Lỗi khi tạo hàng loạt: ' + e.message);
     } finally {
       if(btn){
         btn.disabled = false;
-        btn.textContent = '🚀 BẮT ĐẦU VẼ HÀNG LOẠT ẢNH KREA 2 TURBO';
+        selectImageStudioMode(imageStudioActiveMode);
       }
+      try { doRefresh(true); } catch(e){}
     }
     return;
   }
 
-  // Chế độ Tạo Ảnh Đơn (text2image) hoặc Sửa Ảnh Giữ Mặt (edit)
+  // Chế độ Tạo Ảnh Đơn (text2image) hoặc Edit Ảnh (edit)
+  // Hỗ trợ bấm liên tiếp nhiều lệnh khi có >= 2 tài khoản (Tự động đẩy lệnh mới sang TK rảnh tiếp theo!)
   const ref1Data = (imageStudioActiveMode === 'edit') ? await readInputFileAsDataUrl(document.getElementById('ist-ref1-inp')) : '';
   const ref2Data = (imageStudioActiveMode === 'edit') ? await readInputFileAsDataUrl(document.getElementById('ist-ref2-inp')) : '';
   if(imageStudioActiveMode === 'edit' && !ref1Data && !ref2Data){
-    return toast('⚠️ Ở chế độ Sửa & Đồng Nhất Ảnh, vui lòng chọn ít nhất 1 ảnh gốc!');
+    return toast('⚠️ Ở chế độ Edit Ảnh, vui lòng tải lên ít nhất 1 ảnh gốc cần sửa!');
   }
 
+  window._activeImageStudioReqs = (window._activeImageStudioReqs || 0) + 1;
+  const canFireMoreParallel = readyAccsNow.length > window._activeImageStudioReqs;
+
   if(btn){
-    btn.disabled = true;
-    btn.textContent = computeMode === 'colab_gpu'
-      ? `⏳ Đang chạy Krea 2 Gốc trên Google Colab ${colabGpu}...`
-      : '⏳ Đang chạy Krea 2 Turbo (14B)... (~15 giây)';
+    if(!canFireMoreParallel){
+      btn.disabled = true;
+      btn.textContent = `⏳ Đang tạo trên Google Colab ${colabGpu}...`;
+    } else {
+      btn.disabled = false;
+      btn.textContent = `⚡ Đang tạo (${window._activeImageStudioReqs} lệnh) — Bấm tiếp để chạy song song ở TK khác!`;
+    }
   }
-  if(badge) badge.textContent = computeMode === 'colab_gpu' ? `⏳ Đang render trên Colab ${colabGpu}...` : '⏳ Đang vẽ ảnh 8K...';
-  toast(computeMode === 'colab_gpu'
-    ? `🚀 Đang gửi lệnh vẽ Krea 2 gốc (${ckpt}) lên Google Colab GPU ${colabGpu}...`
-    : '🎨 Đang tạo ảnh bằng Krea 2 Turbo (14B) + lưu metadata .civitai.info...');
+  if(badge) badge.textContent = `⏳ Đang chạy (${window._activeImageStudioReqs} lệnh song song)...`;
+  toast(readyAccsNow.length >= 2
+    ? `🚀 Đang gửi lệnh sang Tài Khoản Rảnh (${colabGpu}) — Bạn vẫn có thể tạo tiếp Ảnh hoặc Video ở TK khác!`
+    : `🚀 Đang gửi lệnh tạo ảnh lên Google Colab GPU ${colabGpu}...`);
+  setTimeout(() => { try { doRefresh(true); } catch(e){} }, 500);
   try {
     const res = await fetch('/api/krea2/generate', {
       method: 'POST',
@@ -24835,6 +24976,7 @@ async function runImageStudioGenerate(){
       body: JSON.stringify({
         prompt: rawInput,
         mode: imageStudioActiveMode === 'edit' ? 'edit' : 'text2image',
+        edit_instruction: imageStudioActiveMode === 'edit' ? rawInput : '',
         width: width,
         height: height,
         steps: steps,
@@ -24855,25 +24997,32 @@ async function runImageStudioGenerate(){
       krea2LastGeneratedResult = res;
       renderKrea2ResultPreview(res);
       await loadKrea2CatalogAndHistory();
-      if(badge) badge.textContent = `✅ Hoàn tất (${res.width}×${res.height})`;
+      const accInfo = res.colab_account ? ` [TK: ${res.colab_account.split('@')[0]}]` : '';
+      if(badge) badge.textContent = `✅ Hoàn tất (${res.width}×${res.height})${accInfo}`;
       if(res.storyboard){
         applyStoryboardDataToUI(res.storyboard);
-        toast(`🎉 Đã tạo ảnh Krea 2 và gắn trực tiếp vào ${res.saved_sb_ref}!`);
+        toast(`🎉 Đã tạo ảnh và gắn trực tiếp vào ${res.saved_sb_ref}${accInfo}!`);
       } else {
-        toast(`🎉 Đã tạo xong ảnh Krea 2 (${res.filename}) kèm file .civitai.info!`);
+        toast(`🎉 Đã tạo xong ảnh (${res.filename})${accInfo}!`);
       }
     } else {
       if(badge) badge.textContent = '⚠️ Lỗi';
-      toast('⚠️ Lỗi Krea 2: ' + (res.error || 'Không thể tạo ảnh'));
+      toast('⚠️ Lỗi tạo ảnh: ' + (res.error || 'Không thể tạo ảnh'));
     }
   } catch(e){
     if(badge) badge.textContent = '⚠️ Lỗi kết nối';
-    toast('⚠️ Lỗi kết nối Krea 2: ' + e.message);
+    toast('⚠️ Lỗi kết nối: ' + e.message);
   } finally {
+    window._activeImageStudioReqs = Math.max(0, (window._activeImageStudioReqs || 1) - 1);
     if(btn){
       btn.disabled = false;
-      selectImageStudioMode(imageStudioActiveMode);
+      if(window._activeImageStudioReqs > 0){
+        btn.textContent = `⚡ Đang tạo (${window._activeImageStudioReqs} lệnh) — Bấm tiếp để chạy ở TK khác!`;
+      } else {
+        selectImageStudioMode(imageStudioActiveMode);
+      }
     }
+    try { doRefresh(true); } catch(e){}
   }
 }
 
@@ -29760,7 +29909,7 @@ async function doGen(){
         output_fps: parseInt((document.getElementById('out-fps') || {}).value || '24') || 24,
         destutter: !!(document.getElementById('destutter') && document.getElementById('destutter').checked),
           upscale_target: document.getElementById('upscale-target') ? document.getElementById('upscale-target').value : '2K',
-          multi_account: false
+          multi_account: !chainLf
         })
       }).then(res => res.json());
 
@@ -34744,6 +34893,23 @@ class H(BaseHTTPRequestHandler):
             total_enabled_cu = 0.0
             total_all_cu = 0.0
             funded_cnt = 0
+            busy_video_set = set()
+            with queue_lock:
+                for alloc in current_running_jobs.values():
+                    if isinstance(alloc, list):
+                        busy_video_set.update(alloc)
+                    elif isinstance(alloc, str) and alloc:
+                        busy_video_set.add(alloc)
+                for em_k, w_st in account_workers.items():
+                    if isinstance(w_st, dict) and w_st.get("status") == "running":
+                        busy_video_set.add(em_k)
+            try:
+                from scripts.krea2_civitai_engine import get_active_image_accounts, get_active_image_tasks
+                busy_image_set = get_active_image_accounts()
+                busy_image_tasks = get_active_image_tasks()
+            except Exception:
+                busy_image_set = set()
+                busy_image_tasks = {}
             for acc in raw_accs:
                 em = acc.get("email")
                 en = is_worker_enabled(em)
@@ -34767,6 +34933,13 @@ class H(BaseHTTPRequestHandler):
                 acc_copy["enabled"] = en
                 acc_copy["worker_enabled"] = en
                 acc_copy["is_ready"] = is_ready
+                in_vid = bool(em and em in busy_video_set)
+                in_img = bool(em and em in busy_image_set)
+                acc_copy["busy_video"] = in_vid
+                acc_copy["busy_image"] = in_img
+                acc_copy["live_task"] = "video" if in_vid else ("image" if in_img else "idle")
+                if in_vid or in_img:
+                    acc_copy["status"] = "running"
                 enriched_accounts.append(acc_copy)
             if not raw_accs and status_copy.get("balance") is not None:
                 try:
@@ -34786,6 +34959,10 @@ class H(BaseHTTPRequestHandler):
                 "total_accounts": len(raw_accs),
                 "ready_workers_count": len(ready_workers),
                 "ready_workers": ready_workers,
+                "busy_video_accounts": [e for e in ready_workers if e in busy_video_set],
+                "busy_image_accounts": [e for e in ready_workers if e in busy_image_set],
+                "idle_ready_accounts": [e for e in ready_workers if e not in busy_video_set and e not in busy_image_set],
+                "active_image_tasks": busy_image_tasks,
                 "parallel_multiplier": max(1, len(ready_workers)),
                 "total_cu": round(total_enabled_cu, 2),
                 "total_cu_all": round(total_all_cu, 2),
@@ -37399,6 +37576,18 @@ class H(BaseHTTPRequestHandler):
                     custom_tw = f"{custom_tw}, {joined_tw}".strip(", ") if custom_tw else joined_tw
                 compute_mode = "colab_gpu"
                 colab_gpu = str(d.get("colab_gpu") or "A100").strip().upper()
+                busy_vid_emails = set()
+                with queue_lock:
+                    for alloc in current_running_jobs.values():
+                        if isinstance(alloc, list):
+                            busy_vid_emails.update(alloc)
+                        elif isinstance(alloc, str) and alloc:
+                            busy_vid_emails.add(alloc)
+                    for em_k, w_st in account_workers.items():
+                        if isinstance(w_st, dict) and w_st.get("status") == "running":
+                            busy_vid_emails.add(em_k)
+                elig_emails = [a.get("email") for a in get_eligible_accounts() if a.get("email")]
+                pref_acc = str(d.get("preferred_account") or "").strip()
                 res = generate_image_with_krea2(
                     prompt=str(d.get("prompt") or ""),
                     width=int(d.get("width") or 1024),
@@ -37417,10 +37606,14 @@ class H(BaseHTTPRequestHandler):
                     output_path=out_path,
                     compute_mode=compute_mode,
                     colab_gpu=colab_gpu,
+                    busy_video_accounts=list(busy_vid_emails),
+                    eligible_accounts=elig_emails,
+                    preferred_account=pref_acc,
                 )
                 if compute_mode == "colab_gpu" or "Google Colab GPU" in str(res.get("engine") or ""):
                     try:
                         schedule_idle_gpu_stop(480)
+                        _process_queue(from_timer=True)
                     except Exception:
                         pass
                 if res.get("ok") and target_ref_name:
