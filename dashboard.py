@@ -3104,7 +3104,7 @@ def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, 
                 f" H3_FACE_REFINE={'1' if face_refine else '0'}"
                 f" H3_COLOR_GRADE={'1' if color_grade else '0'}"
             )
-            dim_env += (" H3_AI_UPSCALE=1" if (enable_upscale and str(upscale_target) == "AI_x2_deep") else " H3_AI_UPSCALE=0") + " H3_SELFLIFT=1 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1" + oj_env
+            dim_env += (" H3_AI_UPSCALE=1" if (enable_upscale and str(upscale_target) == "AI_x2_deep") else " H3_AI_UPSCALE=0") + f" H3_SELFLIFT=0 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1 H3_RIFE_48FPS={'1' if int(output_fps or 24) >= 48 else '0'}" + oj_env
             cmd_args = f"{token_env} {session_env} {seed_env} {mode_env} {lora_env} {dim_env} python3 '{runner}' single"
             for img in images:
                 cmd_args += f" --image '{wsl_path(img)}'"
@@ -3482,7 +3482,7 @@ def run_batch_video(manifest_data, output_dir, gpu="A100", timeout=7200, seed=-1
                     lora_env = f"H3_LORA={clip_job.get('lora', 'pdmd')}"
                     seed_val = clip_job.get("seed", -1)
                     seed_env = f"H3_SEED={seed_val}" if seed_val != -1 else ""
-                    dim_env = f"H3_DURATION_SECONDS={clip_job.get('duration_seconds', 15)} H3_WIDTH={clip_job.get('width', 576)} H3_HEIGHT={clip_job.get('height', 1024)} H3_REF_SIZE=max H3_AI_UPSCALE=0 H3_SELFLIFT=1 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1"
+                    dim_env = f"H3_DURATION_SECONDS={clip_job.get('duration_seconds', 15)} H3_WIDTH={clip_job.get('width', 576)} H3_HEIGHT={clip_job.get('height', 1024)} H3_REF_SIZE=match H3_AI_UPSCALE=0 H3_SELFLIFT=0 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1 H3_COLOR_GRADE=1"
                     clip_timeout = 3600  # base gen + bắt buộc H3VideoUpsampler 2K trên Colab
 
                     cmd = f"{token_env} {session_env} {seed_env} {mode_env} {lora_env} {dim_env} python3 '{runner}' single"
