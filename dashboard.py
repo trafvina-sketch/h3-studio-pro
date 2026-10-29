@@ -13039,11 +13039,12 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <option value="director">Director</option>
           </select>
           <select id="gen-lora" style="display:none">
-            <option value="pdmd" selected>PDMD 4-Bước</option>
+            <option value="pdmd" selected>PDMD 4-Bước + LMS Sharp 2K</option>
+            <option value="lms_sharp">Open-H3 LMS Sharp 2K</option>
             <option value="fasth3_omni">FastH3 Omni 8-Bước PDD</option>
             <option value="fasth3_t2v">FastH3 T2V V2 8-Bước</option>
             <option value="fasth3_trim">FastH3 Trim T2V 8-Bước</option>
-            <option value="char_swap">Character Swap LoRA + Turbo 8-Bước</option>
+            <option value="char_swap">Character Swap v1.1 + LMS Sharp 2K</option>
             <option value="mystic">MysticXXX H3 V4</option>
           </select>
           <!-- HỘP CHỌN BIẾN THỂ FASTH3 T2V (V2 50-BLOCK vs TRIM 42-BLOCK SIÊU NHANH) -->
@@ -17809,8 +17810,13 @@ function applyAdultMode(){
     sel.innerHTML = '';
     const optPdmd = document.createElement('option');
     optPdmd.value = 'pdmd';
-    optPdmd.textContent = (currentLang === 'vi' ? '🌟 PDMD 4-Bước (ByteDance/UCSD - Siêu nét, Chuẩn điện ảnh) [Khuyên dùng]' : '🌟 PDMD 4-Step (ByteDance/UCSD - Ultra Sharp, Cinema Standard) [Recommended]');
+    optPdmd.textContent = (currentLang === 'vi' ? '🌟 PDMD 4-Bước + LMS Sharp 2K (ByteDance/UCSD × NVIDIA Open-H3 - Siêu nét) [Khuyên dùng]' : '🌟 PDMD 4-Step + LMS Sharp 2K (ByteDance/UCSD × NVIDIA Open-H3 - Ultra Sharp) [Recommended]');
     sel.appendChild(optPdmd);
+
+    const optLms = document.createElement('option');
+    optLms.value = 'lms_sharp';
+    optLms.textContent = (currentLang === 'vi' ? '💎 Open-H3 LMS Sharp 2K (NVIDIA NVLabs r64 + 3D Latent Upscaler LMS v0.1)' : '💎 Open-H3 LMS Sharp 2K (NVIDIA NVLabs r64 + 3D Latent Upscaler LMS v0.1)');
+    sel.appendChild(optLms);
 
     const optOmni = document.createElement('option');
     optOmni.value = 'fasth3_omni';
@@ -17829,7 +17835,7 @@ function applyAdultMode(){
 
     const optCharSwap = document.createElement('option');
     optCharSwap.value = 'char_swap';
-    optCharSwap.textContent = (currentLang === 'vi' ? '🔄 Character Swap LoRA + Turbo 8-Bước (Chuyên dụng thay nhân vật theo Video)' : '🔄 Character Swap LoRA + Turbo 8-Step (Video Character Replacement)');
+    optCharSwap.textContent = (currentLang === 'vi' ? '🔄 Character Swap v1.1 + LMS Sharp 2K (Chuyên dụng thay nhân vật theo Video)' : '🔄 Character Swap v1.1 + LMS Sharp 2K (Video Character Replacement)');
     sel.appendChild(optCharSwap);
 
     const optOfficial = document.createElement('option');
@@ -17843,12 +17849,12 @@ function applyAdultMode(){
       optMystic.textContent = (currentLang === 'vi' ? '🔞 MysticXXX H3 V4 (Mô hình 18+ Siêu Thực - Tối ưu cử chỉ & thân mật)' : '🔞 MysticXXX H3 V4 (Realistic 18+ Adult Model - Sensual & Anatomy)');
       sel.appendChild(optMystic);
       if(curVal === 'mystic') sel.value = 'mystic';
-      else if(['fasth3_omni','fasth3_t2v','fasth3_trim'].includes(curVal)) sel.value = curVal;
+      else if(['lms_sharp','fasth3_omni','fasth3_t2v','fasth3_trim'].includes(curVal)) sel.value = curVal;
       else if(curVal === 'char_swap') sel.value = 'char_swap';
       else if(curVal === 'official') sel.value = 'official';
       else sel.value = 'pdmd';
     } else {
-      if(['fasth3_omni','fasth3_t2v','fasth3_trim'].includes(curVal)) sel.value = curVal;
+      if(['lms_sharp','fasth3_omni','fasth3_t2v','fasth3_trim'].includes(curVal)) sel.value = curVal;
       else if(curVal === 'char_swap') sel.value = 'char_swap';
       else if(curVal === 'official') sel.value = 'official';
       else sel.value = 'pdmd';
@@ -29677,7 +29683,7 @@ function onModeChange(){
 
   // CỐ ĐỊNH TỰ ĐỘNG ĐỘNG CƠ LORA CHUẨN & MẠNH NHẤT CHO TỪNG CHẾ ĐỘ
   let autoLora = 'pdmd';
-  let autoLoraText = '⚡ Động cơ: PDMD 4-Bước (Tự động)';
+  let autoLoraText = '💎 Động cơ: PDMD 4-Bước + Open-H3 LMS Sharp 2K (Tự động)';
   const _adultOn = (typeof isAdultModeActive === 'function' && isAdultModeActive());
   const fastT2vBox = document.getElementById('fg-fasth3-t2v-box');
   if(fastT2vBox) fastT2vBox.style.display = 'none';
@@ -29710,7 +29716,10 @@ function onModeChange(){
     autoLoraText = '⚡ Khung Xương + Ảnh: Ref2VA + Video chuyển động (' + (_adultOn ? 'Mystic V4' : 'PDMD 4-Bước') + ')';
   } else if(mode === 'char_swap'){
     autoLora = 'char_swap';
-    autoLoraText = '⚡ Hoán Đổi Nhân Vật: Character Swap LoRA 8-Bước (Tự động)';
+    autoLoraText = '⚡ Hoán Đổi Nhân Vật: Character Swap v1.1 + Open-H3 LMS Sharp 2K (Tự động)';
+  } else if(mode === 'first_frame'){
+    autoLora = _adultOn ? 'mystic' : 'pdmd';
+    autoLoraText = '⚡ FL2VA Keyframe: LightX2V Turbo 4-Bước v1.3 768P + LMS Sharp 2K';
   } else if(mode === 'continuum'){
     autoLora = (typeof isAdultModeActive === 'function' && isAdultModeActive()) ? 'mystic' : 'pdmd';
     autoLoraText = '⚡ Động cơ: H3 Continuum V3.9.8 Seam Assembler + PDMD 4-Bước (Tự động)';
