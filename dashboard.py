@@ -2911,7 +2911,7 @@ def _find_latest_cam01_previs_mp4():
         pass
     return None
 
-def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, timeout=2400, width=1024, height=576, ref_size="match", seed=-1, warm_session=True, enable_upscale=False, upscale_target="2K", prompt_text="", mode="reference", lora="pdmd", audio_path=None, director_pack=None, source_video=None, preferred_account=None, scene_id="", visual_style="", ui_mode=None, output_fps=24, destutter=False, guides=None, owner_user_id="guest", owner_username="guest", dispatch_now=True):
+def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, timeout=2400, width=1024, height=576, ref_size="match", seed=-1, warm_session=True, enable_upscale=False, upscale_target="2K", prompt_text="", mode="reference", lora="pdmd", audio_path=None, director_pack=None, source_video=None, preferred_account=None, scene_id="", visual_style="", ui_mode=None, output_fps=24, destutter=False, guides=None, owner_user_id="guest", owner_username="guest", dispatch_now=True, masked_swap=True, swap_edit_mode="person", swap_target="person", swap_hat_fix=False, swap_no_lipsync=False, face_refine=False, color_grade=True):
     cancel_idle_gpu_stop()
     mode = (str(mode or "reference").strip().lower()) or "reference"
     ui_mode = (str(ui_mode or mode).strip().lower()) or mode
@@ -2936,7 +2936,7 @@ def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, 
     # Chỉ chế độ Vẽ Đường Máy Quay mới được tự lấy video Cam01 mới nhất
     if not source_video and ui_mode == "cam_previs" and ("<Video 1>" in str(prompt_text or "")):
         source_video = _find_latest_cam01_previs_mp4()
-    if source_video and mode not in ("char_swap", "v2v", "reference", "r2v", "ai_upscale"):
+    if source_video and mode not in ("char_swap", "v2v", "reference", "r2v", "ai_upscale", "face_refine"):
         mode = "reference"
     jid = uuid.uuid4().hex[:8]
     td = SCRIPT_DIR / "temp"
@@ -3084,14 +3084,24 @@ def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, 
             dim_env = f"H3_DURATION_SECONDS={duration} H3_WIDTH={width} H3_HEIGHT={height} H3_REF_SIZE={ref_size}"
             if audio_path and ui_mode in ("audio_sync", "fasth3_omni"):
                 dim_env += " H3_AUDIO_AS_REF=1"
-            dim_env += (" H3_AI_UPSCALE=1" if (enable_upscale and str(upscale_target) == "AI_x2_deep") else " H3_AI_UPSCALE=0") + " H3_SELFLIFT=1 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1"
+            safe_tgt = re.sub(r"[^a-zA-Z0-9_ .-]+", "", str(swap_target or "person")).strip() or "person"
+            oj_env = (
+                f" H3_MASKED_SWAP={'1' if masked_swap else '0'}"
+                f" H3_SWAP_EDIT_MODE='{swap_edit_mode or 'person'}'"
+                f" H3_SWAP_TARGET='{safe_tgt}'"
+                f" H3_SWAP_HAT_FIX={'1' if swap_hat_fix else '0'}"
+                f" H3_SWAP_NO_LIPSYNC={'1' if swap_no_lipsync else '0'}"
+                f" H3_FACE_REFINE={'1' if face_refine else '0'}"
+                f" H3_COLOR_GRADE={'1' if color_grade else '0'}"
+            )
+            dim_env += (" H3_AI_UPSCALE=1" if (enable_upscale and str(upscale_target) == "AI_x2_deep") else " H3_AI_UPSCALE=0") + " H3_SELFLIFT=1 H3_TST=1 H3_CHUNK_FFN=1 H3_LOWVRAM_ATTN=1" + oj_env
             cmd_args = f"{token_env} {session_env} {seed_env} {mode_env} {lora_env} {dim_env} python3 '{runner}' single"
             for img in images:
                 cmd_args += f" --image '{wsl_path(img)}'"
             cmd_args += f" --prompt '{wsl_path(prompt_file)}' --output '{wsl_path(output_path)}' --gpu {gpu} --progress '{prog_wsl}' --timeout {timeout} --mode '{mode}' --lora '{lora}'"
             if audio_path:
                 cmd_args += f" --audio '{wsl_path(audio_path)}'"
-            if source_video and mode in ("char_swap", "v2v", "reference", "r2v", "ai_upscale"):
+            if source_video and mode in ("char_swap", "v2v", "reference", "r2v", "ai_upscale", "face_refine"):
                 cmd_args += f" --source-video '{wsl_path(source_video)}'"
             if director_pack and mode == "director":
                 cmd_args += f" --pack '{wsl_path(director_pack)}'"
@@ -13093,10 +13103,48 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <!-- (1) HOÁN ĐỔI NHÂN VẬT: video người thật -> thay người, giữ nguyên bối cảnh + âm thanh -->
             <div class="v2v-panel" id="v2v-panel-char_swap" data-v2v-mode="char_swap" style="display:none;background:var(--surface);border:1px solid rgba(201,173,125,0.38);border-radius:10px;padding:10px 12px">
               <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-                <span style="font-size:12px;font-weight:800;color:#e5d1b0;display:flex;align-items:center;gap:6px">🎬 Video Gốc Mẫu (Hoán Đổi Nhân Vật)</span>
+                <span style="font-size:12px;font-weight:800;color:#e5d1b0;display:flex;align-items:center;gap:6px">🎬 Video Gốc Mẫu (Hoán Đổi Nhân Vật / OpenJutsu Masked Swap)</span>
               </div>
-              <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.45">Tải 1 video mẫu lên — hệ thống sẽ thay nhân vật theo ảnh bên dưới và giữ nguyên bối cảnh, chuyển động, âm thanh gốc.</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.45">Tải 1 video mẫu lên — hệ thống dùng <b>SAM 3.1 + Mannequin Xám</b> khoanh vùng thay người / đồ vật / bối cảnh và giữ nguyên 100% phần còn lại cùng âm thanh gốc.</div>
               <div class="v2v-core-slot"></div>
+              <div id="v2v-openjutsu-bar" style="margin-top:8px;background:rgba(15,23,42,0.58);border:1px solid rgba(201,173,125,0.32);border-radius:8px;padding:8px 10px">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px">
+                  <span style="font-size:11.5px;font-weight:800;color:#e5d1b0">🪄 Chế độ OpenJutsu:</span>
+                  <select id="v2v-swap-edit-mode" class="sel" onchange="onV2VSwapEditModeChange()" style="flex:1;min-width:210px;padding:4px 24px 4px 8px;font-size:11.5px;font-weight:700">
+                    <option value="person" selected>👤 Thay Nhân Vật Chính — SAM 3.1 Khóa 100% Nền Gốc</option>
+                    <option value="change">🧥 Thay Trang Phục / Tóc / Đồ Vật (Object Swap)</option>
+                    <option value="remove">🧹 Xóa Vật Thể Khỏi Video (Remove Object - Không cần ảnh)</option>
+                    <option value="background">🏞️ Thay Bối Cảnh Xung Quanh (Giữ nguyên người thật)</option>
+                    <option value="face_refine">🔍 Chỉ Sửa Nét Mặt Nhỏ / Đứng Xa (H3 FaceRefine 512×512)</option>
+                  </select>
+                </div>
+                <div id="v2v-swap-target-row" style="display:none;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px">
+                  <span style="font-size:11px;font-weight:700;color:var(--text-sub)">🎯 Vật thể SAM 3.1 cần bắt (tiếng Anh):</span>
+                  <input type="text" id="v2v-swap-target" value="person" placeholder="VD: hair, jacket, dress, glasses, car, hat..." style="flex:1;min-width:180px;font-size:11px;padding:4px 8px">
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:11px">
+                  <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;font-weight:700" title="Tự động tách mask bằng SAM 3.1 + phủ Mannequin xám vùng cần thay để không làm biến dạng nền xung quanh">
+                    <input type="checkbox" id="v2v-masked-swap" checked style="width:14px;height:14px;accent-color:#10b981;cursor:pointer">
+                    <span>🪄 Khóa nền SAM 3.1 + Mannequin Xám</span>
+                  </label>
+                  <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer" title="Bật khi nhân vật gốc đội mũ/nón hoặc tóc dày để SAM 3.1 gộp cả mũ vào vùng thay">
+                    <input type="checkbox" id="v2v-swap-hat-fix" style="width:14px;height:14px;accent-color:#d97706;cursor:pointer">
+                    <span>🧢 Gộp cả mũ/nón (Hat Fix)</span>
+                  </label>
+                  <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer" title="Bật khi video chỉ có nhạc nền, không muốn nhân vật tự nhép miệng theo nhạc">
+                    <input type="checkbox" id="v2v-swap-no-lipsync" style="width:14px;height:14px;accent-color:#f59e0b;cursor:pointer">
+                    <span>🔇 Tắt nhép miệng theo nhạc (No Lip-Sync)</span>
+                  </label>
+                  <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;color:#6ee7b7;font-weight:700" title="Sau khi tạo xong, tự cắt mặt từng frame ra 512×512 vẽ lại sắc nét theo <Picture 1> rồi ghép trả lại">
+                    <input type="checkbox" id="v2v-face-refine" style="width:14px;height:14px;accent-color:#10b981;cursor:pointer">
+                    <span>👤 Hậu kỳ H3 FaceRefine (Nét mặt ở xa)</span>
+                  </label>
+                  <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;color:#fde68a;font-weight:700" title="Khử gắt chi tiết + Tone-mapping Reinhard H3 Soft chuẩn OpenJutsu">
+                    <input type="checkbox" id="v2v-color-grade" checked style="width:14px;height:14px;accent-color:#eab308;cursor:pointer">
+                    <span>🎨 Màu Điện Ảnh OpenJutsu H3 Soft</span>
+                  </label>
+                </div>
+              </div>
             </div>
 
             <!-- (2) KHUNG XƯƠNG + ẢNH: video chuyển động -> bóc khung xương -> nhân vật (Ảnh 1) + bối cảnh (Ảnh 2) -->
@@ -29540,6 +29588,20 @@ function setV2VMotionTimeline(list){
   if(ta) ta.value = arr.map(it => `${(+it.t0).toFixed(1)}-${(+it.t1).toFixed(1)}: ${it.text}`).join('\n');
   if(st) st.textContent = arr.length ? `✅ ${arr.length} mốc động tác` : '⚠️ Không nhận ra động tác rõ ràng';
 }
+function onV2VSwapEditModeChange(){
+  const sel = document.getElementById('v2v-swap-edit-mode');
+  const row = document.getElementById('v2v-swap-target-row');
+  const tgt = document.getElementById('v2v-swap-target');
+  if(!sel || !row) return;
+  const v = sel.value;
+  if(v === 'change' || v === 'remove'){
+    row.style.display = 'flex';
+    if(tgt && (!tgt.value || tgt.value === 'person')) tgt.value = v === 'change' ? 'jacket' : 'person';
+  } else {
+    row.style.display = 'none';
+    if(tgt) tgt.value = 'person';
+  }
+}
 function resetV2VMotionTimeline(){
   const ta = document.getElementById('v2v-motion-tl');
   const st = document.getElementById('v2v-motion-tl-status');
@@ -30227,6 +30289,8 @@ async function doGen(){
     }
   }
   const isV2VMode = (mode === 'char_swap' || mode === 'skeleton_v2v' || mode === 'cam_previs' || mode === 'fasth3_omni');
+  const swapEditMode = (mode === 'char_swap' && document.getElementById('v2v-swap-edit-mode')) ? document.getElementById('v2v-swap-edit-mode').value : 'person';
+  const isSwapRemove = (mode === 'char_swap' && swapEditMode === 'remove');
   // Video người thật gốc (không phải video khung xương) dùng cho Hoán Đổi V2V
   const realVideoPath = (typeof currentOriginalVideoPath !== 'undefined' && currentOriginalVideoPath) ? currentOriginalVideoPath : currentSourceVideoPath;
   const realVideoIsSkeleton = !!(realVideoPath && currentExtractedSkeletonPath && realVideoPath === currentExtractedSkeletonPath);
@@ -30237,7 +30301,7 @@ async function doGen(){
     if(realVideoIsSkeleton){
       return toast('⚠️ Video đang chọn là video KHUNG XƯƠNG. Hoán Đổi V2V cần video người thật — hoặc chuyển sang chế độ "Khung Xương + Ảnh".');
     }
-    if(imgs.length > 2) toast('💡 Hoán Đổi V2V chỉ dùng tối đa 2 ảnh (<Picture 1> mặt, <Picture 2> trang phục) — các ảnh sau sẽ bị bỏ qua.');
+    if(!isSwapRemove && imgs.length > 2) toast('💡 Hoán Đổi V2V chỉ dùng tối đa 2 ảnh (<Picture 1> mặt, <Picture 2> trang phục) — các ảnh sau sẽ bị bỏ qua.');
   }
   if(mode === 'skeleton_v2v'){
     if(!currentSourceVideoData && !currentSourceVideoPath && !currentExtractedSkeletonPath){
@@ -30262,7 +30326,7 @@ async function doGen(){
       imgs = imgs.slice(0, 2);
     }
   }
-  if(mode !== 't2v' && mode !== 'fasth3_t2v' && mode !== 'director' && mode !== 'longshot' && mode !== 'continuum' && mode !== 'fasth3_omni' && !imgs.length) return toast('Vui lòng chọn ít nhất 1 ảnh tham chiếu (<Picture 1>)');
+  if(mode !== 't2v' && mode !== 'fasth3_t2v' && mode !== 'director' && mode !== 'longshot' && mode !== 'continuum' && mode !== 'fasth3_omni' && !isSwapRemove && !imgs.length) return toast('Vui lòng chọn ít nhất 1 ảnh tham chiếu (<Picture 1>)');
 
   // Bóc tách khung xương CHỈ áp dụng cho chế độ "Khung Xương + Ảnh"
   const wantExtractSkel = (mode === 'skeleton_v2v');
@@ -30288,6 +30352,21 @@ async function doGen(){
   }
 
   let rawPrompt = document.getElementById('prompt').value.trim();
+  if(!rawPrompt && mode === 'char_swap'){
+    const tgtName = (document.getElementById('v2v-swap-target') && document.getElementById('v2v-swap-target').value.trim()) || 'person';
+    if(swapEditMode === 'remove'){
+      rawPrompt = `Remove the ${tgtName} from <Video 1> and cleanly reconstruct the original background behind it.`;
+    } else if(swapEditMode === 'background'){
+      rawPrompt = `Keep the person in <Video 1> completely unchanged and replace the surrounding background environment with <Picture 1>.`;
+    } else if(swapEditMode === 'change'){
+      rawPrompt = `Replace the ${tgtName} in <Video 1> with the reference shown in <Picture 1> while keeping everything else unchanged.`;
+    } else if(swapEditMode === 'face_refine'){
+      rawPrompt = `Refine and sharpen the character's face in <Video 1> to match the exact facial identity of <Picture 1>.`;
+    } else {
+      rawPrompt = `Replace the person in <Video 1> with the character from <Picture 1>, preserving the exact background, lighting, camera motion, and audio.`;
+    }
+    document.getElementById('prompt').value = rawPrompt;
+  }
   if(!rawPrompt && mode !== 'director'){
     document.getElementById('btn-gen').disabled = false;
     return toast('Vui lòng nhập prompt kịch bản');
@@ -30482,7 +30561,14 @@ async function doGen(){
         chain_join: (document.getElementById('chain-join') || {}).value || 'last_frame',
         transcribe: !!(document.getElementById('audio-transcribe') && document.getElementById('audio-transcribe').checked),
         keyframes: (typeof getKeyframesPayload === 'function') ? getKeyframesPayload() : [],
-        upscale_target: document.getElementById('upscale-target') ? document.getElementById('upscale-target').value : '2K'
+        upscale_target: document.getElementById('upscale-target') ? document.getElementById('upscale-target').value : '2K',
+        masked_swap: document.getElementById('v2v-masked-swap') ? document.getElementById('v2v-masked-swap').checked : true,
+        swap_edit_mode: swapEditMode,
+        swap_target: (document.getElementById('v2v-swap-target') && document.getElementById('v2v-swap-target').value.trim()) || 'person',
+        swap_hat_fix: !!(document.getElementById('v2v-swap-hat-fix') && document.getElementById('v2v-swap-hat-fix').checked),
+        swap_no_lipsync: !!(document.getElementById('v2v-swap-no-lipsync') && document.getElementById('v2v-swap-no-lipsync').checked),
+        face_refine: !!(document.getElementById('v2v-face-refine') && document.getElementById('v2v-face-refine').checked),
+        color_grade: document.getElementById('v2v-color-grade') ? document.getElementById('v2v-color-grade').checked : true
       })
     }).then(res => res.json());
 
@@ -36457,8 +36543,10 @@ class H(BaseHTTPRequestHandler):
                 saved_images = []
 
             has_req_vid = bool(d.get("source_video_data") or d.get("source_video_file") or d.get("source_video"))
-            if not saved_images and mode not in ("t2v", "text_to_video", "fasth3_t2v", "fasth3_trim", "fasth3_omni", "director", "longshot", "continuum"):
-                return self._j({"error":"Vui lòng chọn ít nhất 1 ảnh tham chiếu cho chế độ này (chế độ T2V / FastH3 / Long Shot / Continuum không bắt buộc ảnh)"}, 400)
+            swap_edit_mode_req = str(d.get("swap_edit_mode") or "person").strip().lower() or "person"
+            is_swap_remove_req = (mode in ("char_swap", "v2v") and swap_edit_mode_req == "remove")
+            if not saved_images and not is_swap_remove_req and mode not in ("t2v", "text_to_video", "fasth3_t2v", "fasth3_trim", "fasth3_omni", "director", "longshot", "continuum", "face_refine"):
+                return self._j({"error":"Vui lòng chọn ít nhất 1 ảnh tham chiếu cho chế độ này (chế độ T2V / FastH3 / Long Shot / Continuum / Xóa vật thể không bắt buộc ảnh)"}, 400)
 
             # Source Video (<Video 1>) dành cho: Hoán Đổi Nhân Vật, Khung Xương + Ảnh, Vẽ Đường Máy Quay, và tùy chọn trong FastH3 Omni
             V2V_MODES = ("char_swap", "v2v", "skeleton_v2v", "cam_previs")
@@ -36606,8 +36694,12 @@ class H(BaseHTTPRequestHandler):
                     mode = "reference"
                     lora = "mystic" if bool(d.get("adult_mode")) else "pdmd"
                 elif mode in ("char_swap", "v2v"):
-                    mode = "char_swap"
-                    lora = "char_swap"
+                    if swap_edit_mode_req == "face_refine":
+                        mode = "face_refine"
+                        lora = "mystic" if bool(d.get("adult_mode")) else "pdmd"
+                    else:
+                        mode = "char_swap"
+                        lora = "char_swap"
 
             # Audio guide (MP3/WAV)
             audio_path = None
@@ -36832,6 +36924,13 @@ class H(BaseHTTPRequestHandler):
                             "ui_mode": req_mode,
                             "lora": lora,
                             "chain_last_frame": True,
+                            "masked_swap": bool(d.get("masked_swap", True)),
+                            "swap_edit_mode": swap_edit_mode_req,
+                            "swap_target": str(d.get("swap_target") or "person").strip() or "person",
+                            "swap_hat_fix": bool(d.get("swap_hat_fix", False)),
+                            "swap_no_lipsync": bool(d.get("swap_no_lipsync", False)),
+                            "face_refine": bool(d.get("face_refine", False)),
+                            "color_grade": bool(d.get("color_grade", True)),
                         })
                     manifest_v2v = {"jobs": v2v_jobs, "chain_last_frame": True}
                     batch_res = run_batch_video(
@@ -37074,6 +37173,13 @@ class H(BaseHTTPRequestHandler):
                 output_fps=int(d.get("output_fps") or 24), destutter=bool(d.get("destutter", False)),
                 guides=(kf_guides or None),
                 owner_user_id=req_uid, owner_username=req_uname,
+                masked_swap=bool(d.get("masked_swap", True)),
+                swap_edit_mode=swap_edit_mode_req,
+                swap_target=str(d.get("swap_target") or "person").strip() or "person",
+                swap_hat_fix=bool(d.get("swap_hat_fix", False)),
+                swap_no_lipsync=bool(d.get("swap_no_lipsync", False)),
+                face_refine=bool(d.get("face_refine", False)),
+                color_grade=bool(d.get("color_grade", True)),
             )
             self._j(res)
         elif p == "/api/retake-clip":

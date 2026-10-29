@@ -548,13 +548,14 @@ def resolve_jobs(manifest: dict[str, Any], output_dir: Path) -> list[dict[str, A
             mode = "t2v"
         elif mode == "skeleton_v2v":
             mode = "char_swap"
-        if mode in ("t2v", "text_to_video", "ai_upscale"):
+        swap_edit_mode = str(raw.get("swap_edit_mode") or manifest.get("swap_edit_mode") or os.environ.get("H3_SWAP_EDIT_MODE", "person")).strip().lower() or "person"
+        if mode in ("t2v", "text_to_video", "ai_upscale") or (mode in ("char_swap", "v2v") and swap_edit_mode == "remove"):
             image_paths: list[Path] = []
         else:
             refs = raw.get("reference_images", raw.get("images"))
             has_vid_ref = bool(raw.get("source_video") or raw.get("video") or os.environ.get("H3_SOURCE_VIDEO"))
-            if not isinstance(refs, list) or (mode not in ("director", "longshot", "continuum") and not (1 <= len(refs) <= 9)):
-                if (mode in ("director", "longshot", "continuum") or has_vid_ref) and (not refs or not isinstance(refs, list)):
+            if not isinstance(refs, list) or (mode not in ("director", "longshot", "continuum", "face_refine") and not (1 <= len(refs) <= 9)):
+                if (mode in ("director", "longshot", "continuum", "face_refine") or has_vid_ref) and (not refs or not isinstance(refs, list)):
                     refs = []
                 else:
                     raise ValueError(f"Job {index} must have 1–9 reference images for mode {mode!r}.")
@@ -615,13 +616,13 @@ def resolve_jobs(manifest: dict[str, Any], output_dir: Path) -> list[dict[str, A
                 pass
 
         if not prompt.strip():
-            if mode in ("director", "ai_upscale"):
+            if mode in ("director", "ai_upscale", "face_refine", "char_swap", "v2v"):
                 prompt = "Photorealistic cinematic scene, high detail, 8k resolution, natural lighting."
             else:
                 raise ValueError(f"Job {index} needs a non-empty UTF-8 prompt.")
 
         image_count = len(image_paths)
-        if mode not in ("t2v", "text_to_video", "director", "longshot", "continuum", "ai_upscale") and image_count > 0:
+        if mode not in ("t2v", "text_to_video", "director", "longshot", "continuum", "ai_upscale", "face_refine") and image_count > 0:
             referenced_numbers = sorted({int(n) for n in PICTURE_RE.findall(prompt) if int(n) >= 1})
             extra_numbers = [n for n in referenced_numbers if n > image_count]
             if extra_numbers:
@@ -727,8 +728,8 @@ def resolve_jobs(manifest: dict[str, Any], output_dir: Path) -> list[dict[str, A
         source_video = normalize_path(raw.get("source_video") or raw.get("video") or os.environ.get("H3_SOURCE_VIDEO"))
         if source_video and (not source_video.is_file() or source_video.stat().st_size == 0):
             source_video = None
-        if mode in ("char_swap", "v2v") and not source_video:
-            raise ValueError(f"Job {index} in Character Swap mode requires a valid source video (<Video 1>).")
+        if mode in ("char_swap", "v2v", "face_refine") and not source_video:
+            raise ValueError(f"Job {index} in {mode!r} mode requires a valid source video (<Video 1>).")
 
         director_pack = normalize_path(raw.get("director_pack") or raw.get("pack") or os.environ.get("H3_DIRECTOR_PACK"))
         if director_pack and (not director_pack.is_file() or director_pack.stat().st_size == 0):
@@ -769,6 +770,13 @@ def resolve_jobs(manifest: dict[str, Any], output_dir: Path) -> list[dict[str, A
             "ai_upscale": bool(raw.get("ai_upscale", manifest.get("ai_upscale", False)) or str(os.environ.get("H3_AI_UPSCALE", "0")).strip() == "1"),
             "selflift": bool(raw.get("selflift", manifest.get("selflift", True)) and str(os.environ.get("H3_SELFLIFT", "1")).strip().lower() not in ("0", "false", "no")),
             "tst": bool(raw.get("tst", manifest.get("tst", True)) and str(os.environ.get("H3_TST", "1")).strip().lower() not in ("0", "false", "no")),
+            "masked_swap": bool(raw.get("masked_swap", manifest.get("masked_swap", True)) and str(os.environ.get("H3_MASKED_SWAP", "1")).strip().lower() not in ("0", "false", "no")),
+            "swap_edit_mode": swap_edit_mode,
+            "swap_target": str(raw.get("swap_target") or manifest.get("swap_target") or os.environ.get("H3_SWAP_TARGET", "person")).strip() or "person",
+            "swap_hat_fix": bool(raw.get("swap_hat_fix", manifest.get("swap_hat_fix", False)) or str(os.environ.get("H3_SWAP_HAT_FIX", "0")).strip().lower() in ("1", "true", "yes")),
+            "swap_no_lipsync": bool(raw.get("swap_no_lipsync", manifest.get("swap_no_lipsync", False)) or str(os.environ.get("H3_SWAP_NO_LIPSYNC", "0")).strip().lower() in ("1", "true", "yes")),
+            "face_refine": bool(raw.get("face_refine", manifest.get("face_refine", False)) or str(os.environ.get("H3_FACE_REFINE", "0")).strip().lower() in ("1", "true", "yes")),
+            "color_grade": bool(raw.get("color_grade", manifest.get("color_grade", True)) and str(os.environ.get("H3_COLOR_GRADE", "1")).strip().lower() not in ("0", "false", "no")),
         })
     return resolved
 
@@ -1458,6 +1466,13 @@ def run_batch(
                 "H3_AI_UPSCALE=" + ("1" if str(job.get("ai_upscale", False)).lower() in ("true", "1") else "0"),
                 "H3_SELFLIFT=" + ("1" if job.get("selflift", True) else "0"),
                 "H3_TST=" + ("1" if job.get("tst", True) else "0"),
+                "H3_MASKED_SWAP=" + ("1" if job.get("masked_swap", True) else "0"),
+                "H3_SWAP_EDIT_MODE=" + str(job.get("swap_edit_mode") or "person"),
+                "H3_SWAP_TARGET=" + str(job.get("swap_target") or "person"),
+                "H3_SWAP_HAT_FIX=" + ("1" if job.get("swap_hat_fix", False) else "0"),
+                "H3_SWAP_NO_LIPSYNC=" + ("1" if job.get("swap_no_lipsync", False) else "0"),
+                "H3_FACE_REFINE=" + ("1" if job.get("face_refine", False) else "0"),
+                "H3_COLOR_GRADE=" + ("1" if job.get("color_grade", True) else "0"),
                 "H3_MULTI_JOBS_FILE=" + remote_multi_file,
             ]
             exec_args = ["exec", "--session", session, "--timeout", str(eff_exec_timeout)]
