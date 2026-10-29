@@ -3143,7 +3143,7 @@ def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, 
 
         # Tự động chuyển đổi dự phòng (Failover) sang tài khoản rảnh khác nếu tài khoản hiện tại bị từ chối cấp phát GPU / hết CU
         out_low = (out or "").lower()
-        if code != 0 and any(k in out_low for k in ("allocation refused", "precondition failed", "0.00 compute units", "insufficient compute units", "quota")):
+        if code != 0 and any(k in out_low for k in ("allocation refused", "precondition failed", "0.00 compute units", "insufficient compute units", "quota", "comfyui 已退出", "任務已中斷", "runtime disconnected")):
             fallback_acc = None
             with queue_lock:
                 busy_other = set()
@@ -3219,7 +3219,7 @@ def run_single_video(images, prompt_file, output_path, gpu="A100", duration=12, 
             "log": out,
             "status": "completed" if is_ok else "failed",
             "stage": "completed" if is_ok else "failed",
-            "stage_label": "✅ Hoàn tất! Video đã qua H3VideoUpsampler (AI Latent x2) và sẵn sàng phát." if is_ok else "❌ Quá trình tạo video thất bại.",
+            "stage_label": "✅ Hoàn tất! Video đã sẵn sàng phát." if is_ok else "❌ Quá trình tạo video thất bại.",
             "finished_at": time.strftime("%H:%M:%S (%d/%m/%Y)"),
             "elapsed_seconds": elapsed_sec,
             "elapsed_str": elapsed_str,
@@ -13876,15 +13876,19 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 
               <div class="adv-item">
                 <div class="adv-row">
-                  <span class="adv-label">⚡ SelfLift 4K + TST + Drift-Control <span id="upscale-badge" class="chip chip-g" style="display:inline-block;font-size:9.5px;padding:1px 6px">LUÔN BẬT</span></span>
+                  <span class="adv-label">⬆️ Upscale <span id="upscale-badge" class="chip chip-g" style="display:none;font-size:9.5px;padding:1px 6px">ON</span></span>
                   <div class="adv-ctl">
-                    <select id="upscale-target" disabled style="opacity:0.9;cursor:default">
-                      <option value="AI_x2" selected>⚡ SelfLift 3D Lift + TST</option>
+                    <select id="upscale-target" style="width:auto;padding:3px 22px 3px 8px;font-size:11.5px;font-weight:700">
+                      <option value="1080p">1080p</option>
+                      <option value="2K" selected>2K</option>
+                      <option value="4K">4K</option>
                     </select>
-                    <input type="checkbox" id="enable-upscale" style="display:none">
+                    <label class="switch">
+                      <input type="checkbox" id="enable-upscale" onchange="toggleUpscale(this.checked)">
+                      <span class="slider"></span>
+                    </label>
                   </div>
                 </div>
-                <div class="adv-hint">Tích hợp <b>SelfLift Progressive (75% Low-Res 0.5x &rarr; 3D Latent Upscaler Lift &rarr; 25% Full-Res)</b> + <b>H3 TST (ổn định chuyển động)</b> + <b>ChunkFFN/LowVRAMAttn</b> + <b>Drift-Control Anti-Burn (chống trôi/cháy màu khi nối đoạn)</b>. Phóng nét <b>1080p/2K/4K Local (0 CU)</b>: bấm nút <b>⬆️</b> ở <b>Thư Viện</b>.</div>
               </div>
 
               <div class="adv-item">
@@ -14101,16 +14105,15 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             </div>
           </div>
 
-          <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
-            <label style="margin:0;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px">
-              <span data-i18n="b_upscale_label">⬆️ Tự động Upscale hàng loạt</span>
-              <span id="b-upscale-badge" class="chip chip-g" style="display:inline-block;font-size:10px;padding:1px 6px">⚡ SelfLift 3D + TST + Drift-Control · LUÔN BẬT</span>
+          <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px">
+            <label style="margin:0;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px;white-space:nowrap">
+              <span data-i18n="b_upscale_label">⬆️ Upscale</span>
             </label>
-            <div style="display:flex;align-items:center;gap:8px">
-              <select id="b-upscale-target" disabled style="padding:2px 8px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-main);font-weight:700;opacity:0.9;cursor:default">
-                <option value="1080p">1080p (FHD)</option>
-                <option value="2K" selected>2K (1440p)</option>
-                <option value="4K">4K (2160p)</option>
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+              <select id="b-upscale-target" style="width:auto;padding:4px 24px 4px 10px;font-size:11.5px;border-radius:6px;border:1px solid var(--border);background:var(--surface-1);color:var(--text-main);font-weight:700">
+                <option value="1080p">1080p</option>
+                <option value="2K" selected>2K</option>
+                <option value="4K">4K</option>
               </select>
               <label class="switch">
                 <input type="checkbox" id="b-enable-upscale">
@@ -17048,7 +17051,7 @@ const i18n = {
     "b_seed_hint": "Để <b>-1</b> để mỗi video có 1 seed ngẫu nhiên riêng biệt, hoặc nhập số để đồng bộ phong cách.",
     "b_out_label": "Thư mục xuất video",
     "b_btn_browse": "📁 Duyệt",
-    "b_upscale_label": "⬆️ Tự động Upscale hàng loạt",
+    "b_upscale_label": "⬆️ Upscale",
     "b_prompts_label": "2. Danh sách Prompts (Mỗi dòng tạo 1 video riêng biệt)",
     "b_btn_clear": "🧹 Xóa",
     "b_btn_clear_title": "Xóa toàn bộ nội dung",
@@ -17340,7 +17343,7 @@ const i18n = {
     "b_seed_hint": "Set to <b>-1</b> for unique random seeds, or enter a number for consistent style.",
     "b_out_label": "Output Directory",
     "b_btn_browse": "📁 Browse",
-    "b_upscale_label": "⬆️ Auto Batch Upscale",
+    "b_upscale_label": "⬆️ Upscale",
     "b_prompts_label": "2. Prompt List (One video per line)",
     "b_btn_clear": "🧹 Clear",
     "b_btn_clear_title": "Clear entire prompt list",
