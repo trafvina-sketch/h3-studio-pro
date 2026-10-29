@@ -2,7 +2,7 @@
 """H3 Studio - Modern Light Dashboard for MiniMax H3 Video Generation."""
 
 from __future__ import annotations
-import base64, json, os, random, re, shutil, subprocess, sys, threading, time, urllib.parse, uuid, webbrowser
+import base64, json, os, queue, random, re, shutil, subprocess, sys, threading, time, traceback, urllib.parse, uuid, webbrowser
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlparse
@@ -2710,6 +2710,16 @@ def _process_queue(from_timer: bool = False):
                 global current_running_job
                 try:
                     w_handler(w_target)
+                except Exception as e_wk:
+                    tb_str = traceback.format_exc()
+                    print(f"[Worker Error] Job {w_jid}: {e_wk}\n{tb_str}")
+                    if w_jid in active_jobs and active_jobs[w_jid].get("status") not in ("completed", "cancelled"):
+                        active_jobs[w_jid].update({
+                            "status": "failed",
+                            "stage": "failed",
+                            "stage_label": f"❌ Lỗi hệ thống khi khởi chạy: {e_wk}",
+                            "log": (active_jobs[w_jid].get("log", "") + "\n" + tb_str)[-3000:],
+                        })
                 finally:
                     with queue_lock:
                         _coalesce_groups.pop(w_jid, None)
@@ -3558,6 +3568,40 @@ def run_batch_video(manifest_data, output_dir, gpu="A100", timeout=7200, seed=-1
                             worker_states[acc_email]["status"] = "idle"
                             worker_states[acc_email]["current_clip"] = None
 
+            def _poll_parallel_prog():
+                while active_jobs.get(jid, {}).get("status") in ("starting", "running"):
+                    time.sleep(2)
+                    try:
+                        combined_logs = []
+                        sub_prog_sum = 0.0
+                        for idx_p in range(total):
+                            cid_p = raw_jobs[idx_p].get("id", f"clip_{idx_p+1:02d}")
+                            cp_file = td / f"prog_{jid}_{cid_p}.json"
+                            if cp_file.exists():
+                                pdata = json.loads(cp_file.read_text(encoding="utf-8"))
+                                j_list = pdata.get("jobs", [{}])
+                                st_p = j_list[0].get("status") if j_list else ""
+                                tail_p = pdata.get("log_tail", [])
+                                if tail_p:
+                                    combined_logs.append(f"=== [{cid_p}] ===\n" + "\n".join(tail_p[-6:]))
+                                if st_p == "completed":
+                                    sub_prog_sum += 1.0
+                                elif st_p == "downloading":
+                                    sub_prog_sum += 0.85
+                                elif st_p == "generating":
+                                    sub_prog_sum += 0.55
+                                elif st_p:
+                                    sub_prog_sum += 0.20
+                        if combined_logs:
+                            active_jobs[jid]["log"] = "\n".join(combined_logs)[-3000:]
+                        with completed_lock:
+                            done_cnt_now = len(done_vids)
+                        eff_ratio = max(done_cnt_now / max(1, total), sub_prog_sum / max(1, total))
+                        active_jobs[jid]["progress"] = min(95, max(12, int(10 + eff_ratio * 85)))
+                    except Exception:
+                        pass
+
+            threading.Thread(target=_poll_parallel_prog, daemon=True).start()
             threads = [threading.Thread(target=_scene_worker, args=(em,), daemon=True) for em in workers_to_use]
             for t in threads: t.start()
             for t in threads: t.join()
@@ -13669,7 +13713,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px">
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
                 <label style="margin:0;font-size:11.5px;font-weight:700;color:var(--text-sub);display:flex;align-items:center;gap:5px;cursor:pointer" title="Khi tạo nhiều đoạn hoặc chọn 20s/30s/45s/60s, hệ thống tự nối thành 1 file MP4">
-                  <input type="checkbox" id="st-auto-merge" checked onchange="updateNormalMergeUI()" style="width:13px;height:13px;cursor:pointer">
+                  <input type="checkbox" id="st-auto-merge" onchange="updateNormalMergeUI()" style="width:13px;height:13px;cursor:pointer">
                   <span>Tự ghép video dài</span>
                 </label>
                 <label style="margin:0;font-size:11.5px;font-weight:700;color:var(--text-sub);display:flex;align-items:center;gap:5px;cursor:pointer" title="Tự cắt frame cuối của đoạn trước nối tiếp sang đoạn sau">
@@ -14133,7 +14177,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:8px;margin-bottom:8px;border-bottom:1px dashed var(--border)">
               <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
                 <label style="margin:0;font-size:12.5px;font-weight:800;color:var(--em);display:flex;align-items:center;gap:6px;cursor:pointer">
-                  <input type="checkbox" id="b-auto-merge" checked style="width:15px;height:15px;cursor:pointer">
+                  <input type="checkbox" id="b-auto-merge" style="width:15px;height:15px;cursor:pointer">
                   <span>🎞️ Tự động ghép tất cả clip thành 1 Video Dài (.MP4)</span>
                 </label>
                 <label style="margin:0;font-size:12px;font-weight:800;color:#d97706;display:flex;align-items:center;gap:6px;cursor:pointer" title="Nếu TẮT: Chạy song song cùng lúc trên tất cả các tài khoản (Nhanh gấp N lần). Nếu BẬT: Chạy tuần tự cảnh trước xong mới lấy Frame cuối cho cảnh sau.">
@@ -36469,9 +36513,44 @@ class H(BaseHTTPRequestHandler):
                 if director_pack_wsl:
                     job_dict["director_pack"] = director_pack_wsl
                 jobs_list.append(job_dict)
-            manifest_payload = {"jobs": jobs_list, "chain_last_frame": chain_lf}
             multi_acc = bool(d.get("multi_account", True))
             ep_title = str(d.get("episode_title") or "Video_Dai_H3")
+            if not auto_merge and not chain_lf and not any(j.get("chain_last_frame") for j in jobs_list):
+                batch_results = []
+                for idx_jb, jb_item in enumerate(jobs_list, start=1):
+                    pf_jb = td / f"p_{batch_uid}_{idx_jb:02d}.txt"
+                    pf_jb.write_text(jb_item["prompt"], encoding="utf-8")
+                    out_jb = str(out_dir / f"{jb_item['output_name']}.mp4")
+                    r_jb = run_single_video(
+                        saved_images, str(pf_jb), out_jb, gpu,
+                        duration=jb_item["duration_seconds"], timeout=2400,
+                        width=width, height=height, ref_size="match",
+                        seed=jb_item["seed"], warm_session=True,
+                        enable_upscale=d.get("enable_upscale", False),
+                        upscale_target=d.get("upscale_target", "2K"),
+                        prompt_text=jb_item["prompt"],
+                        mode=mode, lora=lora, audio_path=None,
+                        director_pack=(win_path(director_pack_wsl) if director_pack_wsl else None),
+                        source_video=None, ui_mode=mode,
+                        output_fps=int(d.get("output_fps") or 24),
+                        destutter=bool(d.get("destutter", False)),
+                        guides=None,
+                        owner_user_id=req_uid, owner_username=req_uname,
+                        dispatch_now=False,
+                    )
+                    batch_results.append(r_jb)
+                _process_queue(from_timer=True)
+                first_jid = batch_results[0]["job_id"]
+                st_first = active_jobs.get(first_jid, {})
+                return self._j({
+                    "job_id": first_jid,
+                    "job_ids": [x["job_id"] for x in batch_results],
+                    "coalesced_count": len(batch_results),
+                    "queue_pos": st_first.get("queue_pos", 0),
+                    "total_jobs": len(batch_results),
+                    "chain_last_frame": False,
+                })
+            manifest_payload = {"jobs": jobs_list, "chain_last_frame": chain_lf}
             batch_res = run_batch_video(
                 manifest_payload,
                 str(out_dir),
