@@ -12688,6 +12688,8 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
   border-color: #c8c4b7 !important;
 }
 
+
+.adv-hint, .adv-sub, .hint, #gen-ready { display: none !important; }
 </style>
 <script>
 (function(){
@@ -13773,20 +13775,20 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <div>
               <label class="gcpu-field-lbl" data-i18n="st_dur_label">Thời lượng</label>
               <select id="gcpu-dur-select" class="gcpu-mini-select" onchange="gcpuSelectDuration(this.value)">
-                <option value="4">4 Giây</option>
-                <option value="6">6 Giây</option>
-                <option value="8">8 Giây</option>
-                <option value="10">10 Giây</option>
-                <option value="12">12 Giây</option>
-                <option value="15" selected>15 Giây (Chuẩn)</option>
+                <option value="4">4s</option>
+                <option value="6">6s</option>
+                <option value="8">8s</option>
+                <option value="10">10s</option>
+                <option value="12">12s</option>
+                <option value="15" selected>15s</option>
               </select>
             </div>
             <div>
-              <label class="gcpu-field-lbl">Tỉ lệ khung hình</label>
+              <label class="gcpu-field-lbl">Tỷ lệ khung hình</label>
               <select id="gcpu-aspect-select" class="gcpu-mini-select" onchange="selectAspectCard(this.value)">
-                <option value="9:16" selected>📱 9:16 (Dọc - TikTok/Reels)</option>
-                <option value="16:9">🖥️ 16:9 (Ngang - YouTube/PC)</option>
-                <option value="1:1">⬛ 1:1 (Vuông - Feed)</option>
+                <option value="9:16" selected>9:16</option>
+                <option value="16:9">16:9</option>
+                <option value="1:1">1:1</option>
               </select>
             </div>
           </div>
@@ -13954,11 +13956,11 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
         </div>
         <!-- THANH TẠO VIDEO CỐ ĐỊNH: TÓM TẮT + KIỂM TRA ĐẦU VÀO (CHỈ HIỂN THỊ, KHÔNG ĐỔI LOGIC TẠO) -->
         <div id="gen-bar" class="gen-bar">
-          <div id="gen-ready" class="gen-ready"></div>
+          <div id="gen-ready" class="gen-ready" style="display:none"></div>
             <div style="display:flex;gap:10px">
               <button class="b b1" id="btn-gen" onclick="doGen()" style="flex:1;justify-content:center;padding:13px 18px;font-size:14.5px;font-weight:900;border-radius:10px;letter-spacing:.02em">
-                <span>✨</span>
-                <span data-i18n="st_btn_gen">Generate Video (Bắt Đầu Tạo)</span>
+                <span>🚀</span>
+                <span data-i18n="st_btn_gen">Tạo Video</span>
               </button>
               <button class="b b2" id="btn-clear-all" onclick="resetStudioForm()" style="padding:13px 16px;font-size:12.5px;border-radius:10px;font-weight:700" title="Xóa toàn bộ ảnh và prompt để tạo tiếp video khác">
                 <span data-i18n="st_btn_reset">🧹 Làm Mới</span>
@@ -13984,8 +13986,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <div class="gcpu-play-circle">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
             </div>
-            <div style="font-size:15px;font-weight:800;color:#f3f3f7;margin-bottom:4px">Màn hình Xem trước &amp; Tải Video</div>
-            <div style="font-size:12.5px;color:#9ca0b0;max-width:400px;line-height:1.5">Nhập Prompt ở cột bên trái rồi bấm <b style="color:#d8be90">Generate Video</b> để bắt đầu.</div>
+            <div style="font-size:14px;font-weight:700;color:#f3f3f7">Xem trước Video</div>
           </div>
         </div>
 
@@ -13998,26 +13999,21 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
   <!-- TAB: BATCH MODE -->
   <div id="p-batch" style="display:none">
     <div class="c">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <div>
-          <h3 data-i18n="b_title" style="font-size:16px;font-weight:700;color:var(--text-main)">Chế Độ Chạy Hàng Loạt (Batch Mode 10 - 20 Video)</h3>
-          <p data-i18n="b_sub" style="font-size:12.5px;color:var(--text-muted);margin-top:4px">Khởi động và nạp mô hình MiniMax H3 <b>1 lần duy nhất</b>, sau đó render liên tục từng video với tốc độ 2-3 phút/clip. Tiết kiệm 80% Compute Units!</p>
-        </div>
-        <span class="chip chip-g" data-i18n="b_chip">Tối ưu chi phí & thời gian</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 data-i18n="b_title" style="font-size:16px;font-weight:700;color:var(--text-main);margin:0">Tạo Video Hàng Loạt</h3>
       </div>
 
       <div class="grid-main">
         <div>
-          <!-- CHẾ ĐỘ BATCH (ĐỘNG CƠ LORA TỰ ĐỘNG CỐ ĐỊNH THEO CHẾ ĐỘ) -->
+          <!-- CHẾ ĐỘ BATCH -->
           <div class="f" style="margin-bottom:14px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-              <label style="margin:0" data-i18n="b_mode_label">🎯 Chế Độ Batch</label>
-              <span class="tip-badge" style="color:var(--em);border-color:var(--em-border);background:var(--em-bg)" data-tip="Hệ thống tự động khóa Động cơ PDMD 4-Bước (hoặc Mystic 18+) và GPU A100 80GB.">⚡ Động cơ &amp; A100 80GB: Tự động tối ưu</span>
+              <label style="margin:0" data-i18n="b_mode_label">Chế độ</label>
             </div>
             <select id="b-mode" onchange="onBatchModeChange()">
-              <option value="reference" data-i18n="b_opt_ref" selected>🖼️ Tham Chiếu Ảnh (Ref2VA)</option>
-              <option value="t2v" data-i18n="b_opt_t2v">🎬 Tự Do Văn Bản (T2V - Không cần ảnh)</option>
-              <option value="director" data-i18n="b_opt_director">🎭 Kịch Bản Đạo Diễn (Pack 18+)</option>
+              <option value="reference" data-i18n="b_opt_ref" selected>🖼️ Tạo từ Ảnh (I2V)</option>
+              <option value="t2v" data-i18n="b_opt_t2v">🎬 Tạo từ Chữ (T2V)</option>
+              <option value="director" data-i18n="b_opt_director">🎭 Kịch bản Đạo diễn</option>
             </select>
             <select id="b-lora" style="display:none">
               <option value="pdmd" selected>PDMD 4-Bước</option>
@@ -14048,33 +14044,32 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
             <div id="b-director-pack-hint" style="display:none"></div>
           </div>
 
-          <div class="f">
+          <div class="f" id="b-img-section">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-              <label id="b-img-label" data-i18n="b_img_label" style="margin:0">1. Ảnh tham chiếu dùng chung</label>
-              <span class="tip-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.35);background:var(--amber-bg)" data-tip="⚠️ Chống nhòe mặt: Chỉ nạp ảnh 1 người duy nhất. Không dùng ảnh ghép Character Sheet nhiều ô.">⚠️ Lưu ý chọn ảnh</span>
+              <label id="b-img-label" data-i18n="b_img_label" style="margin:0">Ảnh tham chiếu</label>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;flex-wrap:wrap">
               <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:170px">
                 <select id="b-char-preset-sel" onchange="applyCharPresetToBatch(this.value)" style="flex:1;padding:5px 26px 5px 9px;font-size:11.5px;border-radius:7px;font-weight:600">
-                  <option value="">👤 Chọn nhanh nhân vật đã lưu (0)...</option>
+                  <option value="">👤 Nhân vật đã lưu (0)</option>
                 </select>
-                <button type="button" class="b b3" id="b-btn-del-char-preset" onclick="deleteSelectedCharPreset('b-char-preset-sel')" style="display:none;padding:4px 7px;font-size:11px;color:#ef4444" title="Xóa nhân vật đã lưu này">🗑️</button>
+                <button type="button" class="b b3" id="b-btn-del-char-preset" onclick="deleteSelectedCharPreset('b-char-preset-sel')" style="display:none;padding:4px 7px;font-size:11px;color:#ef4444" title="Xóa">🗑️</button>
               </div>
               <div style="display:flex;gap:5px;align-items:center">
-                <button type="button" class="b b1" onclick="openMossImageStudioTab('moss')" style="padding:5px 10px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#059669,#0d9488);border:none" data-tip="Mở mục Tạo Ảnh Moss (7 Checkpoints MOSS + Sửa ảnh bằng Moss-Image-Edit LoRA)">
+                <button type="button" class="b b1" onclick="openMossImageStudioTab('moss')" style="padding:5px 10px;font-size:11px;font-weight:800;background:linear-gradient(135deg,#059669,#0d9488);border:none">
                   🌿 Tạo Ảnh Moss
                 </button>
-                <button type="button" class="b b1" onclick="openKrea2StudioModal('batch')" style="padding:5px 10px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none" data-tip="Tạo nhanh ảnh tham chiếu bằng MOSS / Krea 2 Turbo + Civitai Helper">
-                  🎨 Tạo Ảnh Nhanh
+                <button type="button" class="b b1" onclick="openKrea2StudioModal('batch')" style="padding:5px 10px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#0d9488,#7c3aed);border:none">
+                  🎨 Tạo Nhanh
                 </button>
-                <button type="button" class="b b2" onclick="saveCurrentCharPreset('batch')" style="padding:5px 10px;font-size:11px;font-weight:700" data-tip="Lưu bộ ảnh nhân vật đang chọn vào Kho Nhân Vật dùng chung">
-                  💾 Lưu Nhân Vật
+                <button type="button" class="b b2" onclick="saveCurrentCharPreset('batch')" style="padding:5px 10px;font-size:11px;font-weight:700">
+                  💾 Lưu
                 </button>
               </div>
             </div>
             <div class="up" onclick="document.getElementById('b-img-in').click()" style="padding:14px;">
               <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-              <p id="b-img-hint" data-i18n="b_img_hint" style="font-size:12px;font-weight:600;margin:0">Chọn 1–9 ảnh tham chiếu</p>
+              <p id="b-img-hint" data-i18n="b_img_hint" style="font-size:12px;font-weight:600;margin:0">Tải ảnh lên</p>
             </div>
             <input type="file" id="b-img-in" multiple accept="image/*" style="display:none" onchange="addBatchImgs(this)">
             <div class="img-grid" id="b-img-list"></div>
@@ -14083,29 +14078,28 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
           <select id="b-gpu" style="display:none"><option selected value="A100">A100</option></select>
           <div class="row-2">
             <div class="f">
-              <label data-i18n="b_dur_label">⏱️ Thời lượng / clip</label>
-              <select id="b-dur"><option value="15" data-i18n="b_dur_15" selected>15 giây (Max)</option><option value="12" data-i18n="b_dur_12">12 giây</option><option value="10" data-i18n="b_dur_10">10 giây</option><option value="8" data-i18n="b_dur_8">8 giây</option></select>
+              <label data-i18n="b_dur_label">Thời lượng</label>
+              <select id="b-dur"><option value="15" data-i18n="b_dur_15" selected>15s</option><option value="12" data-i18n="b_dur_12">12s</option><option value="10" data-i18n="b_dur_10">10s</option><option value="8" data-i18n="b_dur_8">8s</option><option value="6" data-i18n="b_dur_6">6s</option><option value="4" data-i18n="b_dur_4">4s</option></select>
             </div>
             <div class="f">
-              <label data-i18n="b_aspect_label">📐 Tỷ lệ khung hình</label>
+              <label data-i18n="b_aspect_label">Tỷ lệ khung hình</label>
               <select id="b-aspect">
-                <option value="9:16" data-i18n="opt_asp_916" selected>📱 9:16 Dọc (TikTok/Reels)</option>
-                <option value="16:9" data-i18n="opt_asp_169">🖥️ 16:9 Ngang (YouTube/PC)</option>
-                <option value="1:1" data-i18n="opt_asp_11">⏹️ 1:1 Vuông (Feed)</option>
+                <option value="9:16" data-i18n="opt_asp_916" selected>9:16</option>
+                <option value="16:9" data-i18n="opt_asp_169">16:9</option>
+                <option value="1:1" data-i18n="opt_asp_11">1:1</option>
               </select>
             </div>
           </div>
 
           <div class="f">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-              <label style="margin:0" data-i18n="b_seed_label">🎲 Hạt Giống Chung (Seed)</label>
+              <label style="margin:0" data-i18n="b_seed_label">Seed</label>
               <div style="display:flex;gap:4px">
-                <button type="button" class="b b3" onclick="document.getElementById('b-seed').value = Math.floor(Math.random()*2147483647)" style="font-size:11px;padding:2px 6px">🎲 Random</button>
-                <button type="button" class="b b3" onclick="document.getElementById('b-seed').value='-1'" style="font-size:11px;padding:2px 6px"><span data-i18n="lbl_default">🔄 Mặc định</span></button>
+                <button type="button" class="b b3" onclick="document.getElementById('b-seed').value = Math.floor(Math.random()*2147483647)" style="font-size:11px;padding:2px 6px">🎲</button>
+                <button type="button" class="b b3" onclick="document.getElementById('b-seed').value='-1'" style="font-size:11px;padding:2px 6px"><span data-i18n="lbl_default">🔄</span></button>
               </div>
             </div>
-            <input type="number" id="b-seed" placeholder="-1 (Mỗi video 1 seed ngẫu nhiên riêng)" data-i18n-ph="b_seed_ph" value="-1">
-            <div class="hint" data-i18n="b_seed_hint">Để <b>-1</b> để mỗi video có 1 seed ngẫu nhiên riêng biệt, hoặc nhập số để đồng bộ phong cách.</div>
+            <input type="number" id="b-seed" placeholder="-1" data-i18n-ph="b_seed_ph" value="-1">
           </div>
 
           <div class="f">
@@ -14137,82 +14131,76 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
         <div>
           <div class="f">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
-              <label style="margin:0;font-weight:700" data-i18n="b_prompts_label">2. Danh sách Prompts (Mỗi dòng tạo 1 video riêng biệt)</label>
+              <label style="margin:0;font-weight:700" data-i18n="b_prompts_label">Danh sách Prompt</label>
               <div style="display:flex;gap:6px;align-items:center">
                 <span id="b-count" style="font-size:12px;color:var(--em);font-weight:700">0 video</span>
-                <button type="button" class="b b3" onclick="clearBatchPrompts()" style="font-size:11px;padding:3px 8px" title="Xóa toàn bộ nội dung" data-i18n-title="b_btn_clear_title"><span data-i18n="b_btn_clear">🧹 Xóa</span></button>
+                <button type="button" class="b b3" onclick="clearBatchPrompts()" style="font-size:11px;padding:3px 8px" title="Xóa" data-i18n-title="b_btn_clear_title"><span data-i18n="b_btn_clear">🧹 Xóa</span></button>
               </div>
             </div>
 
-            <!-- DÃY NÚT NẠP NHANH PHIM ĐIỆN ẢNH 5 PHÂN CẢNH (CLEAN CINEMA - MẶC ĐỊNH) -->
-            <div id="b-quick-cinema-row" style="background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+            <!-- DÃY NÚT NẠP NHANH -->
+            <div id="b-quick-cinema-row" style="background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">
               <span style="font-size:11px;font-weight:700;color:var(--em);display:flex;align-items:center;gap:4px" data-i18n="b_clean_movie_label">
-                🎬 Mẫu Phim Ngắn 5 Phân Cảnh:
+                🎬 Mẫu nhanh:
               </span>
-              <button type="button" class="b b3" onclick="fillBatchCinemaPreset('action')" style="font-size:11px;padding:4px 8px;border-color:rgba(59,130,246,0.3)" title="Tự động nạp 5 cảnh: Hành động kịch tính & rượt đuổi nghẹt thở" data-i18n-title="b_action_title">
-                <span data-i18n="b_btn_action">⚔️ Hành Động & Kịch Tính</span>
+              <button type="button" class="b b3" onclick="fillBatchCinemaPreset('action')" style="font-size:11px;padding:3px 8px;border-color:rgba(59,130,246,0.3)">
+                <span data-i18n="b_btn_action">⚔️ Hành động</span>
               </button>
-              <button type="button" class="b b3" onclick="fillBatchCinemaPreset('scifi')" style="font-size:11px;padding:4px 8px;border-color:rgba(147,51,234,0.3)" title="Tự động nạp 5 cảnh: Viễn tưởng không gian & khám phá hành tinh mới" data-i18n-title="b_scifi_title">
-                <span data-i18n="b_btn_scifi">🌌 Viễn Tưởng Vũ Trụ</span>
+              <button type="button" class="b b3" onclick="fillBatchCinemaPreset('scifi')" style="font-size:11px;padding:3px 8px;border-color:rgba(147,51,234,0.3)">
+                <span data-i18n="b_btn_scifi">🌌 Viễn tưởng</span>
               </button>
-              <button type="button" class="b b3" onclick="fillBatchCinemaPreset('romance')" style="font-size:11px;padding:4px 8px;border-color:rgba(236,72,153,0.3)" title="Tự động nạp 5 cảnh: Phim tình cảm lãng mạn nhẹ nhàng (Cặp đôi)" data-i18n-title="b_romance_title">
-                <span data-i18n="b_btn_romance">🌸 Tình Cảm Lãng Mạn</span>
+              <button type="button" class="b b3" onclick="fillBatchCinemaPreset('romance')" style="font-size:11px;padding:3px 8px;border-color:rgba(236,72,153,0.3)">
+                <span data-i18n="b_btn_romance">🌸 Tình cảm</span>
               </button>
             </div>
 
-            <!-- DÃY NÚT NẠP NHANH BỘ PHIM 18+ THEO TIẾN TRÌNH 5 TẬP (CHỈ HIỆN KHI BẬT CHẾ ĐỘ 18+) -->
-            <div id="b-quick-movie-row" style="display:none;background:var(--surface-2);border:1px solid rgba(225,29,72,0.35);border-radius:8px;padding:8px 10px;margin-bottom:10px;flex-wrap:wrap;gap:6px;align-items:center">
+            <!-- DÃY NÚT 18+ -->
+            <div id="b-quick-movie-row" style="display:none;background:var(--surface-2);border:1px solid rgba(225,29,72,0.35);border-radius:8px;padding:6px 10px;margin-bottom:8px;flex-wrap:wrap;gap:6px;align-items:center">
               <span style="font-size:11px;font-weight:700;color:#e11d48;display:flex;align-items:center;gap:4px" data-i18n="b_quick_movie_label">
-                🔞 Nạp Nhanh Phim 18+ (5 Tập):
+                🔞 Mẫu 18+:
               </span>
-              <button type="button" class="b b3" onclick="fillBatchMoviePreset('duo_penthouse')" style="font-size:11px;padding:4px 8px;border-color:rgba(225,29,72,0.3)" title="Tự động nạp 5 tập: Cặp đôi Penthouse (Dạo đầu &rarr; Cởi đồ &rarr; Oral &rarr; Thâm nhập &rarr; Cực khoái)" data-i18n-title="b_penthouse_title">
-                <span data-i18n="b_btn_penthouse">👫 Cặp Đôi Penthouse</span>
+              <button type="button" class="b b3" onclick="fillBatchMoviePreset('duo_penthouse')" style="font-size:11px;padding:3px 8px;border-color:rgba(225,29,72,0.3)">
+                <span data-i18n="b_btn_penthouse">👫 Penthouse</span>
               </button>
-              <button type="button" class="b b3" onclick="fillBatchMoviePreset('duo_hotel')" style="font-size:11px;padding:4px 8px;border-color:rgba(225,29,72,0.3)" title="Tự động nạp 5 tập: Cặp đôi Khách sạn Tình nhân sang trọng" data-i18n-title="b_hotel_title">
-                <span data-i18n="b_btn_hotel">🌹 Khách Sạn Tình Nhân</span>
+              <button type="button" class="b b3" onclick="fillBatchMoviePreset('duo_hotel')" style="font-size:11px;padding:3px 8px;border-color:rgba(225,29,72,0.3)">
+                <span data-i18n="b_btn_hotel">🌹 Khách sạn</span>
               </button>
-              <button type="button" class="b b3" onclick="fillBatchMoviePreset('solo_bath')" style="font-size:11px;padding:4px 8px;border-color:rgba(225,29,72,0.3)" title="Tự động nạp 5 tập: Solo Nữ bồn tắm nước ấm & mơn trớn gợi cảm" data-i18n-title="b_bath_title">
-                <span data-i18n="b_btn_bath">🛁 Solo Bồn Tắm</span>
+              <button type="button" class="b b3" onclick="fillBatchMoviePreset('solo_bath')" style="font-size:11px;padding:3px 8px;border-color:rgba(225,29,72,0.3)">
+                <span data-i18n="b_btn_bath">🛁 Bồn tắm</span>
               </button>
-              <button type="button" class="b b3" onclick="fillBatchMoviePreset('yuri_passion')" style="font-size:11px;padding:4px 8px;border-color:rgba(225,29,72,0.3)" title="Tự động nạp 5 tập: Bách hợp Nữ - Nữ ngọt ngào & nồng cháy" data-i18n-title="b_yuri_title">
-                <span data-i18n="b_btn_yuri">👭 Bách Hợp Yuri</span>
+              <button type="button" class="b b3" onclick="fillBatchMoviePreset('yuri_passion')" style="font-size:11px;padding:3px 8px;border-color:rgba(225,29,72,0.3)">
+                <span data-i18n="b_btn_yuri">👭 Yuri</span>
               </button>
-              <button type="button" class="b b1" onclick="openMovieDirectorModal(true)" style="font-size:11px;padding:4px 10px;background:linear-gradient(135deg,#e11d48,#9333ea);color:#fff;margin-left:auto;font-weight:700" title="Mở Xưởng Biên Kịch Phim 18+ để tự chọn bối cảnh, trang phục rồi nạp sang Batch" data-i18n-title="b_open_movie_title">
-                <span data-i18n="b_btn_open_movie">🎬 Mở Xưởng Phim 18+</span>
+              <button type="button" class="b b1" onclick="openMovieDirectorModal(true)" style="font-size:11px;padding:3px 10px;background:linear-gradient(135deg,#e11d48,#9333ea);color:#fff;margin-left:auto;font-weight:700">
+                <span data-i18n="b_btn_open_movie">🎬 Xưởng 18+</span>
               </button>
             </div>
 
-            <textarea id="b-prompts" rows="11" placeholder="Dán danh sách kịch bản vào đây (mỗi dòng tạo 1 video riêng biệt):&#10;Tập 1: Giới thiệu nhân vật chính bước vào học viện ma thuật...&#10;Tập 2: Đối đầu với quái thú trong rừng cấm...&#10;Tập 3: Kích hoạt bảo kiếm giải cứu đồng đội...&#10;&#10;Hoặc bấm các nút '🎬 Mẫu Phim Ngắn 5 Phân Cảnh' bên trên để nạp kịch bản điện ảnh mẫu!" data-i18n-ph="b_prompts_ph" oninput="updateBatchCount()"></textarea>
-            <div class="hint" data-i18n="b_prompts_hint">Hệ thống phân bổ thông minh qua cụm GPU song song hoặc tuần tự. Khi hoàn thành, tất cả video sẽ nằm trong thư mục xuất.</div>
+            <textarea id="b-prompts" rows="12" placeholder="Mỗi dòng 1 prompt..." data-i18n-ph="b_prompts_ph" oninput="updateBatchCount()"></textarea>
           </div>
 
           <!-- AUTO-MERGE & MULTI-ACCOUNT WORKER POOL CARD -->
           <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:12px">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:8px;margin-bottom:8px;border-bottom:1px dashed var(--border)">
-              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-                <label style="margin:0;font-size:12.5px;font-weight:800;color:var(--em);display:flex;align-items:center;gap:6px;cursor:pointer">
-                  <input type="checkbox" id="b-auto-merge" style="width:15px;height:15px;cursor:pointer">
-                  <span>🎞️ Tự động ghép tất cả clip thành 1 Video Dài (.MP4)</span>
-                </label>
-                <label style="margin:0;font-size:12px;font-weight:800;color:#d97706;display:flex;align-items:center;gap:6px;cursor:pointer" title="Nếu TẮT: Chạy song song cùng lúc trên tất cả các tài khoản (Nhanh gấp N lần). Nếu BẬT: Chạy tuần tự cảnh trước xong mới lấy Frame cuối cho cảnh sau.">
-                  <input type="checkbox" id="b-chain-last-frame" onchange="updateBatchWorkerUI()" style="width:15px;height:15px;cursor:pointer">
-                  <span>🔗 Nối Frame Cuối cảnh trước (Tắt để chạy song song nhiều TK cùng lúc)</span>
-                </label>
-              </div>
-              <span class="chip chip-g" style="font-size:10.5px;padding:2px 8px">FFmpeg Auto-Merge</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+              <label style="margin:0;font-size:12px;font-weight:700;color:var(--em);display:flex;align-items:center;gap:6px;cursor:pointer">
+                <input type="checkbox" id="b-auto-merge" style="width:15px;height:15px;cursor:pointer">
+                <span>🎞️ Tự ghép 1 video</span>
+              </label>
+              <label style="margin:0;font-size:12px;font-weight:700;color:#d97706;display:flex;align-items:center;gap:6px;cursor:pointer">
+                <input type="checkbox" id="b-chain-last-frame" onchange="updateBatchWorkerUI()" style="width:15px;height:15px;cursor:pointer">
+                <span>🔗 Nối tiếp frame cuối</span>
+              </label>
               <label style="margin:0;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer">
                 <input type="checkbox" id="b-multi-account" checked onchange="updateBatchWorkerUI()">
-                <span data-i18n="b_multi_title">⚡ Bật Chạy Đa Tài Khoản Song Song (GPU Cluster)</span>
+                <span data-i18n="b_multi_title">⚡ Đa tài khoản</span>
               </label>
-              <span id="b-multi-badge" class="chip chip-g" style="font-size:10.5px;padding:2px 8px">Tốc độ x1</span>
+              <span id="b-multi-badge" class="chip chip-g" style="font-size:10.5px;padding:2px 8px">x1</span>
             </div>
             <div id="b-workers-list" style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px"></div>
           </div>
 
           <button class="b b1 b-full" id="btn-batch-gen" onclick="doBatchGen()">
-            <span data-i18n="b_btn_gen">🚀 Bắt đầu chạy Batch &amp; Tự Ghép Video Dài</span>
+            <span data-i18n="b_btn_gen">🚀 Tạo Hàng Loạt</span>
           </button>
         </div>
       </div>
@@ -14833,9 +14821,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
           <h3 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px">
             <span data-i18n="gal_title">🎬 Thư Viện Video Đã Tạo</span>
           </h3>
-          <p data-i18n="gal_sub" style="font-size:12.5px;color:var(--text-muted);margin-top:2px">
-            Tích chọn <code>☑️</code> trên các thẻ video để <b>🎬 Ghép Nhiều Clip Thành Phim Dài</b>, hoặc bấm <b>✨ Nối Cảnh</b> để lấy khung hình cuối tạo tiếp tập sau.
-          </p>
+          <p data-i18n="gal_sub" style="display:none"></p>
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
           <!-- NÚT GHÉP NHIỀU VIDEO THÀNH PHIM DÀI -->
@@ -14915,7 +14901,7 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
         <div id="gp-recipe-panel" style="margin-top:14px;background:var(--surface);border:1.5px solid var(--em-border);border-radius:10px;padding:12px 14px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-              <span style="font-size:13px;font-weight:800;color:var(--text-main)">🔍 Hồ Sơ Gốc Khi Tạo Video Này: Ảnh Tham Chiếu Đã Truyền Trực Tiếp (<code>&lt;Picture 1..N&gt;</code>) + Prompt</span>
+              <span style="font-size:13px;font-weight:800;color:var(--text-main)">🔍 Ảnh tham chiếu &amp; Prompt</span>
               <span id="gp-recipe-ref-count" class="chip chip-g" style="font-size:10.5px;padding:2px 8px">0 ảnh tham chiếu</span>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -14927,12 +14913,12 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
 
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;align-items:start">
             <div>
-              <div style="font-size:11.5px;font-weight:700;color:var(--text-sub);margin-bottom:6px">📸 Danh sách Ảnh Tham Chiếu đã đưa trực tiếp vào tạo video (Bấm vào ảnh để xem phóng to):</div>
+              <div style="font-size:11.5px;font-weight:700;color:var(--text-sub);margin-bottom:6px">📸 Ảnh tham chiếu:</div>
               <div id="gp-recipe-refs-grid" style="display:flex;flex-wrap:wrap;gap:8px;min-height:64px;align-items:center"></div>
             </div>
             <div>
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                <label style="font-size:11.5px;font-weight:700;color:var(--text-sub);margin:0">💬 Prompt đã dùng khi tạo video (Có thể chỉnh sửa trực tiếp ở đây rồi bấm Tạo Lại Ngay):</label>
+                <label style="font-size:11.5px;font-weight:700;color:var(--text-sub);margin:0">💬 Prompt:</label>
                 <span id="gp-recipe-style-tag" style="font-size:10.5px;color:var(--em);font-weight:700"></span>
               </div>
               <textarea id="gp-recipe-prompt" rows="4" style="width:100%;font-size:11.5px;font-family:'JetBrains Mono',monospace;padding:8px 10px;border-radius:8px;background:var(--surface-2);color:var(--text-main);border:1px solid var(--border);line-height:1.45" placeholder="Prompt đã sử dụng khi tạo video..."></textarea>
@@ -14973,11 +14959,8 @@ html[data-theme="light"] body.is-embedded [style*="background:#0b0b0e"] {
           <h3 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
             <span data-i18n="q_title">⏳ Hàng Đợi &amp; Tiến Trình Tác Vụ</span>
             <span id="queue-count-badge" class="chip" style="display:none;background:#eff6ff;color:#e5d1b0;font-size:11px">0 tác vụ</span>
-            <span class="chip" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;font-size:11px;font-weight:800">📐 Lưới 5 Ngang × 10 Dọc (50 Cảnh / Tab)</span>
           </h3>
-          <p data-i18n="q_sub" style="font-size:12px;color:var(--text-muted);margin-top:2px">
-            Bố cục 5 ô ngang × 10 hàng dọc (50 cảnh mỗi Tab) kèm STT rõ ràng và phân trang Tab Mới nhất / Cũ hơn giúp quản lý mượt mà 100–200+ phân cảnh.
-          </p>
+          <p data-i18n="q_sub" style="display:none"></p>
         </div>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
           <input type="text" id="q-search-inp" oninput="qCurrentPage=1;renderQueueFromCache()" placeholder="🔍 Tìm STT (#1), mã cảnh (E01S002), #job..." style="width:225px;padding:6px 10px;font-size:11.5px;border-radius:8px;background:var(--surface-2);color:var(--text-main);border:1px solid var(--border)">
@@ -16954,12 +16937,12 @@ const i18n = {
     "dp_st_btn_load": "📥 Nạp vào Prompt",
     "dp_st_hint": "",
     "st_audio_label": "🎵 Âm Thanh Tham Chiếu",
-    "st_images_label": "Ảnh Tham Chiếu Nhân Vật / Bối Cảnh",
-    "st_images_desc": "Bấm hoặc kéo thả 1–9 ảnh vào đây (Tự động gán &lt;Picture 1&gt;..&lt;Picture 9&gt;)",
+    "st_images_label": "Ảnh tham chiếu",
+    "st_images_desc": "Tải ảnh lên",
     "st_images_sub": "",
     "st_images_warn": "",
     "st_images_warn_link": "Ảnh mẫu",
-    "st_prompt_header": "Prompt Kịch Bản",
+    "st_prompt_header": "Prompt",
     "st_btn_movie": "🔞 Xưởng Phim 18+",
     "st_btn_movie_title": "Biên kịch trọn bộ phim 18+ từ 3 đến 5 tập liên hoàn",
     "st_btn_ref2va": "✨ Trình Dựng Phân Cảnh",
@@ -16984,12 +16967,12 @@ const i18n = {
     "adult_banner_title": "CHẾ ĐỘ 18+ ĐANG BẬT",
     "adult_banner_desc": "",
     "adult_banner_btn": "Tắt 18+",
-    "b_clean_movie_label": "🎬 Mẫu Phim Ngắn 5 Phân Cảnh:",
-    "b_btn_action": "⚔️ Hành Động & Kịch Tính",
+    "b_clean_movie_label": "🎬 Mẫu nhanh:",
+    "b_btn_action": "⚔️ Hành động",
     "b_action_title": "Tự động nạp 5 cảnh: Hành động kịch tính & rượt đuổi nghẹt thở",
-    "b_btn_scifi": "🌌 Viễn Tưởng Vũ Trụ",
+    "b_btn_scifi": "🌌 Viễn tưởng",
     "b_scifi_title": "Tự động nạp 5 cảnh: Viễn tưởng không gian & khám phá hành tinh mới",
-    "b_btn_romance": "🌸 Tình Cảm Lãng Mạn",
+    "b_btn_romance": "🌸 Tình cảm",
     "b_romance_title": "Tự động nạp 5 cảnh: Phim tình cảm lãng mạn nhẹ nhàng (Cặp đôi)",
     "tmpl_opt_action": "⚔️ Hành Động Cao Ốc",
     "tmpl_opt_romance": "☕ Lãng Mạn Quán Cà Phê",
@@ -16998,20 +16981,20 @@ const i18n = {
     "tmpl_opt_lipsync": "🗣️ Kèm Thoại Lip-sync",
     "tmpl_opt_cyber": "🌧️ Cyberpunk Mưa Đêm",
     "tmpl_opt_zen": "🏯 Thiền Viện Thanh Tịnh",
-    "st_prompt_ph": "Nhập mô tả cảnh quay, chuyển động nhân vật, bối cảnh...",
+    "st_prompt_ph": "Nhập prompt...",
     "st_prompt_hint": "",
     "st_prompt_hint_adult": "",
-    "st_dur_label": "⏱️ Thời lượng",
+    "st_dur_label": "Thời lượng",
     "pill_15s": "15s",
     "st_gpu_label": "🖥️ GPU Cloud",
     "opt_gpu_a100": "A100 (80GB - Nhanh nhất)",
     "opt_gpu_v100": "V100 (16GB - Tiêu chuẩn)",
     "opt_gpu_t4": "T4 (15GB - Tiết kiệm)",
-    "st_aspect_label": "📐 Khung hình",
+    "st_aspect_label": "Tỷ lệ khung hình",
     "opt_asp_916": "9:16",
     "opt_asp_169": "16:9",
     "opt_asp_11": "1:1",
-    "st_seed_label": "🎲 Seed",
+    "st_seed_label": "Seed",
     "lbl_default": "🔄",
     "st_seed_ph": "-1",
     "st_seed_hint": "",
@@ -17026,16 +17009,16 @@ const i18n = {
     "st_browse_title": "Chọn thư mục lưu video",
     "st_btn_autoname": "⚡ Đặt tên mới",
     "st_autoname_title": "Đặt tên file mới theo thời gian",
-    "st_btn_gen": "Bắt Đầu Tạo Video",
+    "st_btn_gen": "Tạo Video",
     "st_btn_reset": "🧹 Làm Mới",
     "st_reset_title": "Xóa toàn bộ ảnh và prompt để tạo tiếp video khác",
-    "b_title": "Chế Độ Chạy Hàng Loạt (Batch Mode 10 - 20 Video)",
-    "b_sub": "Khởi động và nạp mô hình MiniMax H3 <b>1 lần duy nhất</b>, sau đó render liên tục từng video với tốc độ 2-3 phút/clip. Tiết kiệm 80% Compute Units!",
-    "b_chip": "Tối ưu chi phí & thời gian",
-    "b_mode_label": "🎯 Chế Độ Batch",
-    "b_opt_ref": "🖼️ Tham Chiếu Ảnh (Ref2VA)",
-    "b_opt_t2v": "🎬 Tự Do Văn Bản (T2V - Không cần ảnh)",
-    "b_opt_director": "🎭 Kịch Bản Đạo Diễn (D:\\H3 NF Pack 18+)",
+    "b_title": "Tạo Video Hàng Loạt",
+    "b_sub": "",
+    "b_chip": "",
+    "b_mode_label": "Chế độ",
+    "b_opt_ref": "🖼️ Tạo từ Ảnh (I2V)",
+    "b_opt_t2v": "🎬 Tạo từ Chữ (T2V)",
+    "b_opt_director": "🎭 Kịch bản Đạo diễn",
     "b_lora_label": "⚡ Động Cơ LoRA",
     "b_lora_opt_pdmd": "🌟 PDMD 4-Bước (Sắc nét nhất)",
     "b_lora_opt_mystic": "⚡ MysticXXX H3 V4 (Mượt mà)",
@@ -17044,29 +17027,29 @@ const i18n = {
     "b_dp_btn_preview": "👁️ Xem",
     "b_dp_btn_load": "📥 Nạp 5 Cảnh Vào Prompts Phải",
     "b_dp_hint": "💡 Gói kịch bản hỗ trợ dựng 5 phân cảnh liên hoàn với quy tắc cởi đồ 1 chiều và chuyển động mượt mà.",
-    "b_img_label": "1. Ảnh phong cách / nhân vật dùng chung",
-    "b_img_hint": "Chọn 1–9 ảnh tham chiếu",
+    "b_img_label": "Ảnh tham chiếu",
+    "b_img_hint": "Tải ảnh lên",
     "b_images_warn": "⚠️ <b>Chống nhòe mặt:</b> Chỉ nạp ảnh 1 người duy nhất. Không dùng ảnh ghép Character Sheet nhiều ô. &rarr; ",
     "b_images_warn_link": "Xem ảnh mẫu",
     "b_gpu_label": "GPU",
-    "b_dur_label": "Thời lượng / clip",
-    "b_dur_opt_4s": "4s (Rất nhanh)",
-    "b_dur_opt_6s": "6s (Nhanh)",
-    "b_dur_opt_8s": "8s (Cân bằng)",
-    "b_dur_opt_10s": "10s (Đầy đủ)",
-    "b_dur_opt_12s": "12s (Dài)",
-    "b_dur_opt_15s": "15s (Khuyên dùng)",
-    "b_aspect_label": "Tỷ lệ khung hình (Khắc phục hoàn toàn nhoè mờ khi tạo video dọc TikTok/Reels)",
-    "b_seed_label": "🎲 Hạt Giống Chung (Seed)",
-    "b_seed_ph": "-1 (Mỗi video 1 seed ngẫu nhiên riêng)",
-    "b_seed_hint": "Để <b>-1</b> để mỗi video có 1 seed ngẫu nhiên riêng biệt, hoặc nhập số để đồng bộ phong cách.",
-    "b_out_label": "Thư mục xuất video",
+    "b_dur_label": "Thời lượng",
+    "b_dur_opt_4s": "4s",
+    "b_dur_opt_6s": "6s",
+    "b_dur_opt_8s": "8s",
+    "b_dur_opt_10s": "10s",
+    "b_dur_opt_12s": "12s",
+    "b_dur_opt_15s": "15s",
+    "b_aspect_label": "Tỷ lệ khung hình",
+    "b_seed_label": "Seed",
+    "b_seed_ph": "-1",
+    "b_seed_hint": "",
+    "b_out_label": "Thư mục lưu",
     "b_btn_browse": "📁 Duyệt",
     "b_upscale_label": "⬆️ Upscale",
-    "b_prompts_label": "2. Danh sách Prompts (Mỗi dòng tạo 1 video riêng biệt)",
+    "b_prompts_label": "Danh sách Prompt",
     "b_btn_clear": "🧹 Xóa",
     "b_btn_clear_title": "Xóa toàn bộ nội dung",
-    "b_quick_movie_label": "🔞 Nạp Nhanh Phim 5 Tập:",
+    "b_quick_movie_label": "🔞 Mẫu 18+:",
     "b_btn_penthouse": "👫 Cặp Đôi Penthouse",
     "b_penthouse_title": "Tự động nạp 5 tập: Cặp đôi Penthouse (Dạo đầu &rarr; Cởi đồ &rarr; Oral &rarr; Thâm nhập &rarr; Cực khoái)",
     "b_btn_hotel": "🌹 Khách Sạn Tình Nhân",
@@ -17077,13 +17060,13 @@ const i18n = {
     "b_yuri_title": "Tự động nạp 5 tập: Bách hợp Nữ - Nữ ngọt ngào & nồng cháy",
     "b_btn_open_movie": "🎬 Mở Xưởng Phim 18+",
     "b_open_movie_title": "Mở Xưởng Biên Kịch Phim 18+ để tự chọn bối cảnh, trang phục rồi nạp sang Batch",
-    "b_prompts_ph": "Dán danh sách kịch bản vào đây (mỗi dòng tạo 1 video):\\nTập 1: Giới thiệu nhân vật chính bước vào học viện ma thuật...\\nTập 2: Đối đầu với quái thú trong rừng cấm...\\nTập 3: Kích hoạt bảo kiếm giải cứu đồng đội...\\n\\nHoặc bấm các nút '🔞 Nạp Nhanh Phim 5 Tập' bên trên để tự động điền kịch bản liên hoàn!",
-    "b_prompts_hint": "Hệ thống phân bổ thông minh qua cụm GPU song song hoặc tuần tự. Khi hoàn thành, tất cả video sẽ nằm trong thư mục xuất.",
-    "b_multi_title": "⚡ Bật Chạy Đa Tài Khoản Song Song (GPU Cluster)",
+    "b_prompts_ph": "Mỗi dòng 1 prompt...",
+    "b_prompts_hint": "",
+    "b_multi_title": "⚡ Đa tài khoản",
     "b_multi_desc": "Tự động phân phối các cảnh vào cụm GPU độc lập. Khi một tài khoản hết CU hoặc kết thúc sớm, tài khoản khác sẽ tự động gánh tiếp mà không làm gián đoạn hay mất prompt.",
-    "b_btn_gen": "🚀 Bắt đầu chạy Batch (1 Session Máy Chủ duy nhất)",
+    "b_btn_gen": "🚀 Tạo Hàng Loạt",
     "gal_title": "🎬 Thư Viện Video Đã Tạo",
-    "gal_sub": "Toàn bộ video đã render từ MiniMax H3. Phát tập trung tại 1 trình phát duy nhất — Người dùng tự chủ động bấm phát, không tự động phát gây phiền.",
+    "gal_sub": "",
     "gal_filter_grouped": "🌟 Gộp gọn (Ưu tiên Upscale)",
     "gal_filter_upscaled": "✨ Chỉ video Đã Upscale",
     "gal_filter_all": "📁 Tất cả file rời",
@@ -17094,7 +17077,7 @@ const i18n = {
     "gal_open": "📁 Mở thư mục",
     "gal_empty": "Đang quét thư viện video...",
     "q_title": "⏳ Hàng Đợi & Tiến Trình Tác Vụ",
-    "q_sub": "Mỗi prompt là một ô nhỏ gọn gàng. Hiển thị tiến trình trực tiếp, tự động phát hiện và giải thích chi tiết nguyên nhân lỗi.",
+    "q_sub": "",
     "q_refresh": "🔄 Làm mới danh sách",
     "q_empty": "Chưa có tác vụ nào trong hàng đợi.",
     "guide_title": "📖 Hướng Dẫn Sử Dụng & Bảng Tính Compute Units (CU)",
@@ -17182,10 +17165,10 @@ const i18n = {
     "b_dp_chip": "5 SHOTS LIÊN HOÀN",
     "b_dp_preview": "👁️ Xem",
     "b_dp_load": "📥 Nạp 5 Cảnh Vào Prompts Phải",
-    "b_dur_8": "8s (Cân bằng)",
-    "b_dur_10": "10s (Đầy đủ)",
-    "b_dur_12": "12s (Dài)",
-    "b_dur_15": "15s (Khuyên dùng)",
+    "b_dur_8": "8s",
+    "b_dur_10": "10s",
+    "b_dur_12": "12s",
+    "b_dur_15": "15s",
     "mv_set_penthouse": "Phòng ngủ penthouse sang trọng, ánh đèn vàng ấm cúng, mưa rơi ngoài cửa kính",
     "mv_set_hotel": "Khách sạn tình nhân lãng mạn, ánh nến, hoa hồng, ga trải giường mềm mại",
     "mv_set_bath": "Bồn tắm nước nóng bốc hơi mờ ảo, bọt xà phòng quyến rũ",
@@ -17299,10 +17282,10 @@ const i18n = {
     "opt_gpu_a100": "A100 (40GB/80GB VRAM) &mdash; Fastest",
     "opt_gpu_v100": "V100 (16GB VRAM) &mdash; Standard",
     "opt_gpu_t4": "T4 (16GB VRAM) &mdash; Budget",
-    "st_aspect_label": "Aspect Ratio (Completely fixes blur for vertical TikTok/Reels)",
-    "opt_asp_916": "📱 9:16 Vertical (768×1376) &mdash; TikTok / Reels / Shorts",
-    "opt_asp_169": "🖥️ 16:9 Landscape (1376×768) &mdash; Youtube / PC / TV",
-    "opt_asp_11": "⏹️ 1:1 Square (1024×1024) &mdash; Instagram / Square",
+    "st_aspect_label": "Aspect Ratio",
+    "opt_asp_916": "9:16",
+    "opt_asp_169": "16:9",
+    "opt_asp_11": "1:1",
     "st_seed_label": "🎲 Seed",
     "lbl_default": "🔄 Default",
     "st_seed_ph": "-1 (Random)",
@@ -17321,13 +17304,13 @@ const i18n = {
     "st_btn_gen": "Start Video Generation",
     "st_btn_reset": "🧹 Reset",
     "st_reset_title": "Clear all images and prompt to start a new video",
-    "b_title": "Batch Generation Mode (10 - 20 Videos)",
-    "b_sub": "Loads MiniMax H3 model <b>once</b>, then continuously renders each video at 2-3 min/clip. Saves 80% Compute Units!",
-    "b_chip": "Cost & Time Optimized",
-    "b_mode_label": "🎯 Batch Mode",
-    "b_opt_ref": "🖼️ Image Reference (Ref2VA)",
-    "b_opt_t2v": "🎬 Text-to-Video (T2V - No images)",
-    "b_opt_director": "🎭 Director Script (D:\\H3 NF Pack 18+)",
+    "b_title": "Batch Video",
+    "b_sub": "",
+    "b_chip": "",
+    "b_mode_label": "Mode",
+    "b_opt_ref": "🖼️ From Image (I2V)",
+    "b_opt_t2v": "🎬 From Text (T2V)",
+    "b_opt_director": "🎭 Director Script",
     "b_lora_label": "⚡ LoRA Engine",
     "b_lora_opt_pdmd": "🌟 PDMD 4-Step (Sharpest)",
     "b_lora_opt_mystic": "⚡ MysticXXX H3 V4 (Smooth motion)",
@@ -17336,26 +17319,26 @@ const i18n = {
     "b_dp_btn_preview": "👁️ Preview",
     "b_dp_btn_load": "📥 Load 5 Shots to Batch Prompts",
     "b_dp_hint": "💡 Director pack provides 5 continuous scenes with one-way undressing and seamless camera motion.",
-    "b_img_label": "1. Shared Character / Style Images",
-    "b_img_hint": "Select 1–9 reference images",
+    "b_img_label": "Reference Images",
+    "b_img_hint": "Upload images",
     "b_images_warn": "⚠️ <b>Anti-Blur:</b> Only upload single-person images. Do not use multi-grid character sheets. &rarr; ",
     "b_images_warn_link": "View sample reference",
     "b_gpu_label": "GPU",
-    "b_dur_label": "Duration / clip",
-    "b_dur_opt_4s": "4s (Fastest)",
-    "b_dur_opt_6s": "6s (Fast)",
-    "b_dur_opt_8s": "8s (Balanced)",
-    "b_dur_opt_10s": "10s (Standard)",
-    "b_dur_opt_12s": "12s (Long)",
-    "b_dur_opt_15s": "15s (Recommended)",
-    "b_aspect_label": "Aspect Ratio (Completely fixes blur for vertical TikTok/Reels)",
-    "b_seed_label": "🎲 Shared Seed",
-    "b_seed_ph": "-1 (Unique random seed per video)",
-    "b_seed_hint": "Set to <b>-1</b> for unique random seeds, or enter a number for consistent style.",
+    "b_dur_label": "Duration",
+    "b_dur_opt_4s": "4s",
+    "b_dur_opt_6s": "6s",
+    "b_dur_opt_8s": "8s",
+    "b_dur_opt_10s": "10s",
+    "b_dur_opt_12s": "12s",
+    "b_dur_opt_15s": "15s",
+    "b_aspect_label": "Aspect Ratio",
+    "b_seed_label": "Seed",
+    "b_seed_ph": "-1",
+    "b_seed_hint": "",
     "b_out_label": "Output Directory",
     "b_btn_browse": "📁 Browse",
     "b_upscale_label": "⬆️ Upscale",
-    "b_prompts_label": "2. Prompt List (One video per line)",
+    "b_prompts_label": "Prompts",
     "b_btn_clear": "🧹 Clear",
     "b_btn_clear_title": "Clear entire prompt list",
     "b_quick_movie_label": "🔞 Quick 5-Ep Film Presets:",
@@ -17369,13 +17352,13 @@ const i18n = {
     "b_yuri_title": "Auto-load 5 episodes: Sweet & Passionate Female Duo",
     "b_btn_open_movie": "🎬 Open 18+ Studio",
     "b_open_movie_title": "Open 18+ Movie Director to customize scenes, outfits, then load into Batch",
-    "b_prompts_ph": "Paste script list here (one video per line):\\nEp 1: Introduction of main character entering magic academy...\\nEp 2: Confrontation with beast in forbidden forest...\\nEp 3: Activating sacred blade to rescue companions...\\n\\nOr click the '🔞 Quick 5-Ep Film' buttons above to auto-populate continuous scenes!",
-    "b_prompts_hint": "Intelligently distributed across parallel or sequential GPUs. Rendered videos will be saved to output folder.",
-    "b_multi_title": "⚡ Multi-Account Parallel Run (GPU Cluster)",
+    "b_prompts_ph": "One prompt per line...",
+    "b_prompts_hint": "",
+    "b_multi_title": "⚡ Multi-Account",
     "b_multi_desc": "Automatically distributes scenes across independent GPUs. When one account runs out of CU or finishes early, another takes over seamlessly without losing prompts.",
-    "b_btn_gen": "🚀 Start Batch Generation (Single Server Session)",
+    "b_btn_gen": "🚀 Start Batch",
     "gal_title": "🎬 Generated Video Gallery",
-    "gal_sub": "All rendered videos from MiniMax H3. Centralized video player — manual playback, no disruptive autoplay.",
+    "gal_sub": "",
     "gal_filter_grouped": "🌟 Grouped (Upscale Priority)",
     "gal_filter_upscaled": "✨ Upscaled Only",
     "gal_filter_all": "📁 All Files",
@@ -17386,7 +17369,7 @@ const i18n = {
     "gal_open": "📁 Open Folder",
     "gal_empty": "Scanning video library...",
     "q_title": "⏳ Queue & Task Progress",
-    "q_sub": "Each prompt is a compact card. Real-time progress, automatic error detection and root-cause tips.",
+    "q_sub": "",
     "q_refresh": "🔄 Refresh List",
     "q_empty": "No tasks currently in queue.",
     "guide_title": "📖 User Guide & Compute Units (CU) Cost Specs",
@@ -18676,20 +18659,12 @@ function updateBatchWorkerUI(){
   const count = readyAccs.length;
 
   if(badge){
-    badge.textContent = isMulti ? `${currentLang === 'en' ? 'Speed' : 'Tốc độ'} x${Math.max(1, count)}` : (currentLang === 'en' ? 'Sequential 1 GPU' : 'Tuần tự 1 GPU');
+    badge.textContent = isMulti ? `x${Math.max(1, count)}` : '1 GPU';
     badge.className = isMulti && count >= 2 ? 'chip chip-g' : 'chip';
   }
 
   if(btn){
-    if(isMulti && count >= 2){
-      btn.innerHTML = currentLang === 'en'
-        ? `🚀 Start Batch (Multi-Account Parallel &mdash; Speed x${count})`
-        : `🚀 Bắt đầu chạy Batch (Đa tài khoản song song &mdash; Tốc độ x${count})`;
-    } else {
-      btn.innerHTML = currentLang === 'en'
-        ? `🚀 Start Batch (Single Server Session)`
-        : `🚀 Bắt đầu chạy Batch (1 Session Máy Chủ duy nhất)`;
-    }
+    btn.innerHTML = currentLang === 'en' ? '🚀 Start Batch' : '🚀 Tạo Hàng Loạt';
   }
 
   if(listEl){
@@ -18702,7 +18677,7 @@ function updateBatchWorkerUI(){
         </span>
       `).join('');
     } else {
-      listEl.innerHTML = `<span style="font-size:11px;color:var(--text-muted)">${currentLang === 'en' ? 'Sequential mode on a single GPU.' : 'Chế độ chạy tuần tự trên 1 GPU duy nhất.'}</span>`;
+      listEl.innerHTML = '';
     }
   }
 }
@@ -19620,7 +19595,7 @@ async function loadCharacterPresets(){
   try {
     const res = await fetch('/api/character-presets').then(r => r.json());
     charPresetsCache = res.presets || [];
-    const optsHtml = `<option value="">👤 Chọn nhanh nhân vật đã lưu (${charPresetsCache.length})...</option>` +
+    const optsHtml = `<option value="">👤 Nhân vật đã lưu (${charPresetsCache.length})</option>` +
       charPresetsCache.map(p => `<option value="${escapeHtml(p.id)}">👤 ${escapeHtml(p.name)} (${p.count || 1} ảnh)</option>`).join('');
     const s1 = document.getElementById('char-preset-sel');
     const s2 = document.getElementById('b-char-preset-sel');
@@ -29875,77 +29850,36 @@ function onModeChange(){
     }
   }
 
+  if(imgLabel) imgLabel.innerHTML = 'Ảnh tham chiếu';
+  if(imgDesc) imgDesc.innerHTML = 'Tải ảnh lên';
+  if(promptBox) promptBox.placeholder = 'Nhập prompt...';
   if(mode === 'cam_previs'){
     if(packBox) packBox.style.display = 'none';
-    if(imgLabel) imgLabel.innerHTML = 'Chọn Ảnh Nhân Vật Chính (Ảnh 1) &amp; Ảnh Bối Cảnh Quán Bar/Phòng (Ảnh 2)';
-    if(imgDesc) imgDesc.innerHTML = 'Tải <b>Ảnh 1 = Nhân vật chính</b> (sẽ thay cho hình trụ xám) + <b>Ảnh 2 = Bối cảnh không gian</b> (ví dụ quán bar/căn phòng)';
-    // Tự động chọn mốc 6s (5s quỹ đạo + 1s giữ biểu cảm) nếu đang ở mặc định 15s và chưa gắn sẵn video 3D
     if(dur === '15' && !currentSourceVideoPath && !currentSourceVideoData){
       dur = '6';
       document.querySelectorAll('#pills .pill').forEach(p => p.classList.toggle('on', p.dataset.v === '6'));
     }
   } else if(mode === 'continuum'){
     if(packBox) packBox.style.display = 'none';
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Tham Chiếu V3.9 @R1..@R9 (1–9 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Tải <b>1–9 ảnh nhân vật/bối cảnh</b> (tương ứng <code>@R1..@R9</code>) để định tuyến theo từng Chunk trong H3 Continuum V3.9.8';
     renderContinuumRefRouting();
     renderContinuumChunksList();
   } else if(mode === 'longshot'){
     if(packBox) packBox.style.display = 'none';
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Nhân Vật & Bối Cảnh Cast (1–9 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Tải <b>1–9 ảnh nhân vật/bối cảnh</b> (&lt;Picture 1&gt;..&lt;Picture 9&gt;) để AI nhận diện &amp; giữ mặt xuyên suốt các Shot';
     renderLongshotCastList();
     renderLongshotList();
     if(!_geminiStatusCheckedOnce){
       _geminiStatusCheckedOnce = true;
       checkGeminiWebStatus(false);
     }
-  } else if(mode === 't2v' || mode === 'fasth3_t2v'){
-    if(imgLabel) imgLabel.innerHTML = mode === 'fasth3_t2v' ? 'Không Cần Ảnh — Chế Độ FastH3 Văn Bản T2V 8-Bước' : 'Ảnh Tham Chiếu (Tùy chọn)';
-    if(imgDesc) imgDesc.innerHTML = mode === 'fasth3_t2v'
-      ? 'Tự sinh <b>Video + Âm thanh</b> trực tiếp từ văn bản bằng mô hình <b>FastVideo FastH3 8-Bước</b> (node <code>MiniMaxH3ImageToVideo</code> thuần văn bản, <code>res_multistep</code>, <code>shift=10/3</code>).'
-      : 'Chế độ Text-to-Video (không bắt buộc ảnh)';
-    if(packBox) packBox.style.display = 'none';
-    if(promptBox) promptBox.placeholder = mode === 'fasth3_t2v'
-      ? 'Mô tả cảnh quay, chuyển động máy quay và âm thanh/lời thoại muốn tạo bằng FastH3 T2V 8-Bước...'
-      : 'Mô tả chi tiết nội dung video bạn muốn tạo...';
-  } else if(mode === 'audio_sync'){
-    if(packBox) packBox.style.display = 'none';
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Nhân Vật + File MP3/WAV (1–9 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Tải <b>1–9 ảnh nhân vật</b> ở đây &amp; chọn <b>file MP3/WAV</b> bên dưới';
-    if(promptBox) promptBox.placeholder = 'Mô tả hành động/biểu cảm của <Picture 1> khớp với file âm thanh MP3 đã tải lên...';
-  } else if(mode === 'skeleton_v2v'){
-    if(packBox) packBox.style.display = 'none';
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Nhân Vật & Bối Cảnh (1–2 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Kéo thả hoặc <b>bấm chọn 1–2 ảnh</b>';
-    if(promptBox) promptBox.placeholder = 'Nhập mô tả nhân vật và bối cảnh (hoặc để trống)...';
-  } else if(mode === 'char_swap'){
-    if(packBox) packBox.style.display = 'none';
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Nhân Vật Thay Thế (1–2 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Kéo thả hoặc <b>bấm chọn 1–2 ảnh nhân vật</b>';
-    if(promptBox) promptBox.placeholder = 'Nhập mô tả nhân vật thay thế (hoặc để trống để hệ thống tự xử lý)...';
   } else if(mode === 'director'){
     if(packBox) packBox.style.display = 'block';
     onDirectorPackChange();
-  } else if(mode === 'fasth3_omni'){
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Tham Chiếu Đa Phương Thức &lt;Picture 1..9&gt; (1–9 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Tải <b>1–9 ảnh nhân vật/trang phục/bối cảnh</b> (kết hợp tùy chọn <b>&lt;Video 1&gt;</b> ở trên &amp; <b>&lt;Audio 1&gt;</b> bên dưới)';
-    if(packBox) packBox.style.display = 'none';
-    if(promptBox) promptBox.placeholder = 'Nhập mô tả cảnh quay, chuyển động nhân vật, bối cảnh...';
-  } else if(mode === 'first_frame'){
-    if(imgLabel) imgLabel.innerHTML = 'Keyframe Đầu (0:00s) &amp; Keyframe Cuối (Kết thúc)';
-    if(imgDesc) imgDesc.innerHTML = 'Chọn <b>Ảnh Đầu</b> (bắt buộc) và <b>Ảnh Cuối</b> (tùy chọn)';
-    if(packBox) packBox.style.display = 'none';
-    if(promptBox) promptBox.placeholder = 'Nhập mô tả cảnh quay tiếp theo...';
   } else {
-    if(imgLabel) imgLabel.innerHTML = 'Ảnh Tham Chiếu (1–9 ảnh)';
-    if(imgDesc) imgDesc.innerHTML = 'Kéo thả hoặc <b>bấm chọn 1–9 ảnh</b>';
     if(packBox) packBox.style.display = 'none';
     if(promptBox && (promptBox.value.trim().startsWith('{"longshot":true') || promptBox.value.trim().startsWith('{"continuum":true'))){
       promptBox.value = '';
       updatePromptCount();
     }
-    if(promptBox) promptBox.placeholder = 'Nhập mô tả cảnh quay, chuyển động nhân vật, bối cảnh...';
   }
   if(mode !== 'longshot' && mode !== 'continuum'){
     const activePill = document.querySelector('#pills .pill.on');
@@ -31076,7 +31010,7 @@ function uxSyncStudioLang(){
   const cpSel = document.getElementById('char-preset-sel');
   if(cpSel && cpSel.options[0]){
     const cnt = (typeof charPresetsCache !== 'undefined' && Array.isArray(charPresetsCache)) ? charPresetsCache.length : 0;
-    cpSel.options[0].textContent = en ? `👤 Quick-load saved character (${cnt})...` : `👤 Chọn nhanh nhân vật đã lưu (${cnt})...`;
+    cpSel.options[0].textContent = en ? `👤 Saved characters (${cnt})` : `👤 Nhân vật đã lưu (${cnt})`;
   }
   const kreaBtn = document.querySelector('#char-preset-bar button[onclick*="openKrea2StudioModal"]');
   if(kreaBtn) kreaBtn.textContent = en ? '🎨 Krea 2 Image (Civitai)' : '🎨 Tạo Ảnh Krea 2 (Civitai)';
@@ -31115,9 +31049,9 @@ function uxSyncStudioLang(){
   }
   // Bước 3 thanh dưới
   const m1 = document.querySelector('#st-auto-merge + span');
-  if(m1) m1.textContent = en ? '🎞️ Auto-merge into 1 long video (.MP4)' : '🎞️ Tự ghép thành 1 video dài (.MP4)';
+  if(m1) m1.textContent = en ? 'Auto-merge' : 'Tự ghép video dài';
   const m2 = document.querySelector('#st-chain-last-frame + span');
-  if(m2) m2.textContent = en ? '🔗 Auto-chain last frame to next clip' : '🔗 Auto cắt Frame Cuối nối cùng Ref cảnh sau';
+  if(m2) m2.textContent = en ? 'Chain last frame' : 'Nối frame cuối';
   const txtBtn = document.querySelector('button[onclick*="st-normal-txt-inp"]');
   if(txtBtn) txtBtn.textContent = en ? '📂 Load .TXT' : '📂 Nạp .TXT';
   const aiSplitBtn = document.getElementById('btn-st-ai-split');
@@ -31379,23 +31313,7 @@ function gcpuSync3Selects(){
   }
 }
 function uxDockEmptyHtml(){
-  const en = _uxEn();
-  const st = window.__uxLast || {mode: _uxVal('gen-mode', 'reference') || 'reference', C: [], missing: 0, modeName: '', hasPrompt: false};
-  const mode = st.mode;
-  const tip = UX_DOCK_TIPS[mode] || UX_DOCK_TIPS.reference;
-  const sampleBtn = tip.sample
-    ? `<button type="button" class="b b2" data-ux-sample="${mode}" style="font-size:11px;padding:4px 10px;border-radius:7px;flex-shrink:0">${en ? '✨ Try Sample Prompt' : '✨ Thử Prompt mẫu'}</button>`
-    : '';
-  return `<div class="ux-dock" data-ux-dock-empty="1" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:rgba(255,255,255,0.015);border:1px dashed var(--border);border-radius:10px">
-    <div style="display:flex;align-items:center;gap:10px;min-width:0">
-      <span style="font-size:18px">${tip.ico}</span>
-      <div style="min-width:0">
-        <div style="font-size:12px;font-weight:700;color:var(--text-main)">${en ? 'No active render job' : 'Chưa có tiến trình đang chạy'}</div>
-        <div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${en ? 'Generated videos will automatically play in the stage above.' : 'Khi bấm Generate Video, tiến trình và kết quả sẽ tự động phát trên màn hình lớn.'}</div>
-      </div>
-    </div>
-    ${sampleBtn}
-  </div>`;
+  return '';
 }
 function uxRenderDockEmpty(){
   const dock = document.getElementById('studio-live-dock');
@@ -32218,22 +32136,17 @@ async function pickBatchOutDir(){
 function onBatchModeChange(){
   const mode = document.getElementById('b-mode') ? document.getElementById('b-mode').value : 'reference';
   const packBox = document.getElementById('b-fg-director-pack');
+  const imgSec = document.getElementById('b-img-section');
   const imgLabel = document.getElementById('b-img-label');
   const imgHint = document.getElementById('b-img-hint');
-  
   if(packBox){
     packBox.style.display = (mode === 'director' ? 'block' : 'none');
   }
-  if(mode === 'director'){
-    if(imgLabel) imgLabel.innerHTML = '1. Ảnh nhân vật khóa nét (Khuyên dùng 1–2 ảnh)';
-    if(imgHint) imgHint.innerHTML = 'Khóa nét mặt nhân vật xuyên suốt các tập phim (Tùy chọn)';
-  } else if(mode === 't2v'){
-    if(imgLabel) imgLabel.innerHTML = '1. Ảnh tham chiếu (Tùy chọn trong chế độ T2V)';
-    if(imgHint) imgHint.innerHTML = 'Chế độ T2V tự sinh hoàn toàn từ văn bản, không bắt buộc tải ảnh';
-  } else {
-    if(imgLabel) imgLabel.innerHTML = '1. Ảnh phong cách / nhân vật dùng chung';
-    if(imgHint) imgHint.innerHTML = 'Chọn 1–9 ảnh tham chiếu theo chuẩn Ref2VA';
+  if(imgSec){
+    imgSec.style.display = (mode === 't2v' ? 'none' : 'block');
   }
+  if(imgLabel) imgLabel.innerHTML = currentLang === 'en' ? 'Reference Images' : 'Ảnh tham chiếu';
+  if(imgHint) imgHint.innerHTML = currentLang === 'en' ? 'Upload images' : 'Tải ảnh lên';
 }
 
 function onBatchDirectorPackChange(){
