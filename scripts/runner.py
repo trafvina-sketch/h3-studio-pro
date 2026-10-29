@@ -1365,13 +1365,14 @@ def run_batch(
                                 'job_timeout_seconds = min(float(os.environ.get("H3_JOB_TIMEOUT_SECONDS", "1200" if INFERENCE_MODE == "longshot" else "720")), 1800.0 if INFERENCE_MODE == "longshot" else 900.0)',
                                 'job_timeout_seconds = min(float(os.environ.get("H3_JOB_TIMEOUT_SECONDS", "2400")), 3600.0)',
                             )
-                            src_joined = src_joined.replace(
-                                '    history = requests.get(BASE_URL + f"/history/{prompt_id}", timeout=30).json()',
-                                '    try:\n'
-                                '        history = requests.get(BASE_URL + f"/history/{prompt_id}", timeout=30).json()\n'
-                                '    except Exception:\n'
-                                '        history = {}',
-                            )
+                            if '        history = requests.get(' not in src_joined:
+                                src_joined = src_joined.replace(
+                                    '    history = requests.get(BASE_URL + f"/history/{prompt_id}", timeout=30).json()',
+                                    '    try:\n'
+                                    '        history = requests.get(BASE_URL + f"/history/{prompt_id}", timeout=30).json()\n'
+                                    '    except Exception:\n'
+                                    '        history = {}',
+                                )
                             src_joined = src_joined.replace(
                                 '    if time.time() - last_report >= 30:',
                                 '    if time.time() - last_report >= 10:',

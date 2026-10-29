@@ -2620,10 +2620,21 @@ def _process_queue(from_timer: bool = False):
 
         # Phân phối các lệnh trong hàng chờ: Chia đều cho tất cả các tài khoản rảnh trước (1 lệnh/TK rảnh),
         # chỉ gom nhiều lệnh vào 1 TK khi số lệnh trong hàng đợi nhiều hơn số TK rảnh!
+        # TỐI ƯU CU THÔNG MINH (WARM-FIRST CU SAVER):
+        # Một tài khoản GPU đang ẤM (đã tải 39GB model + nạp sẵn vào VRAM trong 12 phút gần nhất) chỉ tốn ~0.10 CU (~50s) cho mỗi video tiếp theo,
+        # trong khi bật mới 1 tài khoản LẠNH tốn ~0.45 CU (~5 phút) chỉ để tải model!
+        # Do đó: Nếu đang có tài khoản ẤM rảnh rỗi và tổng lệnh chờ <= số TK ấm * 2, ưu tiên gom tối đa 2 lệnh vào mỗi TK ẤM trước khi đánh thức TK LẠNH!
         while job_queue and idle_accounts:
+            warm_idle_cnt = sum(
+                1 for a in idle_accounts
+                if (now_ts_q - float(account_workers.get(a.get("email"), {}).get("last_active_ts") or 0.0)) < 720
+            )
             avail_acc_cnt = max(1, len(idle_accounts))
             total_pending_now = len(job_queue)
-            max_per_acc = max(1, min(MAX_COALESCED_BATCH, (total_pending_now + avail_acc_cnt - 1) // avail_acc_cnt))
+            if warm_idle_cnt >= 1 and total_pending_now <= warm_idle_cnt * 2:
+                max_per_acc = max(1, min(2, (total_pending_now + warm_idle_cnt - 1) // warm_idle_cnt))
+            else:
+                max_per_acc = max(1, min(MAX_COALESCED_BATCH, (total_pending_now + avail_acc_cnt - 1) // avail_acc_cnt))
 
             next_jid = job_queue.pop(0)
             job_info = active_jobs.get(next_jid, {})
